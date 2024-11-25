@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/23 23:31:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/25 23:40:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,34 @@ void	pwd_cmd(t_minishell *minishell)
 		perror("minishell: pwd");
 }
 
+void	echo_cmd(char **args)
+{
+	int	newline;
+	
+	newline = 1;
+	if (args[1])
+	{
+		if (ft_strlen(args[1]) == 2)
+		{
+			if (!ft_strncmp(args[1], "-n", 2))
+			{
+				newline = 0;
+				args++;
+			}
+		}
+	}
+	args++;
+	while (*args)
+	{
+		ft_putstr_fd(*args, STDOUT_FILENO);
+		if (*(args + 1))
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		args++;
+	}
+	if (newline)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+}
+
 void	execute_inbuilt_command(t_minishell *minishell)
 {
 	char **args;
@@ -46,5 +74,7 @@ void	execute_inbuilt_command(t_minishell *minishell)
 		cd_cmd(args[1]);
 	if (compare_cmd_name(args[0], "pwd"))
 		pwd_cmd(minishell);
+	if (compare_cmd_name(args[0], "echo"))
+		echo_cmd(args);
 	free_array((void **)args);
 }
