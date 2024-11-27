@@ -1,20 +1,31 @@
-SRCS = main.c inbuilt_cmds.c inbuilt_cmds_utils.c
-OBJS = $(SRCS:.c=.o)
-NAME = minishell
+include Include.mk 
+SRC_DIR = src
+OBJ_DIR = build
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./libft/includes -I.
-LIBFT = libft/libft.a
+LIBFT = libft
+LINKERS= -L./$(LIBFT) -lft -L. -lreadline
+CFLAGS = -Wall -Werror -Wextra -I./includes -I./libft/includes
+NAME = minishell
+SRCSDIR=$(addprefix src/,$(SRCS))
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCSDIR))
+
 
 all: $(NAME)
-$(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -L./libft -lft -lreadline -o $(NAME)
-$(LIBFT):
-	make -C libft
-clean:
-	rm -f $(OBJS)
-	make -C libft clean
+
+$(NAME): $(OBJS)
+	@make -C $(LIBFT)
+	$(CC) $(OBJS) $(LINKERS) $(CFLAGS) -o $(NAME)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+clean: 
+	@make -C $(LIBFT) fclean
+	rm -f  $(OBJS)
+
 fclean: clean
 	rm -f $(NAME)
-	make -C libft fclean
+
 re: fclean all
+
 .PHONY: all clean fclean re

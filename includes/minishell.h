@@ -26,5 +26,6 @@ enum	e_errors
 int		compare_cmd_name(char *arg1, char *cmd_name);
 void	execute_inbuilt_command(t_minishell *minishell);
 void	exit_handler(t_minishell *minishell, int error);
+void	print_error(int error);
 
 #endif

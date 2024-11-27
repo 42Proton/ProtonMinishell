@@ -1,27 +1,6 @@
 #include <minishell.h>
 
-void	print_error(int error)
-{
-	if (error == ERR_MALLOC)
-		ft_putstr_fd("Error: malloc failed\n", 2);
-}
-
-void	exit_handler(t_minishell *minishell, int error)
-{
-	print_error(error);
-	if (error > ERR_MALLOC)
-	{
-		rl_clear_history();
-		free(minishell->cwd);
-		free(minishell->line_read);
-		free(minishell);
-	}
-	if (error != NONE)
-		exit(EXIT_FAILURE);
-	exit(EXIT_SUCCESS);
-}
-
-void	parse_line(t_minishell *minishell)
+static void	parse_line(t_minishell *minishell)
 {
 	execute_inbuilt_command(minishell);
 	add_history(minishell->line_read);
