@@ -2,5 +2,6 @@ SRCS= \
 	main.c \
 	handlers.c \
 	print_error.c \
-	inbuilt_cmds_utils.c \
-	inbuilt_cmds.c 
+	compare_cmd_name.c \
+	execute_inbuilt_command.c \
+	cmds.c
