@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/28 18:44:32 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/28 23:24:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static int	parse_env_data(char *data, t_env *env)
 	i++;
 	env->name = malloc(i * sizeof(char));
 	if (!env->name)
-		free(env);
-	if (!env->name)
 		return (0);
 	ft_strlcpy(env->name, data, i);
 	j = i;
@@ -41,7 +39,6 @@ static int	parse_env_data(char *data, t_env *env)
 	if (!env->data)
 	{
 		free(env->name);
-		free(env);
 		return (0);
 	}
 	ft_strlcpy(env->data, data + i, j + 1);
