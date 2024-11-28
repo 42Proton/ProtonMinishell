@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/27 20:27:03 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/28 16:16:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,18 @@ void	echo_cmd(char **args)
 	}
 	if (newline)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+}
+
+void	env_cmd(t_minishell *minishell)
+{
+	t_list	*lst;
+	t_env	*env;
+	
+	lst = minishell->env_lst;
+	while (lst)
+	{
+		env = (t_env *)lst->content;
+		ft_printf("%s=%s\n", env->name, env->data);
+		lst = lst->next;
+	}
 }

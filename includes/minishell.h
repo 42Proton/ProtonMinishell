@@ -14,7 +14,14 @@ typedef struct s_minishell
 {
 	char	*line_read;
 	char	*cwd;
+	t_list	*env_lst;
 }	t_minishell;
+
+typedef struct s_env
+{
+	char	*name;
+	char	*data;
+}	t_env;
 
 enum	e_errors
 {
@@ -30,5 +37,6 @@ void	print_error(int error);
 void	cd_cmd(char *arg2);
 void	pwd_cmd(t_minishell *minishell);
 void	echo_cmd(char **args);
+void	env_cmd(t_minishell *minishell);
 
 #endif

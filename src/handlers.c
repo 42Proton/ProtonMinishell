@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/27 20:00:13 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/28 15:45:48 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	exit_handler(t_minishell *minishell, int error)
 		free(minishell->cwd);
 		free(minishell->line_read);
 		free(minishell);
+		if (minishell->env_lst)
+			ft_lstclear(&minishell->env_lst, free);
 	}
 	if (error != NONE)
 		exit(EXIT_FAILURE);
