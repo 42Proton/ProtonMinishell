@@ -6,14 +6,14 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/28 16:16:25 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/28 18:50:13 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <minishell.h>
 
-void	cd_cmd(char *arg2)
+void	cd_cmd(t_minishell *minishell, char *arg2)
 {
 	if (arg2)
 	{
@@ -22,7 +22,7 @@ void	cd_cmd(char *arg2)
 				perror("minishell: cd");
 	}
 	else
-		if (chdir(getenv("HOME")) == -1)
+		if (chdir(ft_getenv(minishell, "HOME")) == -1)
 			perror("minishell: cd");
 }
 
@@ -41,13 +41,10 @@ void	echo_cmd(char **args)
 	newline = 1;
 	if (args[1])
 	{
-		if (ft_strlen(args[1]) == 2)
+		if (!ft_strcmp(args[1], "-n"))
 		{
-			if (!ft_strncmp(args[1], "-n", 2))
-			{
-				newline = 0;
-				args++;
-			}
+			newline = 0;
+			args++;
 		}
 	}
 	args++;

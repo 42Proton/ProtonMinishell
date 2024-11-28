@@ -7,57 +7,6 @@ static void	parse_line(t_minishell *minishell)
 	free(minishell->line_read);
 }
 
-static int	parse_env_data(char *data, t_env *env)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (data[i] != '=')
-		i++;
-	i++;
-	env->name = malloc(i * sizeof(char));
-	if (!env->name)
-		return (0);
-	ft_strlcpy(env->name, data, i);
-	j = i;
-	while (data[j])
-		j++;
-	env->data = malloc(((j - i) + 1) * sizeof(char));
-	if (!env->data)
-	{
-		free(env->name);
-		return (0);
-	}
-	ft_strlcpy(env->data, data + i, j + 1);
-	return (1);
-}
-
-static void	prep_minishell_env(t_minishell *minishell, char **ev)
-{
-	t_env	*env;
-	t_list	*lst;
-
-	while (*ev)
-	{
-		env = malloc(sizeof(t_env));
-		if (!env)
-			exit_handler(minishell, ERR_MALLOC2);
-		parse_env_data(*ev, env);
-		lst = ft_lstnew(env);
-		if (!lst)
-		{
-			free(env);
-			exit_handler(minishell, ERR_MALLOC2);
-		}
-		if (!minishell->env_lst)
-			minishell->env_lst = lst;
-		else
-			ft_lstadd_back(&minishell->env_lst, lst);
-		ev++;
-	}
-}
-
 static t_minishell	*minishell_prep(void)
 {
 	t_minishell	*minishell;
