@@ -74,10 +74,14 @@ static t_minishell	*minishell_prep(void)
 	return (minishell);
 }
 
-int	main(void)
+int	main()
 {
 	t_minishell	*minishell;
+	struct sigaction sa;
+	sa.sa_flags = SA_SIGINFO
+	sa.sa_sigaction = &signal_handler;
 
+	sigaction(SIGINT,&sa, NULL);
 	minishell = minishell_prep();
 	while (1)
 	{

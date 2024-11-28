@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <linux/limits.h>
+#include <signal.h>
 
 typedef struct s_minishell
 {
