@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/28 18:50:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/28 23:30:35 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	execute_inbuilt_command(t_minishell *minishell)
 	if (!args)
 		exit_handler(minishell, ERR_MALLOC2);
 	if (!ft_strcmp(args[0], "exit"))
+	{
+		free_array((void **)args);
 		exit_handler(minishell, NONE);
+	}
 	if (!ft_strcmp(args[0], "cd"))
 		cd_cmd(minishell, args[1]);
 	if (!ft_strcmp(args[0], "pwd"))
