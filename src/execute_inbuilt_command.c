@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/28 23:30:35 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/29 19:55:06 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	execute_inbuilt_command(t_minishell *minishell)
 {
-	char **args;
+	char	**args;
 
 	args = ft_split(minishell->line_read, ' ');
 	if (!args)
@@ -32,5 +32,9 @@ void	execute_inbuilt_command(t_minishell *minishell)
 		echo_cmd(args);
 	if (!ft_strcmp(args[0], "env"))
 		env_cmd(minishell);
+	if (!ft_strcmp(args[0], "unset"))
+		unset_cmd(minishell, args[1]);
+	if (!ft_strcmp(args[0], "export"))
+		export_cmd(minishell, args[1]);
 	free_array((void **)args);
 }

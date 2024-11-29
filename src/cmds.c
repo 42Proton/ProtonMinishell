@@ -6,10 +6,9 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/28 18:50:13 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/30 02:24:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <minishell.h>
 
@@ -37,7 +36,7 @@ void	pwd_cmd(t_minishell *minishell)
 void	echo_cmd(char **args)
 {
 	int	newline;
-	
+
 	newline = 1;
 	if (args[1])
 	{
@@ -63,12 +62,41 @@ void	env_cmd(t_minishell *minishell)
 {
 	t_list	*lst;
 	t_env	*env;
-	
+
 	lst = minishell->env_lst;
 	while (lst)
 	{
 		env = (t_env *)lst->content;
 		ft_printf("%s=%s\n", env->name, env->data);
 		lst = lst->next;
+	}
+}
+
+void	unset_cmd(t_minishell *minishell, char *name)
+{
+	if (!name)
+	{
+		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+		return ;
+	}
+	if (!check_env_name(name))
+	{
+		ft_putstr_fd("unset: ", STDERR_FILENO);
+		ft_putstr_fd(name, STDERR_FILENO);
+		ft_putstr_fd(": invalid parameter name\n", STDERR_FILENO);
+		return ;
+	}
+	ft_unsetenv(minishell, name);
+}
+
+void	free_lst(t_list	*lst)
+{
+	t_list	*temp;
+
+	while (lst)
+	{
+		temp = lst->next;
+		free(lst);
+		lst = temp;
 	}
 }

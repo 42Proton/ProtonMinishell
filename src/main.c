@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
+/*   Updated: 2024/11/29 14:38:21 by amsaleh          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static void	parse_line(t_minishell *minishell)
@@ -20,6 +32,7 @@ static t_minishell	*minishell_prep(void)
 		exit_handler(minishell, ERR_MALLOC2);
 	if (*environ)
 		prep_minishell_env(minishell, environ);
+	minishell->last_exit_code = 0;
 	return (minishell);
 }
 

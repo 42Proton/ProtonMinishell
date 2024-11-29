@@ -6,20 +6,20 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/28 23:27:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/30 02:21:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	free_env(t_env *env)
+void	free_env(t_env *env)
 {
 	free(env->name);
 	free(env->data);
 	free(env);
 }
 
-static int	parse_env_data(char *data, t_env *env)
+int	parse_env_data(char *data, t_env *env)
 {
 	int		i;
 	int		j;
@@ -35,10 +35,14 @@ static int	parse_env_data(char *data, t_env *env)
 	j = i;
 	while (data[j])
 		j++;
-	env->data = malloc(((j - i) + 1) * sizeof(char));
+	if (j == i)
+		env->data = ft_strdup("");
+	else
+		env->data = malloc(((j - i) + 1) * sizeof(char));
 	if (!env->data)
 		return (0);
-	ft_strlcpy(env->data, data + i, j + 1);
+	if (j != i)
+		ft_strlcpy(env->data, data + i, (j - i) + 1);
 	return (1);
 }
 
