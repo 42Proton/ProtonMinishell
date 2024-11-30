@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 02:24:53 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/30 17:30:38 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <signal.h>
+# include <features.h>
 # include <libft.h>
 # include <stdio.h>
 # include <errno.h>
@@ -21,6 +23,8 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <linux/limits.h>
+# include <termios.h>
+# include <stdlib.h>
 
 typedef struct s_minishell
 {
@@ -63,5 +67,7 @@ void	unset_cmd(t_minishell *minishell, char *name);
 void	free_env(t_env *env);
 void	free_lst(t_list	*lst);
 t_env	*alloc_env(char *name, char *data);
+void	signal_handler(void);
+int 	terminals_config(void);
 
 #endif
