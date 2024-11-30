@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/30 23:43:18 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/30 23:47:35 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,9 @@ int	terminals_config(void)
 	struct termios	term;
 
 	if (tcgetattr(STDERR_FILENO, &term) != 0)
-	{
-		perror("NO ATTERI");
 		return (1);
-	}
 	term.c_cc[VQUIT] = _POSIX_VDISABLE;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) != 0)
-	{
-		perror("COULDN'T SET");
 		return (1);
-	}
 	return (0);
 }

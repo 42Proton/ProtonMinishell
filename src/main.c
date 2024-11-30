@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 21:38:38 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/30 23:48:16 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	main(void)
 
 	minishell = minishell_prep();
 	signal_handler();
-	terminals_config();
+	if(terminals_config())
+		exit_handler(minishell,EXIT_FAILURE);
 	start_shell(minishell);
 }
