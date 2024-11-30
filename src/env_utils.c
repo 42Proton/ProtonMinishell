@@ -21,8 +21,8 @@ void	free_env(t_env *env)
 
 int	parse_env_data(char *data, t_env *env)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (data[i] != '=')

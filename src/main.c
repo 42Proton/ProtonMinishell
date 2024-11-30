@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 17:14:26 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/30 21:38:38 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,17 @@ static t_minishell	*minishell_prep(void)
 	return (minishell);
 }
 
-
+static void	start_shell(t_minishell *mini)
+{
+	while (1)
+	{
+		mini->line_read = readline("\e[33mminishell 0x90\e[0m> ");
+		if (!mini->line_read)
+			exit_handler(mini, NONE);
+		if (*mini->line_read)
+			parse_line(mini);
+	}
+}
 
 int	main(void)
 {
@@ -45,12 +55,5 @@ int	main(void)
 	minishell = minishell_prep();
 	signal_handler();
 	terminals_config();
-	while (1)
-	{
-		minishell->line_read = readline("\e[33mminishell 0x90\e[0m> ");
-		if (!minishell->line_read)
-			exit_handler(minishell, NONE);
-		if (*minishell->line_read)
-			parse_line(minishell);
-	}
+	start_shell(minishell);
 }

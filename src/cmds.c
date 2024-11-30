@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/30 02:24:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/30 21:44:40 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ void	cd_cmd(t_minishell *minishell, char *arg2)
 			if (chdir(arg2) == -1)
 				perror("minishell: cd");
 	}
-	else
-		if (chdir(ft_getenv(minishell, "HOME")) == -1)
-			perror("minishell: cd");
+	else if (chdir(ft_getenv(minishell, "HOME")) == -1)
+		perror("minishell: cd");
 }
 
 void	pwd_cmd(t_minishell *minishell)
@@ -87,16 +86,4 @@ void	unset_cmd(t_minishell *minishell, char *name)
 		return ;
 	}
 	ft_unsetenv(minishell, name);
-}
-
-void	free_lst(t_list	*lst)
-{
-	t_list	*temp;
-
-	while (lst)
-	{
-		temp = lst->next;
-		free(lst);
-		lst = temp;
-	}
 }

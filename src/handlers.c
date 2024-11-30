@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/28 18:56:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/11/30 21:45:41 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@ static void	ft_lstclear_env(t_list **lst, void (*del)(void *))
 		node = node_next;
 	}
 	*lst = 0;
+}
+
+void	free_lst(t_list *lst)
+{
+	t_list	*temp;
+
+	while (lst)
+	{
+		temp = lst->next;
+		free(lst);
+		lst = temp;
+	}
 }
 
 void	exit_handler(t_minishell *minishell, int error)

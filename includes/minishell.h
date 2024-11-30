@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 17:30:38 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/30 21:44:12 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ void	free_env(t_env *env);
 void	free_lst(t_list	*lst);
 t_env	*alloc_env(char *name, char *data);
 void	signal_handler(void);
-int 	terminals_config(void);
+int		terminals_config(void);
 
 #endif
