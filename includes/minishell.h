@@ -6,13 +6,13 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 21:44:12 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/30 23:42:32 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
+# define _POSIX_SOURCE
 # include <signal.h>
 # include <features.h>
 # include <libft.h>

@@ -6,12 +6,11 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/30 21:46:09 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/11/30 23:43:18 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#define __USE_POSIX 1
 
 static void	signal_test(int signum)
 {
