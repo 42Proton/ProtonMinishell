@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 23:42:32 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/01 18:05:57 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,36 @@ typedef struct s_env
 	char	*data;
 }	t_env;
 
+typedef struct s_redirect
+{
+	int		redirect_type;
+	char	*redirect_name;
+}	t_redirect;
+
+typedef struct s_operation
+{
+	t_redirect	*in_redirects;
+	t_redirect	*out_redirects;
+	char		*cmd;
+	char		*args;
+}	t_operation;
+
 enum	e_errors
 {
 	ERR_MALLOC,
 	ERR_MALLOC2,
 	NONE
+};
+
+enum	e_redirect
+{
+	REDIRECT_STDIN,
+	REDIRECT_STDOUT,
+	REDIRECT_INFILE,
+	REDIRECT_OUTFILE,
+	REDIRECT_LIMITER,
+	REDIRECT_APPEND,
+	REDIRECT_PIPE
 };
 
 int		ft_unsetenv(t_minishell *minishell, char *name);
@@ -55,6 +80,7 @@ int		export_cmd(t_minishell *minishell, char *arg2);
 int		sort_env(t_minishell *minishell, t_list **sorted_env);
 int		sort_print_env(t_minishell *minishell);
 char	*ft_getenv(t_minishell *minishell, char *env_name);
+char	*get_exec_path(t_minishell *minishell, char *cmd);
 void	prep_minishell_env(t_minishell *minishell, char **ev);
 void	execute_inbuilt_command(t_minishell *minishell);
 void	exit_handler(t_minishell *minishell, int error);

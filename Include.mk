@@ -9,3 +9,4 @@ SRCS= \
 	env_utils2.c \
 	env_utils3.c \
 	term_handlers.c \
+	search_exec.c \

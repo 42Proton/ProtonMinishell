@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 23:48:16 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/01 19:29:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,11 @@ static t_minishell	*minishell_prep(void)
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!minishell)
 		exit_handler(minishell, ERR_MALLOC);
-	minishell->cwd = malloc(PATH_MAX);
+	minishell->cwd = malloc(PATH_MAX + 1);
 	if (!minishell->cwd)
 		exit_handler(minishell, ERR_MALLOC2);
 	if (*environ)
 		prep_minishell_env(minishell, environ);
-	minishell->last_exit_code = 0;
 	return (minishell);
 }
 
@@ -54,7 +53,7 @@ int	main(void)
 
 	minishell = minishell_prep();
 	signal_handler();
-	if(terminals_config())
-		exit_handler(minishell,EXIT_FAILURE);
+	if (terminals_config())
+		exit_handler(minishell, EXIT_FAILURE);
 	start_shell(minishell);
 }
