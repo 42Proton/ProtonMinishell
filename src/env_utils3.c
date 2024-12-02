@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 02:19:37 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 21:45:29 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/02 17:39:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_setenv(t_minishell *minishell, char *name, char *data)
 		free_env(env);
 		return (-1);
 	}
-	ft_lstadd_front(&minishell->env_lst, lst);
+	ft_lstadd_back(&minishell->env_lst, lst);
 	return (0);
 }
 

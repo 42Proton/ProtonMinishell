@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/02 01:19:06 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/02 14:49:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ typedef struct s_redirect
 
 typedef struct s_operation
 {
-	t_redirect	in_redirect;
+	t_redirect	*in_redirects;
 	t_redirect	out_redirect;
+	t_redirect	*truncate_out_redirects;
 	char		*cmd;
 	char		*args;
 }	t_operation;
