@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/01 19:29:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/03 16:30:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static void	start_shell(t_minishell *mini)
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read)
+		{
+			line_tokenizer(mini);
 			parse_line(mini);
+		}
 	}
 }
 

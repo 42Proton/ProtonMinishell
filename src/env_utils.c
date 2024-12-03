@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 02:21:59 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/03 16:51:07 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ void	prep_minishell_env(t_minishell *minishell, char **ev)
 			free_env(env);
 			exit_handler(minishell, ERR_MALLOC2);
 		}
-		if (!minishell->env_lst)
-			minishell->env_lst = lst;
-		else
-			ft_lstadd_back(&minishell->env_lst, lst);
+		ft_lstadd_back(&minishell->env_lst, lst);
 		ev++;
 	}
 }

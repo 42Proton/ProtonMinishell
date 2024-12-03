@@ -10,3 +10,6 @@ SRCS= \
 	env_utils3.c \
 	term_handlers.c \
 	search_exec.c \
+	parse_line.c \
+	line_tokenizer.c \
+	line_tokenizer_utils.c

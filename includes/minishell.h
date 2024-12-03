@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/02 14:49:25 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:24:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 typedef struct s_minishell
 {
 	char	*line_read;
+	char	**line_tokenized;
 	char	*cwd;
 	t_list	*env_lst;
 	int		last_exit_code;
@@ -46,14 +47,25 @@ typedef struct s_redirect
 	char	*redirect_name;
 }	t_redirect;
 
-typedef struct s_operation
+typedef struct s_operation	t_operation;
+
+struct s_operation
 {
+	int			operation_type;
+	t_operation	**operations;
 	t_redirect	*in_redirects;
 	t_redirect	out_redirect;
 	t_redirect	*truncate_out_redirects;
 	char		*cmd;
 	char		*args;
-}	t_operation;
+};
+
+typedef struct s_tokens_split
+{
+	size_t	start;
+	size_t	end;
+	size_t	token_i;
+}	t_tokens_split;
 
 enum	e_errors
 {
@@ -73,6 +85,19 @@ enum	e_redirect
 	REDIRECT_PIPE
 };
 
+enum	e_operation
+{
+	OPERATION_DEFAULT,
+	OPERATION_SUBSHELL,
+	OPERATION_AND,
+	OPERATION_OR
+};
+
+void	line_tokenizer(t_minishell *mini);
+void	split_tokens(t_minishell *mini);
+size_t	token_count_skip_to_end(char *line, size_t i);
+int		check_sep(char *line);
+size_t	skip_spaces(char *line);
 int		ft_unsetenv(t_minishell *minishell, char *name);
 int		ft_setenv(t_minishell *minishell, char *name, char *data);
 int		check_env_name(char *name);
