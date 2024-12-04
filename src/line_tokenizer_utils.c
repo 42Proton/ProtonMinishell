@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 00:09:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/04 00:23:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:14:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 static void	add_sep_tokens(t_minishell *mini,
 		t_tokens_split *tokens_split, char *line)
 {
+	t_list	*lst;
+	char	*content;
+
 	tokens_split->end += check_sep(line + tokens_split->end);
-	mini->line_tokenized[tokens_split->token_i] = \
-	ft_substr(mini->line_read, tokens_split->start,
+	content = ft_substr(mini->line_read, tokens_split->start,
 			tokens_split->end - tokens_split->start);
+	lst = ft_lstnew(content);
+	ft_lstadd_back(&mini->line_tokens, lst);
 	tokens_split->start = tokens_split->end;
 	tokens_split->token_i++;
 }
@@ -53,43 +57,16 @@ static void	split_skip_to_end(char *line, t_tokens_split *tokens_split)
 	}
 }
 
-size_t	token_count_skip_to_end(char *line, size_t i)
+static void	add_token(t_minishell *mini, t_tokens_split *tokens_split)
 {
-	while (line[i])
-	{
-		if (line[i] == ' ' || check_sep(line + i))
-			break ;
-		if (line[i] == '"' || line[i] == '\'')
-			i += skip_quotes(line + i);
-		else
-			i++;
-	}
-	return (i);
-}
+	t_list	*lst;
+	char	*content;
 
-void	split_tokens(t_minishell *mini)
-{
-	t_tokens_split	tokens_split;
-	char			*line;
-
-	ft_bzero(&tokens_split, sizeof(t_tokens_split));
-	line = mini->line_read;
-	while (line[tokens_split.end])
-	{
-		tokens_split.start += skip_spaces(line + tokens_split.start);
-		tokens_split.end = tokens_split.start;
-		while (check_sep(line + tokens_split.end))
-			add_sep_tokens(mini, &tokens_split, line);
-		tokens_split.start += skip_spaces(line + tokens_split.start);
-		tokens_split.end = tokens_split.start;
-		if (line[tokens_split.end] && !check_sep(line + tokens_split.end))
-		{
-			split_skip_to_end(line, &tokens_split);
-			mini->line_tokenized[tokens_split.token_i] = \
-				ft_substr(mini->line_read, tokens_split.start,
-					tokens_split.end - tokens_split.start);
-			tokens_split.start = tokens_split.end;
-			tokens_split.token_i++;
-		}
-	}
+	split_skip_to_end(mini->line_read, tokens_split);
+	content = ft_substr(mini->line_read, tokens_split->start,
+			tokens_split->end - tokens_split->start);
+	lst = ft_lstnew(content);
+	ft_lstadd_back(&mini->line_tokens, lst);
+	tokens_split->start = tokens_split->end;
+	tokens_split->token_i++;
 }

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/04 00:24:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:13:24 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 typedef struct s_minishell
 {
 	char	*line_read;
-	char	**line_tokenized;
+	t_list	*line_tokens;
 	char	*cwd;
 	t_list	*env_lst;
 	int		last_exit_code;
@@ -94,8 +94,6 @@ enum	e_operation
 };
 
 void	line_tokenizer(t_minishell *mini);
-void	split_tokens(t_minishell *mini);
-size_t	token_count_skip_to_end(char *line, size_t i);
 int		check_sep(char *line);
 size_t	skip_spaces(char *line);
 int		ft_unsetenv(t_minishell *minishell, char *name);

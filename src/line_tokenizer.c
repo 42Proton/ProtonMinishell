@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:29:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/04 14:54:20 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:13:07 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,43 +41,27 @@ size_t	skip_spaces(char *line)
 	return (i);
 }
 
-static size_t	count_tokens(char *line)
-{
-	size_t	tokens_count;
-	size_t	i;
-
-	tokens_count = 0;
-	i = 0;
-	while (line[i])
-	{
-		i += skip_spaces(line + i);
-		while (check_sep(line + i))
-		{
-			i += check_sep(line + i);
-			tokens_count++;
-		}
-		i += skip_spaces(line + i);
-		if (line[i] && !check_sep(line + i))
-			tokens_count++;
-		i = token_count_skip_to_end(line, i);
-	}
-	return (tokens_count);
-}
-
 void	line_tokenizer(t_minishell *mini)
 {
-	size_t	tokens_count;
+	t_tokens_split	tokens_split;
+	char			*line;
 
-	tokens_count = count_tokens(mini->line_read);
-	if (!tokens_count)
-		return ;
-	mini->line_tokenized = ft_calloc(tokens_count + 1, sizeof(void *));
-	if (!mini->line_tokenized)
-		exit_handler(mini, ERR_MALLOC2);
-	split_tokens(mini);
-	// while (*mini->line_tokenized)
-	// {
-	// 	ft_printf("%s\n", *mini->line_tokenized);
-	// 	mini->line_tokenized++;
-	// }
+	ft_bzero(&tokens_split, sizeof(t_tokens_split));
+	line = mini->line_read;
+	while (line[tokens_split.end])
+	{
+		tokens_split.start += skip_spaces(line + tokens_split.start);
+		tokens_split.end = tokens_split.start;
+		while (check_sep(line + tokens_split.end))
+			add_sep_tokens(mini, &tokens_split, line);
+		tokens_split.start += skip_spaces(line + tokens_split.start);
+		tokens_split.end = tokens_split.start;
+		if (line[tokens_split.end] && !check_sep(line + tokens_split.end))
+			add_token(mini, &tokens_split);
+	}
+	while (mini->line_tokens)
+	{
+		ft_printf("%s\n", mini->line_tokens->content);
+		mini->line_tokens = mini->line_tokens->next;
+	}
 }
