@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:29:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/04 00:23:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/04 14:54:20 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	check_sep(char *line)
 	if (!ft_strncmp(line, "<<", 2))
 		return (2);
 	if (!ft_strncmp(line, ">>", 2))
+		return (2);
+	if (!ft_strncmp(line, "<>", 2))
 		return (2);
 	if (*line == '|' || *line == '(' || *line == ')')
 		return (1);
@@ -73,4 +75,9 @@ void	line_tokenizer(t_minishell *mini)
 	if (!mini->line_tokenized)
 		exit_handler(mini, ERR_MALLOC2);
 	split_tokens(mini);
+	// while (*mini->line_tokenized)
+	// {
+	// 	ft_printf("%s\n", *mini->line_tokenized);
+	// 	mini->line_tokenized++;
+	// }
 }
