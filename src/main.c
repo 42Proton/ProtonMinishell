@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 23:20:58 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/05 23:26:00 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,25 @@ static void	parse_line(t_minishell *minishell)
 
 static t_minishell	*minishell_prep(void)
 {
-	t_minishell	*minishell;
+	t_minishell	*mini;
 	extern char	**environ;
 
-	minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!minishell)
-		exit_handler(minishell, ERR_MALLOC);
-	minishell->cwd = malloc(PATH_MAX + 1);
-	if (!minishell->cwd)
-		exit_handler(minishell, ERR_MALLOC2);
+	mini = ft_calloc(1, sizeof(t_minishell));
+	if (!mini)
+		exit_handler(mini, ERR_MALLOC);
+	mini->cwd = malloc(PATH_MAX + 1);
+	if (!mini->cwd)
+		exit_handler(mini, ERR_MALLOC2);
 	if (*environ)
-		prep_minishell_env(minishell, environ);
-	return (minishell);
+		prep_minishell_env(mini, environ);
+	if (tgetent(NULL, ft_getenv(mini, "TERM")) <= 0)
+        exit_handler(mini, ERR_TERM);
+	return (mini);
 }
 
 static void	start_shell(t_minishell *mini)
 {
+	display_header();
 	while (1)
 	{
 		mini->line_read = readline("\e[33mminishell 0x90\e[0m> ");
@@ -59,6 +62,6 @@ int	main(void)
 	minishell = minishell_prep();
 	signal_handler();
 	if (terminals_config())
-		exit_handler(minishell, EXIT_FAILURE);
+		exit_handler(minishell, ERR_TERM);
 	start_shell(minishell);
 }

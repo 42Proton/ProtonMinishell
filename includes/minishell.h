@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 23:17:10 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/05 23:25:01 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <libft.h>
 # include <stdio.h>
 # include <errno.h>
+# include <termcap.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
@@ -25,6 +26,8 @@
 # include <linux/limits.h>
 # include <termios.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <sys/ioctl.h>
 
 typedef struct s_minishell
 {
@@ -86,6 +89,7 @@ enum	e_errors
 {
 	ERR_MALLOC,
 	ERR_MALLOC2,
+	ERR_TERM,
 	NONE
 };
 
@@ -108,7 +112,10 @@ enum	e_operation
 	OPERATION_OR
 };
 
+void	display_header(void);
 void	line_tokenizer(t_minishell *mini);
+void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
+void	add_sep_tokens(t_minishell *mini, t_tokens_split *tokens_split, char *line);
 int		check_sep(char *line);
 size_t	skip_spaces(char *line);
 int		ft_unsetenv(t_minishell *minishell, char *name);

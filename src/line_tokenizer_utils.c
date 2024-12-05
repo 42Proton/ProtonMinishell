@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   line_tokenizer_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 00:09:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 12:43:12 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/05 19:58:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
