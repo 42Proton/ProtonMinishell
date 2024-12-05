@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 19:52:28 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/05 19:58:42 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,8 @@ void	free_lst(t_list	*lst);
 t_env	*alloc_env(char *name, char *data);
 void	signal_handler(void);
 int		terminals_config(void);
+void	add_sep_tokens(t_minishell *mini,
+		t_tokens_split *tokens_split, char *line);
+void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
 
 #endif
