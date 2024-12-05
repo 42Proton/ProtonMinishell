@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 19:38:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/05 22:17:35 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ int	main(void)
 	minishell = minishell_prep();
 	signal_handler();
 	if (terminals_config())
-		exit_handler(minishell, EXIT_FAILURE);
+		exit_handler(minishell, ERR_TERM);
 	start_shell(minishell);
 }
