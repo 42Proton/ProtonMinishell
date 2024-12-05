@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/05 19:33:51 by amsaleh          ###   ########.fr       */
+/*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
+/*   Updated: 2024/12/05 19:55:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	print_error(int error)
+void	display_header(void)
 {
-	if (error == ERR_MALLOC || error == ERR_MALLOC2)
-		perror("malloc failed");
-	if (error == ERR_TERM)
-		perror("term fail");
+    char	*clear_cmd;
+	char	*line;
+	int		fd;
+
+    clear_cmd = tgetstr("cl", NULL);
+    if (clear_cmd)
+		ft_putstr_fd(clear_cmd, STDOUT_FILENO);
+	fd = open("header.txt", O_RDONLY);
+	if (!fd)
+		return ;
+	line = get_next_line(fd);
+	while (line)
+	{
+		ft_putstr_fd(line, STDOUT_FILENO);
+		free(line);
+		line = get_next_line(fd);
+	}
 }
