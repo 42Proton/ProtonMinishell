@@ -3,33 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   line_tokenizer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:29:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/04 19:13:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/05 18:19:10 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	check_sep(char *line)
-{
-	if (!ft_strncmp(line, "&&", 2))
-		return (2);
-	if (!ft_strncmp(line, "||", 2))
-		return (2);
-	if (!ft_strncmp(line, "<<", 2))
-		return (2);
-	if (!ft_strncmp(line, ">>", 2))
-		return (2);
-	if (!ft_strncmp(line, "<>", 2))
-		return (2);
-	if (*line == '|' || *line == '(' || *line == ')')
-		return (1);
-	if (*line == '<' || *line == '>')
-		return (1);
-	return (0);
-}
+
 
 size_t	skip_spaces(char *line)
 {
@@ -58,10 +41,5 @@ void	line_tokenizer(t_minishell *mini)
 		tokens_split.end = tokens_split.start;
 		if (line[tokens_split.end] && !check_sep(line + tokens_split.end))
 			add_token(mini, &tokens_split);
-	}
-	while (mini->line_tokens)
-	{
-		ft_printf("%s\n", mini->line_tokens->content);
-		mini->line_tokens = mini->line_tokens->next;
 	}
 }

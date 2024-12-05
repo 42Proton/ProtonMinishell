@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 12:43:22 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/05 23:17:10 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ typedef struct s_redirect
 	char	*redirect_name;
 }	t_redirect;
 
-typedef struct s_operation	t_operation;
+typedef struct s_operation t_operation;
 
 struct s_operation
 {
 	int			operation_type;
-	t_operation	**operations;
+	struct s_operation	**operations;
 	t_redirect	*in_redirects;
 	t_redirect	out_redirect;
 	t_redirect	*truncate_out_redirects;
@@ -66,6 +66,21 @@ typedef struct s_tokens_split
 	size_t	end;
 	size_t	token_i;
 }	t_tokens_split;
+
+typedef struct s_token
+{
+	int index;
+	int type;
+	char *token_word;
+}	t_token;
+
+enum	e_types
+{
+	REDIRECTIONS,
+	COMMANDS,
+	ENV,
+	WORDS
+};
 
 enum	e_errors
 {
@@ -122,5 +137,8 @@ int		terminals_config(void);
 void	add_sep_tokens(t_minishell *mini,
 		t_tokens_split *tokens_split, char *line);
 void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
+void    validate_tokens(t_minishell *mini);
+int	check_if_command(char *token,t_list *envs);
+int	check_if_environ(char *token,t_list *envs);
 
 #endif

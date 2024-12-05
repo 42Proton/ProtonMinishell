@@ -11,4 +11,6 @@ SRCS= \
 	term_handlers.c \
 	search_exec.c \
 	line_tokenizer.c \
-	line_tokenizer_utils.c
+	line_tokenizer_utils.c\
+	validate_tokens.c \
+	checks.c

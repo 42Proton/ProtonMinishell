@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/03 16:30:25 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/05 23:20:58 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ static void	start_shell(t_minishell *mini)
 		if (*mini->line_read)
 		{
 			line_tokenizer(mini);
+			validate_tokens(mini);
 			parse_line(mini);
+			//FREE TOKENS FUNCTION TO BE WRITTEN
 		}
 	}
 }
