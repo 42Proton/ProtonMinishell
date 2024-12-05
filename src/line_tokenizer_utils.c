@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   line_tokenizer_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 00:09:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/04 19:14:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/05 12:43:12 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	add_sep_tokens(t_minishell *mini,
+void	add_sep_tokens(t_minishell *mini,
 		t_tokens_split *tokens_split, char *line)
 {
 	t_list	*lst;
@@ -57,7 +57,7 @@ static void	split_skip_to_end(char *line, t_tokens_split *tokens_split)
 	}
 }
 
-static void	add_token(t_minishell *mini, t_tokens_split *tokens_split)
+void	add_token(t_minishell *mini, t_tokens_split *tokens_split)
 {
 	t_list	*lst;
 	char	*content;

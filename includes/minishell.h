@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/04 19:13:24 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/05 12:43:22 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,8 @@ void	free_lst(t_list	*lst);
 t_env	*alloc_env(char *name, char *data);
 void	signal_handler(void);
 int		terminals_config(void);
+void	add_sep_tokens(t_minishell *mini,
+		t_tokens_split *tokens_split, char *line);
+void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
 
 #endif
