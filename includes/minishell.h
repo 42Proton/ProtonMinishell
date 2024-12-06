@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/06 22:32:25 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/06 22:41:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_minishell
 {
 	char	*line_read;
 	t_list	*line_tokens;
+	t_list  *tokens;
 	char	*cwd;
 	t_list	*env_lst;
 	int		last_exit_code;

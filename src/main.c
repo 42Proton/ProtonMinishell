@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/06 22:33:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/06 22:40:16 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_minishell	*minishell_prep(void)
 
 static void	start_shell(t_minishell *mini)
 {
-	display_header();
+	//display_header();
 	while (1)
 	{
 		mini->line_read = readline("\e[33mminishell 0x90\e[0m> ");
