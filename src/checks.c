@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/05 23:14:59 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 13:40:35 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,18 @@ int	check_if_environ(char *token,t_list *envs)
    		envs = envs->next;
 	}
 	return(0);
+}
+int	check_if_builtin(char *token)
+{
+	if (ft_strncmp(token,"cd",2) == 0)
+		return (1);
+	if (ft_strcmp(token,"export") == 0)
+		return (1);
+	if (ft_strcmp(token,"unset") == 0)
+		return (1);
+	if (ft_strcmp(token, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(token, "env") == 0)
+		return (1);
+	return (0);
 }

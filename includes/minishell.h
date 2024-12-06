@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 23:25:01 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 13:54:06 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_minishell
 {
 	char	*line_read;
 	t_list	*line_tokens;
+	t_list  *tokens;
 	char	*cwd;
 	t_list	*env_lst;
 	int		last_exit_code;
@@ -147,5 +148,8 @@ void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
 void    validate_tokens(t_minishell *mini);
 int	check_if_command(char *token,t_list *envs);
 int	check_if_environ(char *token,t_list *envs);
+int	check_if_builtin(char *token);
+void	free_tokens(void *tokens);
+void	free_token_list(t_list	*tokens);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 23:26:00 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 14:01:10 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static void	start_shell(t_minishell *mini)
 			line_tokenizer(mini);
 			validate_tokens(mini);
 			parse_line(mini);
-			//FREE TOKENS FUNCTION TO BE WRITTEN
+			//ft_printf("%s",((t_token *)mini->tokens->content)->token_word);
+			//free_token_list(mini->tokens);
 		}
 	}
 }
