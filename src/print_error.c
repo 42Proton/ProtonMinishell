@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/05 19:33:51 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/06 21:55:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,12 @@ void	print_error(int error)
 		perror("malloc failed");
 	if (error == ERR_TERM)
 		perror("term fail");
+}
+
+void	print_syntax_error(t_token *token)
+{
+	ft_putstr_fd(
+		"minishell 0x90: syntax error near unexpected token '", STDERR_FILENO);
+	ft_putstr_fd(token->token_word, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
 }

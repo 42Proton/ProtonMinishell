@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 23:26:00 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 22:33:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_minishell	*minishell_prep(void)
 	if (*environ)
 		prep_minishell_env(mini, environ);
 	if (tgetent(NULL, ft_getenv(mini, "TERM")) <= 0)
-        exit_handler(mini, ERR_TERM);
+		exit_handler(mini, ERR_TERM);
 	return (mini);
 }
 
@@ -47,10 +47,16 @@ static void	start_shell(t_minishell *mini)
 			exit_handler(mini, NONE);
 		if (*mini->line_read)
 		{
+			line_add_newline(mini);
 			line_tokenizer(mini);
-			validate_tokens(mini);
-			parse_line(mini);
-			//FREE TOKENS FUNCTION TO BE WRITTEN
+			if (lexical_analysis(mini))
+			{
+				parse_line(mini);
+				mini->line_tokens = 0;
+				//FREE TOKENS FUNCTION TO BE WRITTEN	
+			}
+			ft_lstclear(&mini->line_tokens, clear_token);
+			free(mini->line_read);
 		}
 	}
 }

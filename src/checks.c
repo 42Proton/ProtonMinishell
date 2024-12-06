@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/05 23:14:59 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 22:09:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,45 +26,59 @@ int	check_sep(char *line)
 		return (2);
 	if (*line == '|' || *line == '(' || *line == ')')
 		return (1);
-	if (*line == '<' || *line == '>')
+	if (*line == '<' || *line == '>' || *line == '\n')
 		return (1);
 	return (0);
 }
-int	check_if_command(char *token,t_list *envs)
-{
-	char **allpaths;
-	char *temp;
-	int i;
 
-	i = 0;
-	while(envs && ft_strcmp(((t_env *)envs->content)->name,"PATH"))
-                envs = envs->next;
-	allpaths =  ft_split(((t_env *)envs->content)->data,':');
-	if(access(token,X_OK) == 0)
+int	check_sep_ex_parenthesis(char *line)
+{
+	if (!ft_strncmp(line, "&&", 2))
+		return (2);
+	if (!ft_strncmp(line, "||", 2))
+		return (2);
+	if (!ft_strncmp(line, "<<", 2))
+		return (2);
+	if (!ft_strncmp(line, ">>", 2))
+		return (2);
+	if (!ft_strncmp(line, "<>", 2))
+		return (2);
+	if (*line == '|' || *line == '>' || *line == '\n')
 		return (1);
-	while (allpaths[i])
-	{
-		temp = ft_strjoin(allpaths[i],"/");
-		free(allpaths[i]);
-		allpaths[i] = temp;
-		temp = ft_strjoin(allpaths[i],token);
-		free(allpaths[i]);
-		allpaths[i] = temp;
-		if(access(allpaths[i],X_OK) == 0)
-			return (1);
-		i++;
-	}
-	free_array((void **)allpaths);
+	if (*line == '<')
+		return (1);
 	return (0);
 }
 
-int	check_if_environ(char *token,t_list *envs)
+int	check_redirect(char *token)
 {
-	while(envs)
-	{
-		if(ft_strcmp(((t_env *)envs->content)->name,token) == 0)
+	if (!ft_strncmp(token, "<<", 2))
 		return (1);
-   		envs = envs->next;
-	}
-	return(0);
+	if (!ft_strncmp(token, ">>", 2))
+		return (1);
+	if (!ft_strncmp(token, "<>", 2))
+		return (1);
+	if (*token == '<' || *token == '>')
+		return (1);
+	return (0);
+}
+
+int	check_redirect_num(int type)
+{
+	if (type == IN_REDIRECTION || type == OUT_REDIRECTION)
+		return (1);
+	if (type == INOUT_REDIRECTION || type == LIMITER_REDIRECTION)
+		return (1);
+	if (type == APPEND_REDIRECTION)
+		return (1);
+	return (0);
+}
+
+int	check_operator_num(int type)
+{
+	if (type == AND_OPERATOR || type == OR_OPERATOR)
+		return (1);
+	if (type == PIPE)
+		return (1);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 23:25:01 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 22:32:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ typedef struct s_redirect
 	char	*redirect_name;
 }	t_redirect;
 
-typedef struct s_operation t_operation;
+typedef struct s_operation	t_operation;
 
 struct s_operation
 {
 	int			operation_type;
-	struct s_operation	**operations;
+	t_operation	**operations;
 	t_redirect	*in_redirects;
 	t_redirect	out_redirect;
 	t_redirect	*truncate_out_redirects;
@@ -72,17 +72,26 @@ typedef struct s_tokens_split
 
 typedef struct s_token
 {
-	int index;
-	int type;
-	char *token_word;
+	int		index;
+	int		type;
+	char	*token_word;
 }	t_token;
 
-enum	e_types
+enum	e_token_type
 {
-	REDIRECTIONS,
-	COMMANDS,
-	ENV,
-	WORDS
+	COMMAND,
+	ARGUMENT,
+	AND_OPERATOR,
+	OR_OPERATOR,
+	PIPE,
+	IN_REDIRECTION,
+	OUT_REDIRECTION,
+	INOUT_REDIRECTION,
+	LIMITER_REDIRECTION,
+	APPEND_REDIRECTION,
+	OPEN_PARENTHESIS,
+	CLOSE_PARENTHESIS,
+	IDENTIFIER
 };
 
 enum	e_errors
@@ -112,10 +121,22 @@ enum	e_operation
 	OPERATION_OR
 };
 
+void	clear_token(void *content);
+int		check_sep_ex_parenthesis(char *line);
+int		check_operator_num(int type);
+void	print_syntax_error(t_token *token);
+int		check_redirect_num(int type);
+t_token	*get_token_num(t_list *tokens, size_t index);
+int		validate_tokens(t_minishell *mini);
+void	print_tokens(t_minishell *mini);
+int		check_redirect(char *token);
+int		get_redirection_type(char *token);
+void	line_add_newline(t_minishell *mini);
 void	display_header(void);
 void	line_tokenizer(t_minishell *mini);
 void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
-void	add_sep_tokens(t_minishell *mini, t_tokens_split *tokens_split, char *line);
+void	add_sep_tokens(t_minishell *mini,
+			t_tokens_split *tokens_split, char *line);
 int		check_sep(char *line);
 size_t	skip_spaces(char *line);
 int		ft_unsetenv(t_minishell *minishell, char *name);
@@ -142,10 +163,8 @@ t_env	*alloc_env(char *name, char *data);
 void	signal_handler(void);
 int		terminals_config(void);
 void	add_sep_tokens(t_minishell *mini,
-		t_tokens_split *tokens_split, char *line);
+			t_tokens_split *tokens_split, char *line);
 void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
-void    validate_tokens(t_minishell *mini);
-int	check_if_command(char *token,t_list *envs);
-int	check_if_environ(char *token,t_list *envs);
+int		lexical_analysis(t_minishell *mini);
 
 #endif

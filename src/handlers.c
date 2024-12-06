@@ -3,35 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2024/11/30 21:45:41 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 22:32:16 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	ft_lstclear_env(t_list **lst, void (*del)(void *))
+static void	clear_env(void *content)
 {
-	t_list	*node_next;
-	t_list	*node;
 	t_env	*env;
 
-	node = *lst;
-	if (!node || !del)
-		return ;
-	while (node)
-	{
-		env = (t_env *)node->content;
-		del(env->data);
-		del(env->name);
-		del(node->content);
-		node_next = node->next;
-		del(node);
-		node = node_next;
-	}
-	*lst = 0;
+	env = (t_env *)content;
+	free(env->data);
+	free(env->name);
+	free(env);
+}
+
+void	clear_token(void *content)
+{
+	t_token	*token;
+
+	token = (t_token *)content;
+	free(token->token_word);
+	free(token);
 }
 
 void	free_lst(t_list *lst)
@@ -54,7 +51,7 @@ void	exit_handler(t_minishell *minishell, int error)
 		rl_clear_history();
 		free(minishell->cwd);
 		free(minishell->line_read);
-		ft_lstclear_env(&minishell->env_lst, free);
+		ft_lstclear(&minishell->env_lst, clear_env);
 		free(minishell);
 	}
 	if (error != NONE)

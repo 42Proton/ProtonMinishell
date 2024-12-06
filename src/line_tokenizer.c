@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   line_tokenizer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:29:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 18:19:10 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 19:17:56 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-
 
 size_t	skip_spaces(char *line)
 {
