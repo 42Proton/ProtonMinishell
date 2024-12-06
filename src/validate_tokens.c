@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:45:59 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/06 14:46:15 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/06 15:48:42 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,22 @@ static t_list   *turn_into_struct(t_list *tokens,t_list *envs)
 {
         t_list *tok;
         t_token *temp;
-        
+        int     i;
     
+        i = 0;
         tok = ft_calloc(1,sizeof(t_list));
         if(!tok)
                 return (NULL);
         while(tokens)
         {
                 temp = ft_calloc(1,sizeof(t_token));
+                temp->index = i;
                 temp->type = check_type(tokens->content, envs);
                 temp->token_word = ft_strdup(tokens->content);
                 ft_lstadd_front(&tok,ft_lstnew((temp)));
                 tokens = tokens->next;
                 free(temp);
+                i++;
         }
         return (tok);
 }
