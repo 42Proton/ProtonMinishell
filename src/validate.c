@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:23:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/06 22:20:53 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/07 01:11:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ static ssize_t	pre_validate_tokens_helper(t_token *token, t_token *prev_token)
 		return (token->index);
 	if (prev_token)
 	{
-		if (check_sep_ex_parenthesis(prev_token->token_word)
-			&& check_sep_ex_parenthesis(token->token_word))
+		if (check_sep_operators_nl(prev_token->token_word)
+			&& check_sep_operators_nl(token->token_word))
+			return (token->index);
+		if (check_redirect(prev_token->token_word)
+			&& (check_redirect(token->token_word) || check_sep_operators_nl(token->token_word)))
 			return (token->index);
 		if (prev_token->type == OPEN_PARENTHESIS
 			&& token->type == CLOSE_PARENTHESIS)

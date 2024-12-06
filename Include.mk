@@ -15,4 +15,5 @@ SRCS= \
 	line_tokenizer_utils.c\
 	lexical_analysis.c \
 	checks.c \
+	checks2.c \
 	validate.c

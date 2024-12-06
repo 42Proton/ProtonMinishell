@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/06 22:41:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/07 01:09:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ enum	e_token_type
 	APPEND_REDIRECTION,
 	OPEN_PARENTHESIS,
 	CLOSE_PARENTHESIS,
-	IDENTIFIER
+	IDENTIFIER,
+	NEWLINE_TOKEN
 };
 
 enum	e_errors
@@ -122,8 +123,9 @@ enum	e_operation
 	OPERATION_OR
 };
 
+int		check_type(char *token, t_token *previous_token);
 void	clear_token(void *content);
-int		check_sep_ex_parenthesis(char *line);
+int		check_sep_operators_nl(char *line);
 int		check_operator_num(int type);
 void	print_syntax_error(t_token *token);
 int		check_redirect_num(int type);

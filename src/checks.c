@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/06 22:39:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/07 01:08:56 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,11 @@ int	check_sep(char *line)
 	return (0);
 }
 
-int	check_sep_ex_parenthesis(char *line)
+int	check_sep_operators_nl(char *line)
 {
-	if (!ft_strncmp(line, "&&", 2))
-		return (2);
-	if (!ft_strncmp(line, "||", 2))
-		return (2);
-	if (!ft_strncmp(line, "<<", 2))
-		return (2);
-	if (!ft_strncmp(line, ">>", 2))
-		return (2);
-	if (!ft_strncmp(line, "<>", 2))
-		return (2);
-	if (*line == '|' || *line == '>' || *line == '\n')
+	if (!ft_strncmp(line, "&&", 2) || !ft_strncmp(line, "||", 2))
 		return (1);
-	if (*line == '<')
+	if (*line == '|' || *line == '\n')
 		return (1);
 	return (0);
 }
