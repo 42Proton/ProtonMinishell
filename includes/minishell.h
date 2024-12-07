@@ -61,7 +61,7 @@ struct s_operation
 	t_redirect	out_redirect;
 	t_redirect	*truncate_out_redirects;
 	char		*cmd;
-	char		*args;
+	char		**args;
 };
 
 typedef struct s_tokens_split
@@ -120,7 +120,8 @@ enum	e_operation
 	OPERATION_DEFAULT,
 	OPERATION_SUBSHELL,
 	OPERATION_AND,
-	OPERATION_OR
+	OPERATION_OR,
+	OPERATION_PIPE 
 };
 
 int		check_type(char *token, t_token *previous_token);
