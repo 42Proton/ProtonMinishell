@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/06 22:52:35 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/08 15:38:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	parse_line(t_minishell *minishell)
 {
 	execute_inbuilt_command(minishell);
-	add_history(minishell->line_read);
 }
 
 static t_minishell	*minishell_prep(void)
@@ -38,7 +37,7 @@ static t_minishell	*minishell_prep(void)
 
 static void	start_shell(t_minishell *mini)
 {
-	//display_header();
+	display_header();
 	while (1)
 	{
 		mini->line_read = readline("\e[33mminishell 0x90\e[0m> ");
@@ -52,6 +51,7 @@ static void	start_shell(t_minishell *mini)
 			{
 				parse_line(mini);
 			}
+			add_history(mini->line_read);
 			ft_lstclear(&mini->line_tokens, clear_token);
 			free(mini->line_read);
 		}
