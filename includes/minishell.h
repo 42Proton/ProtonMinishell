@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/07 01:09:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/10 00:26:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,19 @@ typedef struct s_token
 	char	*token_word;
 }	t_token;
 
+typedef struct s_new_tok_len
+{
+	size_t	res;
+	size_t	i;
+}	t_new_tok_len;
+
+typedef struct s_tok_expander
+{
+	int		mode;
+	t_split	split_se;
+	t_list	*lst;
+}	t_tok_expander;
+
 enum	e_token_type
 {
 	COMMAND,
@@ -124,6 +137,14 @@ enum	e_operation
 	OPERATION_PIPE 
 };
 
+enum	expander_modes
+{
+	DEFAULT_MODE,
+	SINGLE_QUOTE_MODE,
+	ENV_MODE
+};
+
+void	tokens_expander(t_minishell *mini);
 int		check_type(char *token, t_token *previous_token);
 void	clear_token(void *content);
 int		check_sep_operators_nl(char *line);

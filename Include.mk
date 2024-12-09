@@ -16,4 +16,5 @@ SRCS= \
 	lexical_analysis.c \
 	checks.c \
 	checks2.c \
-	validate.c
+	validate.c \
+	expander.c
