@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/09 15:19:06 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/09 16:47:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	parse_line(t_minishell *minishell)
 {
 	execute_inbuilt_command(minishell);
-	add_history(minishell->line_read);
 }
 
 static t_minishell	*minishell_prep(char **environ)
@@ -37,7 +36,7 @@ static t_minishell	*minishell_prep(char **environ)
 
 static void	start_shell(t_minishell *mini)
 {
-	//display_header();
+	display_header();
 	while (1)
 	{
 		mini->line_read = readline("\001\033[35m\002minishell 0x90>\001\033[33m\002 ");
@@ -51,6 +50,7 @@ static void	start_shell(t_minishell *mini)
 			{
 				parse_line(mini);
 			}
+			add_history(mini->line_read);
 			ft_lstclear(&mini->line_tokens, clear_token);
 			free(mini->line_read);
 		}
