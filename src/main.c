@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/09 13:24:17 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/09 15:19:06 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ static void	parse_line(t_minishell *minishell)
 	add_history(minishell->line_read);
 }
 
-static t_minishell	*minishell_prep(void)
+static t_minishell	*minishell_prep(char **environ)
 {
 	t_minishell	*mini;
-	extern char	**environ;
 
 	mini = ft_calloc(1, sizeof(t_minishell));
 	if (!mini)
@@ -41,7 +40,7 @@ static void	start_shell(t_minishell *mini)
 	//display_header();
 	while (1)
 	{
-		mini->line_read = readline("\001\033[35m\002minishell 0x90>\001\033[33m\002");
+		mini->line_read = readline("\001\033[35m\002minishell 0x90>\001\033[33m\002 ");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read)
@@ -58,11 +57,13 @@ static void	start_shell(t_minishell *mini)
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
 	t_minishell	*minishell;
 
-	minishell = minishell_prep();
+	minishell = minishell_prep(env);
 	signal_handler();
 	if (terminals_config())
 		exit_handler(minishell, ERR_TERM);
