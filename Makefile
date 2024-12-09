@@ -10,8 +10,10 @@ SRCSDIR=$(addprefix src/,$(SRCS))
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCSDIR))
 
 
-all: $(NAME)
+all: libft $(NAME)
 
+libft:
+	@make -C $(LIBFT)
 $(NAME): $(OBJS)
 	@make -C $(LIBFT)
 	$(CC) $(OBJS) $(LINKERS) $(CFLAGS) -o $(NAME)
@@ -28,4 +30,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re libft
