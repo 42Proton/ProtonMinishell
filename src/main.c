@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/06 22:52:35 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/09 13:24:17 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	start_shell(t_minishell *mini)
 	//display_header();
 	while (1)
 	{
-		mini->line_read = readline("\e[33mminishell 0x90\e[0m> ");
+		mini->line_read = readline("\001\033[35m\002minishell 0x90>\001\033[33m\002");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read)
