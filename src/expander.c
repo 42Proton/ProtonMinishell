@@ -6,146 +6,68 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 01:18:57 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/10 16:36:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	check_quotes(char c)
+static void	expand_iter_tok(t_minishell *mini, char *s, t_tok_expander *tok_exp)
 {
-	if (c == '\'' || c == '"')
-		return (1);
-	return (0);
-}
-
-static int	check_expander_env(char c, int mode)
-{
-	if (c == '$' && mode != SINGLE_QUOTE_MODE)
-		return (1);
-	return (0);
-}
-
-static void	inc_split_index(t_split *split_se)
-{
-	split_se->start += 1;
-	split_se->end += 1;
-}
-
-static void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp)
-{
-	ft_lstclear(&tok_exp->lst, free);
-	free(tok_exp);
-	exit_handler(mini, ERR_MALLOC2);
-}
-
-static char	*get_env_safe(t_minishell *mini, char *new_str)
-{
-	char *res;
-
-	if (!*new_str)
+	if (check_quotes(s[tok_exp->split_se.end]))
 	{
-		free(new_str);
-		res = ft_strdup("$");
-		return (res);
+		expander_add_tok(mini, s, tok_exp);
+		if (check_expander_default_mode(s[tok_exp->split_se.end], tok_exp))
+			tok_exp->mode = DEFAULT_MODE;
+		if (s[tok_exp->split_se.end] == '\'')
+			tok_exp->mode = SINGLE_QUOTE_MODE;
+		inc_split_index(&tok_exp->split_se);
 	}
-	res = ft_getenv(mini, new_str);
-	free(new_str);
-	if (!res)
-		res = ft_strdup("");
-	return (res);	
-}
-
-static void	expander_add_tok(t_minishell *mini, char *word, t_tok_expander *tok_exp)
-{
-	char	*new_str;
-	t_split	split_se;
-	t_list	*lst;
-
-	if (tok_exp->split_se.start == tok_exp->split_se.end && tok_exp->mode != ENV_MODE)
-		return ;
-	split_se = tok_exp->split_se;
-	new_str = ft_substr(word, split_se.start,
-		split_se.end - split_se.start);
-	if (!new_str)
-		expander_clean_exit(mini, tok_exp);
-	if (tok_exp->mode == ENV_MODE)
+	else if (check_env_sep(s[tok_exp->split_se.end]) && tok_exp->mode == ENV_MODE)
 	{
-		new_str = get_env_safe(mini, new_str);
-		if (!new_str)
-			expander_clean_exit(mini, tok_exp);
+		expander_add_tok(mini, s, tok_exp);
+		tok_exp->mode = DEFAULT_MODE;
 	}
-	lst = ft_lstnew(new_str);
-	if (!lst)
+	else if (check_expander_env(s[tok_exp->split_se.end], tok_exp->mode))
 	{
-		free(new_str);
-		expander_clean_exit(mini, tok_exp);
+		expander_add_tok(mini, s, tok_exp);
+		if (ft_isdigit(s[tok_exp->split_se.end + 1]))
+			inc_split_index(&tok_exp->split_se);
+		else
+			tok_exp->mode = ENV_MODE;
+		inc_split_index(&tok_exp->split_se);
 	}
-	ft_lstadd_back(&tok_exp->lst, lst);
-	tok_exp->split_se.start = tok_exp->split_se.end;
-}
-
-static char	*expander_join_tokens(t_minishell *mini, t_tok_expander *tok_exp)
-{
-	char	*res;
-	t_list	*lst;
-
-	res = ft_strdup("");
-	if (!res)
-		exit_handler(mini, ERR_MALLOC2);
-	lst = tok_exp->lst;
-	while (lst)
-	{
-		res = ft_strjoin(res, (char *)lst->content);
-		lst = lst->next;
-	}
-	return (res);
+	else
+		tok_exp->split_se.end++;
 }
 
 static char	*expand_tok(t_minishell *mini, char *s)
 {
 	t_tok_expander	*tok_exp;
+	char			*res;
 
 	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
 	if (!tok_exp)
 		exit_handler(mini, ERR_MALLOC2);
 	while (s[tok_exp->split_se.end])
-	{
-		if (check_quotes(s[tok_exp->split_se.end]))
-		{
-			expander_add_tok(mini, s, tok_exp);
-			if ((tok_exp->mode == SINGLE_QUOTE_MODE && s[tok_exp->split_se.end] == '\'') || tok_exp->mode == ENV_MODE)
-				tok_exp->mode = DEFAULT_MODE;
-			if (s[tok_exp->split_se.end] == '\'')
-				tok_exp->mode = SINGLE_QUOTE_MODE;
-			inc_split_index(&tok_exp->split_se);
-		}
-		else if (check_expander_env(s[tok_exp->split_se.end], tok_exp->mode))
-		{
-			expander_add_tok(mini, s, tok_exp);
-			tok_exp->mode = ENV_MODE;
-			inc_split_index(&tok_exp->split_se);
-		}
-		else if (s[tok_exp->split_se.end] == ' ' && tok_exp->mode == ENV_MODE)
-		{
-			expander_add_tok(mini, s, tok_exp);
-			tok_exp->mode = DEFAULT_MODE;
-		}
-		else
-			tok_exp->split_se.end++;
-	}
+		expand_iter_tok(mini, s, tok_exp);
 	expander_add_tok(mini, s, tok_exp);
-	return (expander_join_tokens(mini, tok_exp));
+	res = expander_join_subtok(mini, tok_exp);
+	free(tok_exp);
+	return (res);
 }
 
 void	tokens_expander(t_minishell *mini)
 {
 	t_list	*tokens;
+	char	*expanded_str;
 
 	tokens = mini->line_tokens;
 	while (tokens)
 	{
-		printf("%s\n", expand_tok(mini, ((t_token *)tokens->content)->token_word));
+		expanded_str = expand_tok(mini, (char *)tokens->content);
+		free(tokens->content);
+		tokens->content = expanded_str;
 		tokens = tokens->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 00:26:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/10 14:21:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,15 @@ enum	expander_modes
 	ENV_MODE
 };
 
+void	inc_split_index(t_split *split_se);
+void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp);
+char	*get_env_safe(t_minishell *mini, char *new_str);
+void	expander_add_tok(t_minishell *mini, char *word, t_tok_expander *tok_exp);
+char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp);
+int		check_env_sep(char c);
+int		check_quotes(char c);
+int		check_expander_env(char c, int mode);
+int		check_expander_default_mode(char c, t_tok_expander *tok_exp);
 void	tokens_expander(t_minishell *mini);
 int		check_type(char *token, t_token *previous_token);
 void	clear_token(void *content);

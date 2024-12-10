@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/07 01:04:25 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/10 12:24:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,26 @@ int	check_type(char *token, t_token *previous_token)
 	if (check_redirect_num(previous_type))
 		type = IDENTIFIER;
 	return (type);
+}
+
+int	check_quotes(char c)
+{
+	if (c == '\'' || c == '"')
+		return (1);
+	return (0);
+}
+
+int	check_expander_env(char c, int mode)
+{
+	if (c == '$' && mode != SINGLE_QUOTE_MODE)
+		return (1);
+	return (0);
+}
+
+int	check_expander_default_mode(char c, t_tok_expander *tok_exp)
+{
+	if ((tok_exp->mode == SINGLE_QUOTE_MODE && c == '\'')
+		|| tok_exp->mode == ENV_MODE)
+		return (1);
+	return (0);
 }
