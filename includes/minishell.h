@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 14:21:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/11 23:48:56 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ enum	expander_modes
 	ENV_MODE
 };
 
+void	expand_tok_wildcards(t_minishell *mini, t_list *lst);
+int 	check_str_wildcard(char *s);
 void	inc_split_index(t_split *split_se);
 void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp);
 char	*get_env_safe(t_minishell *mini, char *new_str);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 16:35:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/11 17:01:56 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,16 @@ int	check_env_sep(char c)
 {
 	if (c == ' ' || c == '*' || c == '$')
 		return (1);
+	return (0);
+}
+
+int check_str_wildcard(char *s)
+{
+	while (*s)
+	{
+		if (*s == '*')
+			return (1);
+		s++;
+	}
 	return (0);
 }

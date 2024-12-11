@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 16:36:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/11 23:48:24 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	tokens_expander(t_minishell *mini)
 		expanded_str = expand_tok(mini, (char *)tokens->content);
 		free(tokens->content);
 		tokens->content = expanded_str;
+		if (check_str_wildcard(expanded_str))
+			expand_tok_wildcards(mini, tokens);
 		tokens = tokens->next;
 	}
 }

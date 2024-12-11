@@ -19,4 +19,5 @@ SRCS= \
 	checks3.c \
 	validate.c \
 	expander.c \
-	expander_utils.c
+	expander_utils.c \
+	expander_wildcard.c
