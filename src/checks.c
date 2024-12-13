@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/07 01:08:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/13 22:06:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,6 @@ int	check_operator_num(int type)
 	if (type == AND_OPERATOR || type == OR_OPERATOR)
 		return (1);
 	if (type == PIPE)
-		return (1);
-	return (0);
-}
-int	check_if_builtin(char *token)
-{
-	if (ft_strncmp(token,"cd",2) == 0)
-		return (1);
-	if (ft_strcmp(token,"export") == 0)
-		return (1);
-	if (ft_strcmp(token,"unset") == 0)
-		return (1);
-	if (ft_strcmp(token, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(token, "env") == 0)
 		return (1);
 	return (0);
 }

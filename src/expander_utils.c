@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:17:28 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 14:55:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/13 22:33:12 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp)
 
 char	*get_env_safe(t_minishell *mini, char *new_str)
 {
-	char *res;
+	char	*res;
 
 	if (!*new_str)
 	{
@@ -41,7 +41,7 @@ char	*get_env_safe(t_minishell *mini, char *new_str)
 		res = ft_strdup("");
 	else
 		res = ft_strdup(res);
-	return (res);	
+	return (res);
 }
 
 void	expander_add_tok(t_minishell *mini,
@@ -51,11 +51,11 @@ void	expander_add_tok(t_minishell *mini,
 	t_split	split_se;
 	t_list	*lst;
 
-	if (tok_exp->split_se.start == tok_exp->split_se.end && tok_exp->mode != ENV_MODE)
+	if (!check_expander_if_split(tok_exp))
 		return ;
 	split_se = tok_exp->split_se;
 	new_str = ft_substr(word, split_se.start,
-		split_se.end - split_se.start);
+			split_se.end - split_se.start);
 	if (!new_str)
 		expander_clean_exit(mini, tok_exp);
 	if (tok_exp->mode == ENV_MODE)

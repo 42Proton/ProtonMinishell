@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 12:24:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/13 22:04:22 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_type_main_conditions(char *token, int previous_type)
 {
 	int	type;
-	
+
 	type = COMMAND;
 	if (*token == '(')
 		type = OPEN_PARENTHESIS;

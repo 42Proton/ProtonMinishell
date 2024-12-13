@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 16:21:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/13 22:32:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ static void	start_shell(t_minishell *mini)
 
 int	main(int argc, char **argv, char **env)
 {
-	(void)argc;
-	(void)argv;
 	t_minishell	*minishell;
 
+	(void)argc;
+	(void)argv;
 	minishell = minishell_prep(env);
 	signal_handler();
 	if (terminals_config())

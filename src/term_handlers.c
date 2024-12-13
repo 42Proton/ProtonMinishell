@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/06 16:32:37 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/13 22:19:45 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ void	signal_handler(void)
 int	terminals_config(void)
 {
 	struct termios	term;
-	if(!isatty(STDIN_FILENO))
-		return (1);	
+
+	if (!isatty(STDIN_FILENO))
+		return (1);
 	if (tcgetattr(STDERR_FILENO, &term) != 0)
 		return (1);
 	term.c_cc[VQUIT] = _POSIX_VDISABLE;

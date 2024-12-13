@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/11 23:48:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/13 22:29:55 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_minishell
 {
 	char	*line_read;
 	t_list	*line_tokens;
-	t_list  *tokens;
+	t_list	*tokens;
 	char	*cwd;
 	t_list	*env_lst;
 	int		last_exit_code;
@@ -134,22 +134,29 @@ enum	e_operation
 	OPERATION_SUBSHELL,
 	OPERATION_AND,
 	OPERATION_OR,
-	OPERATION_PIPE 
+	OPERATION_PIPE
 };
 
-enum	expander_modes
+enum	e_expander_modes
 {
 	DEFAULT_MODE,
 	SINGLE_QUOTE_MODE,
 	ENV_MODE
 };
 
-void	expand_tok_wildcards(t_minishell *mini, t_list *lst);
-int 	check_str_wildcard(char *s);
+void	free_tokens(void *tokens);
+int		check_expander_if_split(t_tok_expander *tok_exp);
+void	expand_tok_wildcards(t_minishell *mini,
+			t_list **lst, t_list **main_lst);
+void	del_non_matching_entries(t_list **lst_entries, char *pattern);
+void	insert_sorted_entries(t_list *lst_entries_sorted,
+			t_list **lst, t_list **main_lst);
+int		check_str_wildcard(char *s);
 void	inc_split_index(t_split *split_se);
 void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp);
 char	*get_env_safe(t_minishell *mini, char *new_str);
-void	expander_add_tok(t_minishell *mini, char *word, t_tok_expander *tok_exp);
+void	expander_add_tok(t_minishell *mini,
+			char *word, t_tok_expander *tok_exp);
 char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp);
 int		check_env_sep(char c);
 int		check_quotes(char c);

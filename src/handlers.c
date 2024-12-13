@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/10 14:51:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/13 22:08:12 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ void	free_lst(t_list *lst)
 		lst = temp;
 	}
 }
+
 void	free_tokens(void *tokens)
 {
-	if(((t_token*)tokens)->token_word)
+	if (((t_token *)tokens)->token_word)
 		free(((t_token *)tokens)->token_word);
 	free(tokens);
 }
@@ -63,17 +64,4 @@ void	exit_handler(t_minishell *minishell, int error)
 	if (error != NONE)
 		exit(EXIT_FAILURE);
 	exit(EXIT_SUCCESS);
-}
-void	free_token_list(t_list	*tokens)
-{
-	t_list *prev;
-	if(!tokens)
-		return;
-	while(tokens)
-	{
-		free_tokens(tokens->content);
-		prev = tokens;
-		tokens = tokens->next;
-		free(prev);
-	}
 }

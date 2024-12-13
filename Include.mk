@@ -20,4 +20,6 @@ SRCS= \
 	validate.c \
 	expander.c \
 	expander_utils.c \
-	expander_wildcard.c
+	expander_wildcard.c \
+	expander_wildcard_utils.c \
+	handlers2.c
