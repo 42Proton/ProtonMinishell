@@ -17,9 +17,12 @@ SRCS= \
 	checks.c \
 	checks2.c \
 	checks3.c \
+	checks4.c \
 	validate.c \
 	expander.c \
 	expander_utils.c \
+	expander_pre_wildcards.c \
+	expander_pre_wildcards_utils.c \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
 	handlers2.c

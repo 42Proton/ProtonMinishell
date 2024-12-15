@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/13 22:04:22 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/15 02:00:53 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	check_expander_env(char c, int mode)
 int	check_expander_default_mode(char c, t_tok_expander *tok_exp)
 {
 	if ((tok_exp->mode == SINGLE_QUOTE_MODE && c == '\'')
+		|| (tok_exp->mode == DOUBLE_QUOTE_MODE && c == '"')
 		|| tok_exp->mode == ENV_MODE)
 		return (1);
 	return (0);

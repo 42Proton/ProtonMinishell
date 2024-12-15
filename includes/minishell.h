@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/13 22:29:55 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/15 04:54:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_new_tok_len
 typedef struct s_tok_expander
 {
 	int		mode;
+	size_t	quotes_iter_count;
 	t_split	split_se;
 	t_list	*lst;
 }	t_tok_expander;
@@ -141,23 +142,37 @@ enum	e_expander_modes
 {
 	DEFAULT_MODE,
 	SINGLE_QUOTE_MODE,
+	DOUBLE_QUOTE_MODE,
 	ENV_MODE
 };
 
+int		expander_pre_wildcards_update(t_tok_expander *tok_exp,
+			int *old_mode, t_list **quotes_range);
+int		check_quotes_ex_literal(char c, t_tok_expander *tok_exp);
+int		check_if_wildcard(char c, size_t i, t_list *quotes_range);
+char	*expander_remove_quotes(t_minishell *mini,
+			char *s, t_list **quotes_range);
+int		check_expander_default_mode_basic(char c, int mode);
+int		check_env_end(char *s, t_tok_expander *tok_exp);
+void	expander_pre_wildcards(t_minishell *mini,
+			char *s, t_list **quotes_range);
 void	free_tokens(void *tokens);
 int		check_expander_if_split(t_tok_expander *tok_exp);
 void	expand_tok_wildcards(t_minishell *mini,
-			t_list **lst, t_list **main_lst);
-void	del_non_matching_entries(t_list **lst_entries, char *pattern);
+			t_list **lst, t_list **main_lst, t_list *quotes_range);
+void	del_non_matching_entries(t_list **lst_entries,
+			char *pattern, t_list *quotes_range);
 void	insert_sorted_entries(t_list *lst_entries_sorted,
 			t_list **lst, t_list **main_lst);
 int		check_str_wildcard(char *s);
 void	inc_split_index(t_split *split_se);
-void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp);
+void	expander_clean_exit(t_minishell *mini,
+			t_tok_expander *tok_exp, t_list **quotes_range);
 char	*get_env_safe(t_minishell *mini, char *new_str);
 void	expander_add_tok(t_minishell *mini,
-			char *word, t_tok_expander *tok_exp);
-char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp);
+			char *word, t_tok_expander *tok_exp, t_list **quotes_range);
+char	*expander_join_subtok(t_minishell *mini,
+			t_tok_expander *tok_exp, t_list **quotes_range);
 int		check_env_sep(char c);
 int		check_quotes(char c);
 int		check_expander_env(char c, int mode);

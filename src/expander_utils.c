@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:17:28 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/13 22:33:12 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/15 01:20:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ void	inc_split_index(t_split *split_se)
 	split_se->end += 1;
 }
 
-void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp)
+void	expander_clean_exit(t_minishell *mini,
+	t_tok_expander *tok_exp, t_list **quotes_range)
 {
+	ft_lstclear(quotes_range, free);
 	ft_lstclear(&tok_exp->lst, free);
 	free(tok_exp);
 	exit_handler(mini, ERR_MALLOC2);
@@ -45,7 +47,7 @@ char	*get_env_safe(t_minishell *mini, char *new_str)
 }
 
 void	expander_add_tok(t_minishell *mini,
-	char *word, t_tok_expander *tok_exp)
+	char *word, t_tok_expander *tok_exp, t_list **quotes_range)
 {
 	char	*new_str;
 	t_split	split_se;
@@ -57,24 +59,25 @@ void	expander_add_tok(t_minishell *mini,
 	new_str = ft_substr(word, split_se.start,
 			split_se.end - split_se.start);
 	if (!new_str)
-		expander_clean_exit(mini, tok_exp);
+		expander_clean_exit(mini, tok_exp, quotes_range);
 	if (tok_exp->mode == ENV_MODE)
 	{
 		new_str = get_env_safe(mini, new_str);
 		if (!new_str)
-			expander_clean_exit(mini, tok_exp);
+			expander_clean_exit(mini, tok_exp, quotes_range);
 	}
 	lst = ft_lstnew(new_str);
 	if (!lst)
 	{
 		free(new_str);
-		expander_clean_exit(mini, tok_exp);
+		expander_clean_exit(mini, tok_exp, quotes_range);
 	}
 	ft_lstadd_back(&tok_exp->lst, lst);
 	tok_exp->split_se.start = tok_exp->split_se.end;
 }
 
-char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp)
+char	*expander_join_subtok(t_minishell *mini,
+	t_tok_expander *tok_exp, t_list **quotes_range)
 {
 	char	*res;
 	char	*temp;
@@ -82,7 +85,10 @@ char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp)
 
 	res = ft_strdup("");
 	if (!res)
+	{
+		ft_lstclear(quotes_range, free);
 		exit_handler(mini, ERR_MALLOC2);
+	}
 	lst = tok_exp->lst;
 	while (lst)
 	{

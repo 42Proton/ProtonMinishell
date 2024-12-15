@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 23:48:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/13 22:18:12 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/15 02:18:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ static int	sort_dir_entries(t_list *lst_entries, t_list **lst_entries_sorted)
 	return (1);
 }
 
-void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst)
+void	expand_tok_wildcards(t_minishell *mini,
+	t_list **lst, t_list **main_lst, t_list *quotes_range)
 {
 	DIR		*dir;
 	t_list	*lst_entries;
@@ -118,7 +119,8 @@ void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst)
 		exit_handler(mini, ERR_MALLOC2);
 	if (!lst_entries)
 		return ;
-	del_non_matching_entries(&lst_entries, (char *)(*lst)->content);
+	del_non_matching_entries(&lst_entries,
+		(char *)(*lst)->content, quotes_range);
 	if (!lst_entries)
 		return ;
 	if (!sort_dir_entries(lst_entries, &lst_entries_sorted))

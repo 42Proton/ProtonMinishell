@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/13 22:28:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/15 04:28:51 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,21 @@ int	check_env_sep(char c)
 
 int	check_str_wildcard(char *s)
 {
+	int	mode;
+
+	mode = DEFAULT_MODE;
 	while (*s)
 	{
-		if (*s == '*')
+		if (check_quotes(*s))
+		{
+			if (check_expander_default_mode_basic(*s, mode))
+				mode = DEFAULT_MODE;
+			else if (*s == '\'' && mode == DEFAULT_MODE)
+				mode = SINGLE_QUOTE_MODE;
+			else if (*s == '"' && mode == DEFAULT_MODE)
+				mode = DOUBLE_QUOTE_MODE;
+		}
+		if (mode == DEFAULT_MODE && *s == '*')
 			return (1);
 		s++;
 	}
@@ -51,4 +63,12 @@ int	check_expander_if_split(t_tok_expander *tok_exp)
 		&& tok_exp->mode != ENV_MODE)
 		return (0);
 	return (1);
+}
+
+int	check_env_end(char *s, t_tok_expander *tok_exp)
+{
+	if (check_env_sep(s[tok_exp->split_se.end])
+		&& tok_exp->mode == ENV_MODE)
+		return (1);
+	return (0);
 }
