@@ -6,7 +6,7 @@
 /*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/16 14:12:12 by bismail          ###   ########.fr       */
+/*   Updated: 2024/12/16 14:39:25 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static void	start_shell(t_minishell *mini)
 			{
 				parse_line(mini);
 			}
+			mini->line_read[ft_strlen(mini->line_read) - 1] = 0;
 			add_history(mini->line_read);
 			ft_lstclear(&mini->line_tokens, clear_token);
 			free(mini->line_read);

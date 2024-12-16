@@ -14,8 +14,8 @@
 
 int	check_expander_default_mode_basic(char c, int mode)
 {
-	if ((mode == SINGLE_QUOTE_MODE && c == '\'')
-		|| (mode == DOUBLE_QUOTE_MODE && c == '"'))
+	if ((mode == SINGLE_QUOTE_MODE && c == '\'') || (mode == DOUBLE_QUOTE_MODE
+			&& c == '"'))
 		return (1);
 	return (0);
 }
@@ -40,9 +40,9 @@ int	check_if_wildcard(char c, size_t i, t_list *quotes_range)
 
 int	check_quotes_ex_literal(char c, t_tok_expander *tok_exp)
 {
-	if ((c == '"' && tok_exp->mode == DOUBLE_QUOTE_MODE)
-		|| (c == '\'' && tok_exp->mode == SINGLE_QUOTE_MODE)
-		|| (check_quotes(c) && tok_exp->mode == DEFAULT_MODE))
+	if ((c == '"' && tok_exp->mode == DOUBLE_QUOTE_MODE) || (c == '\''
+			&& tok_exp->mode == SINGLE_QUOTE_MODE) || (check_quotes(c)
+			&& tok_exp->mode == DEFAULT_MODE))
 		return (1);
 	return (0);
 }

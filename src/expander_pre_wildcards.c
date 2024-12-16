@@ -12,8 +12,8 @@
 
 #include <minishell.h>
 
-static int	expander_pre_wildcards_iter(char *s,
-	t_tok_expander *tok_exp, int *old_mode, t_list **quotes_range)
+static int	expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
+		int *old_mode, t_list **quotes_range)
 {
 	while (s[tok_exp->split_se.end])
 	{
@@ -35,8 +35,8 @@ static int	expander_pre_wildcards_iter(char *s,
 	return (1);
 }
 
-static void	exp_pre_wildcards_quotes_condition(t_minishell *mini,
-	char *s, t_tok_expander *tok_exp, t_list **quotes_range)
+static void	exp_pre_wildcards_quotes_condition(t_minishell *mini, char *s,
+		t_tok_expander *tok_exp, t_list **quotes_range)
 {
 	expander_add_tok(mini, s, tok_exp, quotes_range);
 	if (check_expander_default_mode(s[tok_exp->split_se.end], tok_exp))
@@ -48,8 +48,8 @@ static void	exp_pre_wildcards_quotes_condition(t_minishell *mini,
 	inc_split_index(&tok_exp->split_se);
 }
 
-char	*expander_remove_quotes(t_minishell *mini,
-	char *s, t_list **quotes_range)
+char	*expander_remove_quotes(t_minishell *mini, char *s,
+		t_list **quotes_range)
 {
 	t_tok_expander	*tok_exp;
 	char			*res;
@@ -71,8 +71,8 @@ char	*expander_remove_quotes(t_minishell *mini,
 	return (res);
 }
 
-void	expander_pre_wildcards(t_minishell *mini,
-	char *s, t_list **quotes_range)
+void	expander_pre_wildcards(t_minishell *mini, char *s,
+		t_list **quotes_range)
 {
 	t_tok_expander	*tok_exp;
 	int				old_mode;

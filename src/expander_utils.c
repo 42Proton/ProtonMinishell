@@ -18,8 +18,8 @@ void	inc_split_index(t_split *split_se)
 	split_se->end += 1;
 }
 
-void	expander_clean_exit(t_minishell *mini,
-	t_tok_expander *tok_exp, t_list **quotes_range)
+void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp,
+		t_list **quotes_range)
 {
 	ft_lstclear(quotes_range, free);
 	ft_lstclear(&tok_exp->lst, free);
@@ -46,8 +46,8 @@ char	*get_env_safe(t_minishell *mini, char *new_str)
 	return (res);
 }
 
-void	expander_add_tok(t_minishell *mini,
-	char *word, t_tok_expander *tok_exp, t_list **quotes_range)
+void	expander_add_tok(t_minishell *mini, char *word, t_tok_expander *tok_exp,
+		t_list **quotes_range)
 {
 	char	*new_str;
 	t_split	split_se;
@@ -56,8 +56,7 @@ void	expander_add_tok(t_minishell *mini,
 	if (!check_expander_if_split(tok_exp))
 		return ;
 	split_se = tok_exp->split_se;
-	new_str = ft_substr(word, split_se.start,
-			split_se.end - split_se.start);
+	new_str = ft_substr(word, split_se.start, split_se.end - split_se.start);
 	if (!new_str)
 		expander_clean_exit(mini, tok_exp, quotes_range);
 	if (tok_exp->mode == ENV_MODE)
@@ -76,8 +75,8 @@ void	expander_add_tok(t_minishell *mini,
 	tok_exp->split_se.start = tok_exp->split_se.end;
 }
 
-char	*expander_join_subtok(t_minishell *mini,
-	t_tok_expander *tok_exp, t_list **quotes_range)
+char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp,
+		t_list **quotes_range)
 {
 	char	*res;
 	char	*temp;

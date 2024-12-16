@@ -12,15 +12,15 @@
 
 #include <minishell.h>
 
-void	add_sep_tokens(t_minishell *mini,
-		t_tokens_split *tokens_split, char *line)
+void	add_sep_tokens(t_minishell *mini, t_tokens_split *tokens_split,
+		char *line)
 {
 	t_list	*lst;
 	char	*content;
 
 	tokens_split->end += check_sep(line + tokens_split->end);
-	content = ft_substr(mini->line_read, tokens_split->start,
-			tokens_split->end - tokens_split->start);
+	content = ft_substr(mini->line_read, tokens_split->start, tokens_split->end
+			- tokens_split->start);
 	lst = ft_lstnew(content);
 	ft_lstadd_back(&mini->line_tokens, lst);
 	tokens_split->start = tokens_split->end;
@@ -47,8 +47,8 @@ static void	split_skip_to_end(char *line, t_tokens_split *tokens_split)
 {
 	while (line[tokens_split->end])
 	{
-		if (line[tokens_split->end] == ' '
-			|| check_sep(line + tokens_split->end))
+		if (line[tokens_split->end] == ' ' || check_sep(line
+				+ tokens_split->end))
 			break ;
 		if (line[tokens_split->end] == '"' || line[tokens_split->end] == '\'')
 			tokens_split->end += skip_quotes(line + tokens_split->end);
@@ -63,8 +63,8 @@ void	add_token(t_minishell *mini, t_tokens_split *tokens_split)
 	char	*content;
 
 	split_skip_to_end(mini->line_read, tokens_split);
-	content = ft_substr(mini->line_read, tokens_split->start,
-			tokens_split->end - tokens_split->start);
+	content = ft_substr(mini->line_read, tokens_split->start, tokens_split->end
+			- tokens_split->start);
 	lst = ft_lstnew(content);
 	ft_lstadd_back(&mini->line_tokens, lst);
 	tokens_split->start = tokens_split->end;

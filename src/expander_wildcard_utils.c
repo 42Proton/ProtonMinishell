@@ -12,8 +12,8 @@
 
 #include <minishell.h>
 
-static int	check_if_pattern_match(t_list *lst,
-	char *pattern, t_list *quotes_range)
+static int	check_if_pattern_match(t_list *lst, char *pattern,
+		t_list *quotes_range)
 {
 	char	*tok;
 	size_t	i;
@@ -39,8 +39,8 @@ static int	check_if_pattern_match(t_list *lst,
 	return (1);
 }
 
-void	del_non_matching_entries(t_list **lst_entries,
-	char *pattern, t_list *quotes_range)
+void	del_non_matching_entries(t_list **lst_entries, char *pattern,
+		t_list *quotes_range)
 {
 	t_list	*lst_entries_ptr;
 	t_list	*lst_next;
@@ -65,8 +65,8 @@ void	del_non_matching_entries(t_list **lst_entries,
 	}
 }
 
-void	insert_sorted_entries(t_list *lst_entries_sorted,
-	t_list **lst, t_list **main_lst)
+void	insert_sorted_entries(t_list *lst_entries_sorted, t_list **lst,
+		t_list **main_lst)
 {
 	t_list	*lst_prev;
 	t_list	*lst_next;

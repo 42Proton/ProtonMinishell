@@ -72,8 +72,8 @@ int	check_expander_env(char c, int mode)
 int	check_expander_default_mode(char c, t_tok_expander *tok_exp)
 {
 	if ((tok_exp->mode == SINGLE_QUOTE_MODE && c == '\'')
-		|| (tok_exp->mode == DOUBLE_QUOTE_MODE && c == '"')
-		|| tok_exp->mode == ENV_MODE)
+			|| (tok_exp->mode == DOUBLE_QUOTE_MODE && c == '"')
+			|| tok_exp->mode == ENV_MODE)
 		return (1);
 	return (0);
 }

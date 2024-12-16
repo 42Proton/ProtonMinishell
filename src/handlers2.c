@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-void	free_token_list(t_list	*tokens)
+void	free_token_list(t_list *tokens)
 {
 	t_list	*prev;
 

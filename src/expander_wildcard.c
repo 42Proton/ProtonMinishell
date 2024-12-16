@@ -59,8 +59,7 @@ static void	sort_dir_entry(t_list *lst_new, t_list **lst_sorted)
 	t_list	*lst_sorted_ptr;
 
 	lst_sorted_ptr = *lst_sorted;
-	while (lst_sorted_ptr
-		&& ft_strcmp((char *)lst_new->content,
+	while (lst_sorted_ptr && ft_strcmp((char *)lst_new->content,
 			(char *)lst_sorted_ptr->content) > 0)
 	{
 		lst_prev = lst_sorted_ptr;
@@ -105,8 +104,8 @@ static int	sort_dir_entries(t_list *lst_entries, t_list **lst_entries_sorted)
 	return (1);
 }
 
-void	expand_tok_wildcards(t_minishell *mini,
-	t_list **lst, t_list **main_lst, t_list *quotes_range)
+void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst,
+		t_list *quotes_range)
 {
 	DIR		*dir;
 	t_list	*lst_entries;
@@ -119,8 +118,8 @@ void	expand_tok_wildcards(t_minishell *mini,
 		exit_handler(mini, ERR_MALLOC2);
 	if (!lst_entries)
 		return ;
-	del_non_matching_entries(&lst_entries,
-		(char *)(*lst)->content, quotes_range);
+	del_non_matching_entries(&lst_entries, (char *)(*lst)->content,
+		quotes_range);
 	if (!lst_entries)
 		return ;
 	if (!sort_dir_entries(lst_entries, &lst_entries_sorted))

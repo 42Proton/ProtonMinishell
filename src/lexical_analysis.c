@@ -12,8 +12,8 @@
 
 #include <minishell.h>
 
-static t_token	*lexing_token(t_list *tokens,
-	t_token *prev_token, t_list **new_tokens)
+static t_token	*lexing_token(t_list *tokens, t_token *prev_token,
+		t_list **new_tokens)
 {
 	t_token	*token;
 	t_list	*lst;

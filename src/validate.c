@@ -14,9 +14,9 @@
 
 static ssize_t	validate_tokens_parenthesis(t_minishell *mini)
 {
-	t_list		*tokens;
-	t_token		*token;
-	ssize_t		opened_parenthesis;
+	t_list	*tokens;
+	t_token	*token;
+	ssize_t	opened_parenthesis;
 
 	tokens = mini->line_tokens;
 	opened_parenthesis = 0;

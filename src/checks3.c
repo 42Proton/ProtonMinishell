@@ -67,8 +67,7 @@ int	check_expander_if_split(t_tok_expander *tok_exp)
 
 int	check_env_end(char *s, t_tok_expander *tok_exp)
 {
-	if (check_env_sep(s[tok_exp->split_se.end])
-		&& tok_exp->mode == ENV_MODE)
+	if (check_env_sep(s[tok_exp->split_se.end]) && tok_exp->mode == ENV_MODE)
 		return (1);
 	return (0);
 }

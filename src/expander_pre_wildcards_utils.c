@@ -25,10 +25,10 @@ static int	insert_quotes_range(t_list **quotes_range, t_tok_expander *tok_exp)
 	quotes_range_arr = malloc(2 * sizeof(size_t));
 	if (!quotes_range_arr)
 		return (0);
-	quotes_range_arr[0] = tok_exp->split_se.start
-		- tok_exp->quotes_iter_count * 2;
-	quotes_range_arr[1] = tok_exp->split_se.end
-		- (tok_exp->quotes_iter_count + 1) * 2;
+	quotes_range_arr[0] = tok_exp->split_se.start - tok_exp->quotes_iter_count
+		* 2;
+	quotes_range_arr[1] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
+			+ 1) * 2;
 	lst = ft_lstnew(quotes_range_arr);
 	if (!lst)
 	{
@@ -40,8 +40,8 @@ static int	insert_quotes_range(t_list **quotes_range, t_tok_expander *tok_exp)
 	return (1);
 }
 
-int	expander_pre_wildcards_update(t_tok_expander *tok_exp,
-	int *old_mode, t_list **quotes_range)
+int	expander_pre_wildcards_update(t_tok_expander *tok_exp, int *old_mode,
+		t_list **quotes_range)
 {
 	if (tok_exp->mode != DEFAULT_MODE && *old_mode == DEFAULT_MODE)
 	{

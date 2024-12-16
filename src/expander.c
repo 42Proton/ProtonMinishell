@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/15 04:48:19 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/16 14:45:32 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	expander_add_quote_tok(t_minishell *mini,
-	char *word, t_tok_expander *tok_exp)
+/*Written with devil in mind	DON'T READ IT OR TOUCH IT*/
+static void	expander_add_quote_tok(t_minishell *mini, char *word,
+		t_tok_expander *tok_exp)
 {
 	char	*new_str;
 	t_split	split_se;
@@ -32,8 +33,8 @@ static void	expander_add_quote_tok(t_minishell *mini,
 	ft_lstadd_back(&tok_exp->lst, lst);
 }
 
-static void	expander_quotes_condition(t_minishell *mini,
-	char *s, t_tok_expander *tok_exp)
+static void	expander_quotes_condition(t_minishell *mini, char *s,
+		t_tok_expander *tok_exp)
 {
 	expander_add_tok(mini, s, tok_exp, 0);
 	if (check_expander_default_mode(s[tok_exp->split_se.end], tok_exp))
@@ -100,12 +101,12 @@ void	tokens_expander(t_minishell *mini)
 		is_wildcard = check_str_wildcard(expanded_str);
 		if (is_wildcard)
 			expander_pre_wildcards(mini, expanded_str, &quotes_range);
-		tokens->content = expander_remove_quotes(mini,
-				expanded_str, &quotes_range);
+		tokens->content = expander_remove_quotes(mini, expanded_str,
+				&quotes_range);
 		if (is_wildcard)
 		{
-			expand_tok_wildcards(mini, &tokens,
-				&mini->line_tokens, quotes_range);
+			expand_tok_wildcards(mini, &tokens, &mini->line_tokens,
+				quotes_range);
 			ft_lstclear(&quotes_range, free);
 		}
 		tokens = tokens->next;
