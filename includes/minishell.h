@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/15 04:54:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/16 14:12:56 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,5 +224,6 @@ void	add_sep_tokens(t_minishell *mini,
 			t_tokens_split *tokens_split, char *line);
 void	add_token(t_minishell *mini, t_tokens_split *tokens_split);
 int		lexical_analysis(t_minishell *mini);
+int		execute_process(t_list *mini);
 
 #endif
