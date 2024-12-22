@@ -132,7 +132,6 @@ enum						e_redirect
 enum						e_operation
 {
 	OPERATION_DEFAULT,
-	OPERATION_SUBSHELL,
 	OPERATION_AND,
 	OPERATION_OR,
 	OPERATION_PIPE
@@ -233,6 +232,6 @@ void						add_sep_tokens(t_minishell *mini,
 void						add_token(t_minishell *mini,
 								t_tokens_split *tokens_split);
 int							lexical_analysis(t_minishell *mini);
-int							execute_process(t_list *mini);
+int							execute_process(t_minishell *mini);
 
 #endif

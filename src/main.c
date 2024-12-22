@@ -14,7 +14,7 @@
 
 static void	parse_line(t_minishell *minishell)
 {
-	execute_process(minishell->line_tokens);
+	execute_process(minishell);
 	execute_inbuilt_command(minishell);
 }
 
