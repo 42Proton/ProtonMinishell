@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/16 14:39:25 by bismail          ###   ########.fr       */
+/*   Updated: 2024/12/23 13:38:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 static void	parse_line(t_minishell *minishell)
 {
-	execute_process(minishell);
-	execute_inbuilt_command(minishell);
+	//execute_process(minishell);
+	//execute_inbuilt_command(minishell);
+	(void)minishell;
+	return ;
 }
 
 static t_minishell	*minishell_prep(char **environ)
