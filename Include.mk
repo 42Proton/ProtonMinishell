@@ -20,8 +20,8 @@ SRCS= \
 	checks4.c \
 	validate.c \
 	expander.c \
-	expander_utils_helper.c \
 	expander_utils.c \
+	expander_utils2.c \
 	expander_pre_wildcards.c \
 	expander_pre_wildcards_utils.c \
 	expander_wildcard.c \
