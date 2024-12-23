@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/13 22:08:12 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 20:42:30 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	exit_handler(t_minishell *minishell, int error)
 		free(minishell->cwd);
 		free(minishell->line_read);
 		ft_lstclear(&minishell->env_lst, clear_env);
+		ft_lstclear(&minishell->line_tokens, free);
 		free(minishell);
 	}
 	if (error != NONE)
