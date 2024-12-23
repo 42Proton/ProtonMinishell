@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 15:06:31 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 20:52:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 21:35:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*expander_add_tok_helper(char *word, t_tok_expander *tok_exp)
 	char	*new_str2;
 
 	split_se = tok_exp->split_se;
-	if (split_se.end - split_se.start == 1 && tok_exp->mode == ENV_MODE)
+	if (split_se.end - split_se.start == 1 && check_env_mode(tok_exp))
 		new_str = ft_strdup("");
-	else if (split_se.end - split_se.start == 1 && tok_exp->mode != ENV_MODE)
+	else if (split_se.end - split_se.start == 1 && !check_env_mode(tok_exp))
 		new_str = ft_substr(word, split_se.start, 1);
 	else
 		new_str = ft_substr(word, split_se.start, split_se.end - split_se.start);

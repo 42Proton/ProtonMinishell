@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 01:33:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/15 04:53:31 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 21:34:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ int	check_quotes_ex_literal(char c, t_tok_expander *tok_exp)
 	if ((c == '"' && tok_exp->mode == DOUBLE_QUOTE_MODE) || (c == '\''
 			&& tok_exp->mode == SINGLE_QUOTE_MODE) || (check_quotes(c)
 			&& tok_exp->mode == DEFAULT_MODE))
+		return (1);
+	return (0);
+}
+
+int	check_env_mode(t_tok_expander *tok_exp)
+{
+	if (tok_exp->mode == ENV_MODE
+	|| tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
 		return (1);
 	return (0);
 }

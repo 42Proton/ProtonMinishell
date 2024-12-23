@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:17:28 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 20:44:05 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 21:35:08 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ void	expander_add_tok(t_minishell *mini, char *word, t_tok_expander *tok_exp,
 	new_str = expander_add_tok_helper(word, tok_exp);
 	if (!new_str)
 		expander_clean_exit(mini, tok_exp, quotes_range);
-	if (tok_exp->mode == ENV_MODE
-	&& !(ft_strlen(new_str) == 2
+	if (check_env_mode(tok_exp) && !(ft_strlen(new_str) == 2
 	&& new_str[0] == '$' && new_str[1] == '?'))
 	{
 		new_str = get_env_safe(mini, new_str);
