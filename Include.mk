@@ -20,10 +20,11 @@ SRCS= \
 	checks4.c \
 	validate.c \
 	expander.c \
+	expander_utils_helper.c \
 	expander_utils.c \
 	expander_pre_wildcards.c \
 	expander_pre_wildcards_utils.c \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
-	handlers2.c\
+	handlers2.c \
 	execute_process.c
