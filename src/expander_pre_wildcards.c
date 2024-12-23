@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 23:55:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/16 08:50:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 18:17:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
 static void	exp_pre_wildcards_quotes_condition(t_minishell *mini, char *s,
 		t_tok_expander *tok_exp, t_list **quotes_range)
 {
-	expander_add_tok(mini, s, tok_exp, quotes_range);
+	exp_rm_quotes_add_tok(mini, s, tok_exp, quotes_range);
 	if (check_expander_default_mode(s[tok_exp->split_se.end], tok_exp))
 		tok_exp->mode = DEFAULT_MODE;
 	else if (s[tok_exp->split_se.end] == '\'' && tok_exp->mode == DEFAULT_MODE)
@@ -64,7 +64,7 @@ char	*expander_remove_quotes(t_minishell *mini, char *s,
 		else
 			tok_exp->split_se.end++;
 	}
-	expander_add_tok(mini, s, tok_exp, quotes_range);
+	exp_rm_quotes_add_tok(mini, s, tok_exp, quotes_range);
 	free(s);
 	res = expander_join_subtok(mini, tok_exp, quotes_range);
 	free(tok_exp);
