@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 21:30:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 21:45:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,7 @@ static void	expand_iter_tok(t_minishell *mini, char *s, t_tok_expander *tok_exp)
 	else if (check_quotes(s[tok_exp->split_se.end]))
 		expander_quotes_condition(mini, s, tok_exp);
 	else if (check_expander_env(s[tok_exp->split_se.end], tok_exp->mode))
-	{
-		expander_add_tok(mini, s, tok_exp, 0);
-		if (ft_isdigit(s[tok_exp->split_se.end + 1]))
-			inc_split_index(&tok_exp->split_se);
-		else if (tok_exp->mode == DOUBLE_QUOTE_MODE)
-			tok_exp->mode = DOUBLE_QUOTE_ENV_MODE;
-		else
-			tok_exp->mode = ENV_MODE;
-		if (tok_exp->mode == ENV_MODE || tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
-			tok_exp->split_se.end++;
-		else
-			inc_split_index(&tok_exp->split_se);
-	}
+		exp_env_condition(mini, s, tok_exp);
 	else
 		tok_exp->split_se.end++;
 }

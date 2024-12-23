@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 21:34:20 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 21:46:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,13 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void						exp_env_condition(t_minishell *mini, char *s,
+								t_tok_expander *tok_exp);
 int							check_env_mode(t_tok_expander *tok_exp);
 void						exp_rm_quotes_add_tok(t_minishell *mini, char *word,
 								t_tok_expander *tok_exp, t_list **quotes_range);
-char						*expander_add_tok_helper(char *word, t_tok_expander *tok_exp);
+char						*expander_add_tok_helper(char *word,
+								t_tok_expander *tok_exp);
 int							expander_pre_wildcards_update(t_tok_expander *tok_exp,
 								int *old_mode, t_list **quotes_range);
 int							check_quotes_ex_literal(char c,

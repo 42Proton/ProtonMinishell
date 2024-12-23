@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 15:06:31 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 21:35:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/23 21:45:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,19 @@ void	exp_rm_quotes_add_tok(t_minishell *mini, char *word,
 	}
 	ft_lstadd_back(&tok_exp->lst, lst);
 	tok_exp->split_se.start = tok_exp->split_se.end;
+}
+
+void	exp_env_condition(t_minishell *mini, char *s, t_tok_expander *tok_exp)
+{
+	expander_add_tok(mini, s, tok_exp, 0);
+	if (ft_isdigit(s[tok_exp->split_se.end + 1]))
+		inc_split_index(&tok_exp->split_se);
+	else if (tok_exp->mode == DOUBLE_QUOTE_MODE)
+		tok_exp->mode = DOUBLE_QUOTE_ENV_MODE;
+	else
+		tok_exp->mode = ENV_MODE;
+	if (tok_exp->mode == ENV_MODE || tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
+		tok_exp->split_se.end++;
+	else
+		inc_split_index(&tok_exp->split_se);
 }
