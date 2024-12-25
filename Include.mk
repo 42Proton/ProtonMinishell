@@ -27,5 +27,5 @@ SRCS= \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
 	handlers2.c \
-	check_pairs.c
-	# execute_process.c
+	check_pairs.c \
+	execute_process.c
