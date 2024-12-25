@@ -49,8 +49,7 @@ int	check_quotes_ex_literal(char c, t_tok_expander *tok_exp)
 
 int	check_env_mode(t_tok_expander *tok_exp)
 {
-	if (tok_exp->mode == ENV_MODE
-	|| tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
+	if (tok_exp->mode == ENV_MODE || tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
 		return (1);
 	return (0);
 }

@@ -58,7 +58,7 @@ void	expander_add_tok(t_minishell *mini, char *word, t_tok_expander *tok_exp,
 	if (!new_str)
 		expander_clean_exit(mini, tok_exp, quotes_range);
 	if (check_env_mode(tok_exp) && !(ft_strlen(new_str) == 2
-	&& new_str[0] == '$' && new_str[1] == '?'))
+			&& new_str[0] == '$' && new_str[1] == '?'))
 	{
 		new_str = get_env_safe(mini, new_str);
 		if (!new_str)

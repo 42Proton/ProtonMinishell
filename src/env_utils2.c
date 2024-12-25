@@ -106,7 +106,7 @@ int	sort_env(t_minishell *minishell, t_list **sorted_env)
 		if (!new_node)
 			return (0);
 		if (ft_strcmp(((t_env *)new_node->content)->name,
-				((t_env *)(*sorted_env)->content)->name) <= 0)
+						((t_env *)(*sorted_env)->content)->name) <= 0)
 			ft_lstadd_front(sorted_env, new_node);
 		else
 			sort_env_helper(sorted_env, new_node);

@@ -24,12 +24,12 @@ char	*expander_add_tok_helper(char *word, t_tok_expander *tok_exp)
 	else if (split_se.end - split_se.start == 1 && !check_env_mode(tok_exp))
 		new_str = ft_substr(word, split_se.start, 1);
 	else
-		new_str = ft_substr(word, split_se.start, split_se.end - split_se.start);
+		new_str = ft_substr(word, split_se.start, split_se.end
+				- split_se.start);
 	if (!new_str)
 		return (0);
-	if (ft_strlen(new_str) > 2
-	&& new_str[0] == '$' && new_str[1] != '?'
-	&& tok_exp->mode != SINGLE_QUOTE_MODE)
+	if (ft_strlen(new_str) > 2 && new_str[0] == '$' && new_str[1] != '?'
+		&& tok_exp->mode != SINGLE_QUOTE_MODE)
 	{
 		new_str2 = ft_strtrim(new_str, "$");
 		if (!new_str2)
@@ -40,7 +40,7 @@ char	*expander_add_tok_helper(char *word, t_tok_expander *tok_exp)
 }
 
 void	exp_rm_quotes_add_tok(t_minishell *mini, char *word,
-	t_tok_expander *tok_exp, t_list **quotes_range)
+		t_tok_expander *tok_exp, t_list **quotes_range)
 {
 	char	*new_str;
 	t_list	*lst;

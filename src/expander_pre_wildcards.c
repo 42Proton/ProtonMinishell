@@ -22,10 +22,10 @@ static int	expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
 			if (check_expander_default_mode(s[tok_exp->split_se.end], tok_exp))
 				tok_exp->mode = DEFAULT_MODE;
 			else if (s[tok_exp->split_se.end] == '\''
-				&& tok_exp->mode == DEFAULT_MODE)
+					&& tok_exp->mode == DEFAULT_MODE)
 				tok_exp->mode = SINGLE_QUOTE_MODE;
 			else if (s[tok_exp->split_se.end] == '"'
-				&& tok_exp->mode == DEFAULT_MODE)
+					&& tok_exp->mode == DEFAULT_MODE)
 				tok_exp->mode = DOUBLE_QUOTE_MODE;
 			if (!expander_pre_wildcards_update(tok_exp, old_mode, quotes_range))
 				return (0);

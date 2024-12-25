@@ -51,8 +51,8 @@ static void	expand_iter_tok(t_minishell *mini, char *s, t_tok_expander *tok_exp)
 {
 	if (check_env_end(s, tok_exp))
 	{
-		if (s[tok_exp->split_se.end] == '?'
-		&& tok_exp->split_se.end - tok_exp->split_se.start == 1)
+		if (s[tok_exp->split_se.end] == '?' && tok_exp->split_se.end
+			- tok_exp->split_se.start == 1)
 			tok_exp->split_se.end++;
 		expander_add_tok(mini, s, tok_exp, 0);
 		if (tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
@@ -105,7 +105,7 @@ void	tokens_expander(t_minishell *mini)
 		if (is_wildcard)
 		{
 			expand_tok_wildcards(mini, &tokens, &mini->line_tokens,
-				quotes_range);
+					quotes_range);
 			ft_lstclear(&quotes_range, free);
 		}
 		tokens = tokens->next;

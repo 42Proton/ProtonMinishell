@@ -23,7 +23,7 @@ void	print_error(int error)
 void	print_syntax_error(t_token *token)
 {
 	ft_putstr_fd("minishell 0x90: syntax error near unexpected token '",
-		STDERR_FILENO);
+					STDERR_FILENO);
 	if (token->type == NEWLINE_TOKEN)
 		ft_putstr_fd("newline", STDERR_FILENO);
 	else

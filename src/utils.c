@@ -35,7 +35,7 @@ void	print_tokens(t_minishell *mini)
 	while (node)
 	{
 		ft_printf("TYPE: %d, CONTENT: %s\n", ((t_token *)node->content)->type,
-			((t_token *)node->content)->token_word);
+				((t_token *)node->content)->token_word);
 		node = node->next;
 	}
 }

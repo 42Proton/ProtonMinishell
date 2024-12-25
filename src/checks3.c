@@ -14,8 +14,7 @@
 
 int	check_env_sep(char c)
 {
-	if (c == ' ' || c == '*' || c == '$' || c == '?'
-	|| c == '"' || c == '\'')
+	if (c == ' ' || c == '*' || c == '$' || c == '?' || c == '"' || c == '\'')
 		return (1);
 	return (0);
 }
@@ -68,8 +67,7 @@ int	check_expander_if_split(t_tok_expander *tok_exp)
 
 int	check_env_end(char *s, t_tok_expander *tok_exp)
 {
-	if ((check_env_sep(s[tok_exp->split_se.end]))
-	&& check_env_mode(tok_exp))
+	if ((check_env_sep(s[tok_exp->split_se.end])) && check_env_mode(tok_exp))
 		return (1);
 	return (0);
 }

@@ -94,7 +94,7 @@ static int	sort_dir_entries(t_list *lst_entries, t_list **lst_entries_sorted)
 		if (!*lst_entries_sorted)
 			*lst_entries_sorted = lst_new;
 		else if (ft_strcmp((char *)lst_new->content,
-				(char *)(*lst_entries_sorted)->content) <= 0)
+							(char *)(*lst_entries_sorted)->content) <= 0)
 			ft_lstadd_front(lst_entries_sorted, lst_new);
 		else
 			sort_dir_entry(lst_new, lst_entries_sorted);
@@ -119,7 +119,7 @@ void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst,
 	if (!lst_entries)
 		return ;
 	del_non_matching_entries(&lst_entries, (char *)(*lst)->content,
-		quotes_range);
+			quotes_range);
 	if (!lst_entries)
 		return ;
 	if (!sort_dir_entries(lst_entries, &lst_entries_sorted))
