@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/25 16:27:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/25 23:01:40 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	print_test(t_operation *operation, size_t lvl)
+void	print_test(t_operation **operations, size_t lvl)
 {
 	size_t	i = 0;
 	lvl++;
-	while (operation->operations[i])
+	while (operations[i])
 	{
-		printf("LVL:%ld, PTR:%p\n", lvl, operation->operations[i]);
-		if (operation->operations[i]->operations)
-			print_test(operation->operations[i], lvl);
+		printf("LVL:%ld, PTR:%p\n", lvl, operations[i]);
+		if (operations[i]->operations)
+			print_test(operations[i]->operations, lvl);
 		i++;
 	}
 }
@@ -30,15 +30,8 @@ static void	parse_line(t_minishell *mini)
 	//execute_process(minishell);
 	//execute_inbuilt_command(minishell);
 	t_operation **operations = operation_prep(mini->line_tokens, 0);
-	size_t	i = 0;
-	size_t	lvl = 0;
-	while (operations[i])
-	{
-		printf("LVL:%ld, PTR:%p\n", lvl, operations[i]);
-		if (operations[i]->operations)
-			print_test(operations[i], lvl);
-		i++;
-	}
+	(void)operations;
+	print_test(operations, 0);
 	return ;
 }
 

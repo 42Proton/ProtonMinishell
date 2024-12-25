@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2024/12/25 16:29:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/25 23:01:03 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static ssize_t	separators_counter(t_list *lst)
 			parenthesis_count++;
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
-		else if (((t_token *)lst->content)->type >= AND_OPERATOR
+		if (((t_token *)lst->content)->type >= AND_OPERATOR
 				&& ((t_token *)lst->content)->type <= PIPE
 				&& !parenthesis_count)
 			counter++;
@@ -50,7 +50,7 @@ static ssize_t	separators_counter_subop(t_list *lst)
 			parenthesis_count++;
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
-		else if (((t_token *)lst->content)->type >= AND_OPERATOR
+		if (((t_token *)lst->content)->type >= AND_OPERATOR
 				&& ((t_token *)lst->content)->type <= PIPE
 				&& parenthesis_count == 1)
 			counter++;
@@ -59,19 +59,18 @@ static ssize_t	separators_counter_subop(t_list *lst)
 	return (counter);
 }
 
-static int	add_operation_alloc(t_operation **operations, ssize_t *i)
+static int	add_operation_alloc(t_operation **operations, ssize_t i)
 {
 	t_operation	*temp;
 
 	temp = ft_calloc(1, sizeof(t_operation));
 	if (!temp)
 	{
-		while (--(*i) > -1)
-			free(operations[*i]);
+		while (--i > -1)
+			free(operations[i]);
 		return (0);
 	}
-	operations[*i] = temp;
-	(*i)++;
+	operations[i] = temp;
 	return (1);
 }
 
@@ -80,15 +79,16 @@ static t_operation	**operations_alloc(ssize_t sep_count)
 	t_operation	**operations;
 	ssize_t		i;
 
-	i = 0;
+	i = 1;
 	operations = ft_calloc(sizeof(void *), sep_count + 2);
-	if (!add_operation_alloc(operations, &i))
+	if (!add_operation_alloc(operations, 0))
 		return (0);
 	while (sep_count)
 	{
-		if (!add_operation_alloc(operations, &i))
+		if (!add_operation_alloc(operations, i))
 			return (0);
 		sep_count--;
+		i++;
 	}
 	return (operations);
 }
@@ -113,7 +113,8 @@ int	prep_subop(t_operation **operations, t_list *lst)
 	parenthesis_count = 0;
 	while (lst)
 	{
-		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
+		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS
+		&& !parenthesis_count)
 		{
 			if (!add_subop(operations, i, lst))
 				return (0);
@@ -121,7 +122,7 @@ int	prep_subop(t_operation **operations, t_list *lst)
 		}
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
-		else if (((t_token *)lst->content)->type >= AND_OPERATOR
+		if (((t_token *)lst->content)->type >= AND_OPERATOR
 			&& ((t_token *)lst->content)->type <= PIPE
 			&& !parenthesis_count)
 			i++;
@@ -140,7 +141,8 @@ int	prep_subop2(t_operation **operations, t_list *lst)
 	lst = lst->next;
 	while (parenthesis_count)
 	{
-		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
+		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS
+		&& parenthesis_count == 1)
 		{
 			if (!add_subop(operations, i, lst))
 				return (0);
@@ -148,7 +150,7 @@ int	prep_subop2(t_operation **operations, t_list *lst)
 		}
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
-		else if (((t_token *)lst->content)->type >= AND_OPERATOR
+		if (((t_token *)lst->content)->type >= AND_OPERATOR
 			&& ((t_token *)lst->content)->type <= PIPE
 			&& parenthesis_count == 1)
 			i++;

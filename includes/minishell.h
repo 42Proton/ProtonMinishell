@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/25 15:37:22 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/25 22:43:44 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 # include <features.h>
 # include <libft.h>
 # include <linux/limits.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
@@ -153,6 +153,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void	print_test(t_operation **operations, size_t lvl);
 t_operation	**operation_prep(t_list *lst, int is_subop);
 void						exp_env_condition(t_minishell *mini, char *s,
 								t_tok_expander *tok_exp);
