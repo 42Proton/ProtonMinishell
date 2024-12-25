@@ -6,7 +6,7 @@
 /*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/25 23:41:55 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/26 00:41:58 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,10 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void				free_operations(t_operation **operations);
+int					prep_subop(t_operation **operations, t_list *lst);
+int					prep_subop2(t_operation **operations, t_list *lst);
+int					get_subop(t_operation **operations, t_list *lst, int is_subop);
 int					add_subop(t_operation **operations, size_t i, t_list *lst);
 int					add_operation_alloc(t_operation **operations, ssize_t i);
 t_operation			**operations_alloc(ssize_t sep_count);

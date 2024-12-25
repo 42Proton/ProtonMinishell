@@ -6,7 +6,7 @@
 /*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/25 23:01:40 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/26 00:42:13 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ static void	parse_line(t_minishell *mini)
 	//execute_process(minishell);
 	//execute_inbuilt_command(minishell);
 	t_operation **operations = operation_prep(mini->line_tokens, 0);
-	(void)operations;
-	print_test(operations, 0);
+	if (operations)
+		print_test(operations, 0);
+	free_operations(operations);
 	return ;
 }
 

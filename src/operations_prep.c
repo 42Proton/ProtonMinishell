@@ -6,7 +6,7 @@
 /*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2024/12/25 23:49:23 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/26 00:24:39 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,7 @@ t_operation	**operation_prep(t_list *lst, int is_subop)
 	operations = operations_alloc(sep_count);
 	if (!operations)
 		return (0);
-	if (!is_subop)
-	{
-		if (!prep_subop(operations, lst))
-			return (0);
-	}
-	else
-		if (!prep_subop2(operations, lst))
-			return (0);
+	if (!get_subop(operations, lst, is_subop))
+		return (0);
 	return (operations);
 }
