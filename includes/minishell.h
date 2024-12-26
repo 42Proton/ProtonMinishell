@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 09:28:30 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:48:13 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,15 @@ typedef struct s_redirect
 	char					*redirect_name;
 }							t_redirect;
 
-typedef struct s_operation	t_operation;
-
-struct						s_operation
+typedef struct s_operation
 {
 	int						operation_type;
-	t_operation				**operations;
+	struct s_operation		**operations;
 	t_redirect				*in_redirects;
-	t_redirect				out_redirect;
-	t_redirect				*truncate_out_redirects;
+	t_redirect				*out_redirect;
 	char					*cmd;
 	char					**args;
-};
+}	t_operation;
 
 typedef struct s_tokens_split
 {
@@ -157,7 +154,8 @@ enum						e_expander_modes
 void				free_operations(t_operation **operations);
 int					prep_subop(t_operation **operations, t_list *lst);
 int					prep_subop2(t_operation **operations, t_list *lst);
-int					get_subop(t_operation **operations, t_list *lst, int is_subop);
+int					get_subop(t_operation **operations,
+						t_list *lst, int is_subop);
 int					add_subop(t_operation **operations, size_t i, t_list *lst);
 int					add_operation_alloc(t_operation **operations, ssize_t i);
 t_operation			**operations_alloc(ssize_t sep_count);
