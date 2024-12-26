@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/13 22:06:15 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 10:14:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	check_sep(char *line)
 	if (!ft_strncmp(line, "<<", 2))
 		return (2);
 	if (!ft_strncmp(line, ">>", 2))
-		return (2);
-	if (!ft_strncmp(line, "<>", 2))
 		return (2);
 	if (*line == '|' || *line == '(' || *line == ')')
 		return (1);
@@ -46,8 +44,6 @@ int	check_redirect(char *token)
 		return (1);
 	if (!ft_strncmp(token, ">>", 2))
 		return (1);
-	if (!ft_strncmp(token, "<>", 2))
-		return (1);
 	if (*token == '<' || *token == '>')
 		return (1);
 	return (0);
@@ -57,9 +53,7 @@ int	check_redirect_num(int type)
 {
 	if (type == IN_REDIRECTION || type == OUT_REDIRECTION)
 		return (1);
-	if (type == INOUT_REDIRECTION || type == LIMITER_REDIRECTION)
-		return (1);
-	if (type == APPEND_REDIRECTION)
+	if (type == APPEND_REDIRECTION || type == LIMITER_REDIRECTION)
 		return (1);
 	return (0);
 }

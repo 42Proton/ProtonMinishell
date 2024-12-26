@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 23:35:22 by coderx64          #+#    #+#             */
-/*   Updated: 2024/12/26 09:19:00 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 11:06:13 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ void	free_operations(t_operation **operations)
 	{
 		if (operations[i]->operations)
 			free_operations(operations[i]->operations);
+		free(operations[i]->args);
+		free(operations[i]->in_redirects);
+		free(operations[i]->out_redirects);
 		free(operations[i]);
 		i++;
 	}
@@ -75,16 +78,16 @@ int	add_subop(t_operation **operations, size_t i, t_list *lst)
 	return (1);
 }
 
-int	get_subop(t_operation **operations, t_list *lst, int is_subop)
+int	get_ops_data(t_operation **operations, t_list *lst, int is_subop)
 {
 	if (!is_subop)
 	{
-		if (!prep_subop(operations, lst))
+		if (!prep_ops_data(operations, lst))
 			return (0);
 	}
 	else
 	{
-		if (!prep_subop2(operations, lst))
+		if (!prep_subops_data(operations, lst))
 			return (0);
 	}
 	return (1);

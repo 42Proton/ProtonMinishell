@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2024/12/26 09:18:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 14:55:36 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,28 @@ static ssize_t	separators_counter_subop(t_list *lst)
 	return (counter);
 }
 
-int	prep_subop(t_operation **operations, t_list *lst)
+int	prep_op_main_conditions(t_list *lst, size_t *parenthesis_count,
+	t_operation **operations, size_t *i)
+{
+	if (((t_token *)lst->content)->type == OPEN_PARENTHESIS
+	&& !*parenthesis_count)
+	{
+		operations[*i]->operation_type = OPERATION_SUBSHELL;
+		if (!add_subop(operations, *i, lst))
+			return (0);
+		(*parenthesis_count)++;
+	}
+	if (((t_token *)lst->content)->type >= AND_OPERATOR
+		&& ((t_token *)lst->content)->type <= PIPE
+		&& !*parenthesis_count)
+	{
+		(*i)++;
+		operations[*i]->operation_type = check_op_type(lst);
+	}
+	return (1);
+}
+
+int	prep_ops_data(t_operation **operations, t_list *lst)
 {
 	size_t	i;
 	size_t	parenthesis_count;
@@ -66,25 +87,16 @@ int	prep_subop(t_operation **operations, t_list *lst)
 	parenthesis_count = 0;
 	while (lst)
 	{
-		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS
-		&& !parenthesis_count)
-		{
-			if (!add_subop(operations, i, lst))
-				return (0);
-			parenthesis_count++;
-		}
+		prep_op_main_conditions(lst, &parenthesis_count,
+			operations, &i);
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
-		if (((t_token *)lst->content)->type >= AND_OPERATOR
-			&& ((t_token *)lst->content)->type <= PIPE
-			&& !parenthesis_count)
-			i++;
 		lst = lst->next;
 	}
 	return (1);
 }
 
-int	prep_subop2(t_operation **operations, t_list *lst)
+int	prep_subops_data(t_operation **operations, t_list *lst)
 {
 	size_t	i;
 	size_t	parenthesis_count;
@@ -124,7 +136,7 @@ t_operation	**operations_prep(t_list *lst, int is_subop)
 	operations = operations_alloc(sep_count);
 	if (!operations)
 		return (0);
-	if (!get_subop(operations, lst, is_subop))
+	if (!get_ops_data(operations, lst, is_subop))
 		return (0);
 	return (operations);
 }

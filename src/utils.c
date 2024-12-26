@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 09:34:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 10:15:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ int	get_redirection_type(char *token)
 		return (LIMITER_REDIRECTION);
 	if (!ft_strncmp(token, ">>", 2))
 		return (APPEND_REDIRECTION);
-	if (!ft_strncmp(token, "<>", 2))
-		return (INOUT_REDIRECTION);
 	if (*token == '<')
 		return (IN_REDIRECTION);
 	if (*token == '>')

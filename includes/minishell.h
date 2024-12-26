@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 09:48:13 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 11:06:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ typedef struct s_redirect
 
 typedef struct s_operation
 {
-	int						operation_type;
-	struct s_operation		**operations;
-	t_redirect				*in_redirects;
-	t_redirect				*out_redirect;
-	char					*cmd;
-	char					**args;
+	int					operation_type;
+	struct s_operation	**operations;
+	t_redirect			*in_redirects;
+	t_redirect			*out_redirects;
+	size_t				n_out;
+	size_t				n_in;
+	char				*cmd;
+	char				**args;
 }	t_operation;
 
 typedef struct s_tokens_split
@@ -98,7 +100,6 @@ enum						e_token_type
 	PIPE,
 	IN_REDIRECTION,
 	OUT_REDIRECTION,
-	INOUT_REDIRECTION,
 	LIMITER_REDIRECTION,
 	APPEND_REDIRECTION,
 	OPEN_PARENTHESIS,
@@ -139,7 +140,8 @@ enum						e_operation
 	OPERATION_DEFAULT,
 	OPERATION_AND,
 	OPERATION_OR,
-	OPERATION_PIPE
+	OPERATION_PIPE,
+	OPERATION_SUBSHELL
 };
 
 enum						e_expander_modes
@@ -151,10 +153,11 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int					check_op_type(t_list *lst);
 void				free_operations(t_operation **operations);
-int					prep_subop(t_operation **operations, t_list *lst);
-int					prep_subop2(t_operation **operations, t_list *lst);
-int					get_subop(t_operation **operations,
+int					prep_ops_data(t_operation **operations, t_list *lst);
+int					prep_subops_data(t_operation **operations, t_list *lst);
+int					get_ops_data(t_operation **operations,
 						t_list *lst, int is_subop);
 int					add_subop(t_operation **operations, size_t i, t_list *lst);
 int					add_operation_alloc(t_operation **operations, ssize_t i);

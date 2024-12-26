@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 09:33:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 10:56:57 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_test(t_operation **operations, size_t lvl)
 	lvl++;
 	while (operations[i])
 	{
-		printf("LVL:%ld, PTR:%p\n", lvl, operations[i]);
+		printf("LVL:%ld, PTR:%p, TYPE:%d\n", lvl, operations[i], operations[i]->operation_type);
 		if (operations[i]->operations)
 			print_test(operations[i]->operations, lvl);
 		i++;

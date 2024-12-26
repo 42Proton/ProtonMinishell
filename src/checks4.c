@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 01:33:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 21:34:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 10:55:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,15 @@ int	check_env_mode(t_tok_expander *tok_exp)
 	if (tok_exp->mode == ENV_MODE || tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
 		return (1);
 	return (0);
+}
+
+int	check_op_type(t_list *lst)
+{
+	if (((t_token *)lst->content)->type == AND_OPERATOR)
+		return (OPERATION_AND);
+	if (((t_token *)lst->content)->type == OR_OPERATOR)
+		return (OPERATION_OR);
+	if (((t_token *)lst->content)->type == PIPE)
+		return (OPERATION_PIPE);
+	return (OPERATION_DEFAULT);
 }
