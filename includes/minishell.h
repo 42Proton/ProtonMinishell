@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 00:41:58 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/26 09:28:30 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,11 @@ enum						e_uncompleted
 
 enum						e_errors
 {
-	ERR_MALLOC,
-	ERR_MALLOC2,
+	ERR_MALLOC_MINI,
+	ERR_MALLOC_POSTMINI,
 	ERR_TERM,
-	NONE
+	NONE,
+	ERR_MALLOC_POSTLEXER,
 };
 
 enum						e_redirect
@@ -160,7 +161,7 @@ int					get_subop(t_operation **operations, t_list *lst, int is_subop);
 int					add_subop(t_operation **operations, size_t i, t_list *lst);
 int					add_operation_alloc(t_operation **operations, ssize_t i);
 t_operation			**operations_alloc(ssize_t sep_count);
-t_operation			**operation_prep(t_list *lst, int is_subop);
+t_operation			**operations_prep(t_list *lst, int is_subop);
 void				exp_env_condition(t_minishell *mini, char *s,
 						t_tok_expander *tok_exp);
 int					check_env_mode(t_tok_expander *tok_exp);

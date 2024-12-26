@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_pairs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 13:59:05 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/25 15:06:53 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/26 09:30:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_pairs(t_minishell *mini)
 		if (!lmao)
 		{
 			free(checks);
-			exit_handler(mini, ERR_MALLOC2);
+			exit_handler(mini, NONE);
 		}
 		temp = ft_strjoin(mini->line_read, lmao);
 		free(mini->line_read);

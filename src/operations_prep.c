@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2024/12/26 00:24:39 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/26 09:18:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	prep_subop2(t_operation **operations, t_list *lst)
 	return (1);
 }
 
-t_operation	**operation_prep(t_list *lst, int is_subop)
+t_operation	**operations_prep(t_list *lst, int is_subop)
 {
 	ssize_t sep_count;
 	t_operation **operations;

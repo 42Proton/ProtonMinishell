@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexical_analysis.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:45:59 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/16 14:21:48 by bismail          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:33:20 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	lexical_analysis(t_minishell *mini)
 		prev_token = lexing_token(tokens, prev_token, &new_tokens);
 		if (!prev_token)
 		{
-			ft_lstclear(&new_tokens, free);
-			exit_handler(mini, ERR_MALLOC2);
+			ft_lstclear(&new_tokens, free_tokens);
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
 		}
 		tokens = tokens->next;
 	}

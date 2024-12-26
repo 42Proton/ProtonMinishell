@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 21:45:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:32:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*expand_tok(t_minishell *mini, char *s)
 
 	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
 	if (!tok_exp)
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	while (s[tok_exp->split_se.end])
 		expand_iter_tok(mini, s, tok_exp);
 	expander_add_tok(mini, s, tok_exp, 0);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 23:55:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 18:17:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:32:19 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	expander_pre_wildcards(t_minishell *mini, char *s,
 	if (!tok_exp)
 	{
 		free(s);
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	}
 	old_mode = DEFAULT_MODE;
 	if (!expander_pre_wildcards_iter(s, tok_exp, &old_mode, quotes_range))
@@ -89,7 +89,7 @@ void	expander_pre_wildcards(t_minishell *mini, char *s,
 		free(s);
 		ft_lstclear(quotes_range, free);
 		free(tok_exp);
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	}
 	free(tok_exp);
 }

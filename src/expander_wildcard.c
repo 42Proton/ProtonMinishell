@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 23:48:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 20:48:03 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:32:30 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst,
 	if (!dir)
 		return ;
 	if (!get_dir_entries(dir, *(char *)(*lst)->content, &lst_entries))
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	if (!lst_entries)
 		return ;
 	del_non_matching_entries(&lst_entries, (char *)(*lst)->content,
@@ -123,6 +123,6 @@ void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst,
 	if (!lst_entries)
 		return ;
 	if (!sort_dir_entries(lst_entries, &lst_entries_sorted))
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	insert_sorted_entries(lst_entries_sorted, lst, main_lst);
 }

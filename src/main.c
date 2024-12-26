@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 00:42:13 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/26 09:33:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ static void	parse_line(t_minishell *mini)
 {
 	//execute_process(minishell);
 	//execute_inbuilt_command(minishell);
-	t_operation **operations = operation_prep(mini->line_tokens, 0);
-	if (operations)
-		print_test(operations, 0);
+	t_operation **operations = operations_prep(mini->line_tokens, 0);
+	if (!operations)
+		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+	print_test(operations, 0);
 	free_operations(operations);
 	return ;
 }
@@ -42,10 +43,10 @@ static t_minishell	*minishell_prep(char **environ)
 
 	mini = ft_calloc(1, sizeof(t_minishell));
 	if (!mini)
-		exit_handler(mini, ERR_MALLOC);
+		exit_handler(mini, ERR_MALLOC_MINI);
 	mini->cwd = malloc(PATH_MAX + 1);
 	if (!mini->cwd)
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	if (*environ)
 		prep_minishell_env(mini, environ);
 	if (tgetent(NULL, ft_getenv(mini, "TERM")) <= 0)

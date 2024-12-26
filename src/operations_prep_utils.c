@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 23:35:22 by coderx64          #+#    #+#             */
-/*   Updated: 2024/12/26 00:43:08 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/26 09:19:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	free_operations(t_operation **operations)
 
 int	add_subop(t_operation **operations, size_t i, t_list *lst)
 {
-	operations[i]->operations = operation_prep(lst, 1);
+	operations[i]->operations = operations_prep(lst, 1);
 	if (!operations[i]->operations)
 	{
 		free_operations(operations);

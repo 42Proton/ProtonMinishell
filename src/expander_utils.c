@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:17:28 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/23 21:35:08 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:32:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp,
 	ft_lstclear(quotes_range, free);
 	ft_lstclear(&tok_exp->lst, free);
 	free(tok_exp);
-	exit_handler(mini, ERR_MALLOC2);
+	exit_handler(mini, ERR_MALLOC_POSTMINI);
 }
 
 char	*get_env_safe(t_minishell *mini, char *new_str)
@@ -85,7 +85,7 @@ char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp,
 	if (!res)
 	{
 		ft_lstclear(quotes_range, free);
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	}
 	lst = tok_exp->lst;
 	while (lst)

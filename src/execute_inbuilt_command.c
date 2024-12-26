@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/29 19:55:06 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:30:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_inbuilt_command(t_minishell *minishell)
 
 	args = ft_split(minishell->line_read, ' ');
 	if (!args)
-		exit_handler(minishell, ERR_MALLOC2);
+		exit_handler(minishell, ERR_MALLOC_POSTLEXER);
 	if (!ft_strcmp(args[0], "exit"))
 	{
 		free_array((void **)args);

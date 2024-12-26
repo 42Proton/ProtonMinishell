@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/10 14:25:05 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/26 09:34:47 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	line_add_newline(t_minishell *mini)
 
 	temp = ft_strjoin(mini->line_read, "\n");
 	if (!temp)
-		exit_handler(mini, ERR_MALLOC2);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	free(mini->line_read);
 	mini->line_read = temp;
 }
