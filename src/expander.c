@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 09:32:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 08:29:28 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	tokens_expander(t_minishell *mini)
 		if (is_wildcard)
 		{
 			expand_tok_wildcards(mini, &tokens, &mini->line_tokens,
-					quotes_range);
+				quotes_range);
 			ft_lstclear(&quotes_range, free);
 		}
 		tokens = tokens->next;

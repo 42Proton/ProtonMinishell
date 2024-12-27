@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:49:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 21:46:30 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/27 08:31:03 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	sort_env(t_minishell *minishell, t_list **sorted_env)
 		if (!new_node)
 			return (0);
 		if (ft_strcmp(((t_env *)new_node->content)->name,
-						((t_env *)(*sorted_env)->content)->name) <= 0)
+				((t_env *)(*sorted_env)->content)->name) <= 0)
 			ft_lstadd_front(sorted_env, new_node);
 		else
 			sort_env_helper(sorted_env, new_node);

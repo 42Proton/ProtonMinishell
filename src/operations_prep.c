@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2024/12/26 14:55:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 11:30:46 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static ssize_t	separators_counter(t_list *lst)
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
 		if (((t_token *)lst->content)->type >= AND_OPERATOR
-				&& ((t_token *)lst->content)->type <= PIPE
-				&& !parenthesis_count)
+			&& ((t_token *)lst->content)->type <= PIPE
+			&& !parenthesis_count)
 			counter++;
 		lst = lst->next;
 	}
@@ -49,33 +49,12 @@ static ssize_t	separators_counter_subop(t_list *lst)
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
 		if (((t_token *)lst->content)->type >= AND_OPERATOR
-				&& ((t_token *)lst->content)->type <= PIPE
-				&& parenthesis_count == 1)
+			&& ((t_token *)lst->content)->type <= PIPE
+			&& parenthesis_count == 1)
 			counter++;
 		lst = lst->next;
 	}
 	return (counter);
-}
-
-int	prep_op_main_conditions(t_list *lst, size_t *parenthesis_count,
-	t_operation **operations, size_t *i)
-{
-	if (((t_token *)lst->content)->type == OPEN_PARENTHESIS
-	&& !*parenthesis_count)
-	{
-		operations[*i]->operation_type = OPERATION_SUBSHELL;
-		if (!add_subop(operations, *i, lst))
-			return (0);
-		(*parenthesis_count)++;
-	}
-	if (((t_token *)lst->content)->type >= AND_OPERATOR
-		&& ((t_token *)lst->content)->type <= PIPE
-		&& !*parenthesis_count)
-	{
-		(*i)++;
-		operations[*i]->operation_type = check_op_type(lst);
-	}
-	return (1);
 }
 
 int	prep_ops_data(t_operation **operations, t_list *lst)
@@ -87,8 +66,14 @@ int	prep_ops_data(t_operation **operations, t_list *lst)
 	parenthesis_count = 0;
 	while (lst)
 	{
-		prep_op_main_conditions(lst, &parenthesis_count,
-			operations, &i);
+		if (!prep_op_main_conditions(lst, &parenthesis_count,
+				operations, &i))
+			return (0);
+		if (!lst->prev || (check_op_type(lst) && !parenthesis_count))
+			if (!op_data_collector(operations, i, lst))
+				return (0);
+		if (((t_token *)lst->content)->type == COMMAND && !parenthesis_count)
+			operations[i]->cmd = ((t_token *)lst->content)->token_word;
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
 		lst = lst->next;
@@ -106,19 +91,18 @@ int	prep_subops_data(t_operation **operations, t_list *lst)
 	lst = lst->next;
 	while (parenthesis_count)
 	{
-		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS
-		&& parenthesis_count == 1)
-		{
-			if (!add_subop(operations, i, lst))
+		if (!prep_subop_main_conditions(lst, &parenthesis_count,
+				operations, &i))
+			return (0);
+		if ((((t_token *)lst->prev->content)->type == OPEN_PARENTHESIS
+				|| check_op_type(lst)) && parenthesis_count == 1)
+			if (!op_data_collector(operations, i, lst))
 				return (0);
-			parenthesis_count++;
-		}
+		if (((t_token *)lst->content)->type == COMMAND
+			&& parenthesis_count == 1)
+			operations[i]->cmd = ((t_token *)lst->content)->token_word;
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
-		if (((t_token *)lst->content)->type >= AND_OPERATOR
-			&& ((t_token *)lst->content)->type <= PIPE
-			&& parenthesis_count == 1)
-			i++;
 		lst = lst->next;
 	}
 	return (1);
@@ -126,8 +110,8 @@ int	prep_subops_data(t_operation **operations, t_list *lst)
 
 t_operation	**operations_prep(t_list *lst, int is_subop)
 {
-	ssize_t sep_count;
-	t_operation **operations;
+	ssize_t		sep_count;
+	t_operation	**operations;
 
 	if (!is_subop)
 		sep_count = separators_counter(lst);

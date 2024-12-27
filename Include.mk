@@ -12,12 +12,14 @@ SRCS= \
 	search_exec.c \
 	line_tokenizer.c \
 	utils.c \
+	utils2.c \
 	line_tokenizer_utils.c\
 	lexical_analysis.c \
 	checks.c \
 	checks2.c \
 	checks3.c \
 	checks4.c \
+	checks5.c \
 	validate.c \
 	expander.c \
 	expander_utils.c \
@@ -29,4 +31,6 @@ SRCS= \
 	handlers2.c \
 	check_pairs.c \
 	operations_prep.c \
-	operations_prep_utils.c
+	operations_prep_utils.c \
+	operations_prep_utils2.c \
+	operations_prep_utils3.c

@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 10:56:57 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 10:34:53 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+void	print_redirections(t_redirect *redirections, size_t limit)
+{
+	size_t	i = 0;
+
+	while (i < limit)
+	{
+		ft_printf("REDIRECT TYPE: %d, IDENTIFIER:%s\n", redirections[i].type, redirections[i].name);
+		i++;
+	}
+}
 
 void	print_test(t_operation **operations, size_t lvl)
 {
@@ -18,7 +29,11 @@ void	print_test(t_operation **operations, size_t lvl)
 	lvl++;
 	while (operations[i])
 	{
-		printf("LVL:%ld, PTR:%p, TYPE:%d\n", lvl, operations[i], operations[i]->operation_type);
+		printf("LVL:%ld, PTR:%p, TYPE:%d, CMD:%s\n", lvl, operations[i], operations[i]->operation_type, operations[i]->cmd);
+		printf("IN REDIRECTIONS:\n");
+		print_redirections(operations[i]->in_redirects, operations[i]->n_in);
+		printf("OUT REDIRECTIONS:\n");
+		print_redirections(operations[i]->out_redirects, operations[i]->n_out);
 		if (operations[i]->operations)
 			print_test(operations[i]->operations, lvl);
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_pairs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 13:59:05 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/26 09:30:05 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 08:30:43 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	check_counter(int checks[], char *line)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+
 int	check_pairs(t_minishell *mini)
 {
 	int		*checks;

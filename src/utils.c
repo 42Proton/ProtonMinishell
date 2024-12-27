@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 10:15:15 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 08:30:12 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_tokens(t_minishell *mini)
 	while (node)
 	{
 		ft_printf("TYPE: %d, CONTENT: %s\n", ((t_token *)node->content)->type,
-				((t_token *)node->content)->token_word);
+			((t_token *)node->content)->token_word);
 		node = node->next;
 	}
 }

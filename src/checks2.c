@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/17 00:06:13 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 08:30:01 by coderx64         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ int	check_expander_env(char c, int mode)
 int	check_expander_default_mode(char c, t_tok_expander *tok_exp)
 {
 	if ((tok_exp->mode == SINGLE_QUOTE_MODE && c == '\'')
-			|| (tok_exp->mode == DOUBLE_QUOTE_MODE && c == '"')
-			|| tok_exp->mode == ENV_MODE)
+		|| (tok_exp->mode == DOUBLE_QUOTE_MODE && c == '"')
+		|| tok_exp->mode == ENV_MODE)
 		return (1);
 	return (0);
 }
