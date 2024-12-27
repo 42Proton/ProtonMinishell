@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:49:21 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 12:51:28 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 13:35:16 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_out_redirection(t_list *lst)
 	return (0);
 }
 
-int	check_prep_redirect_condition(t_list *lst, ssize_t parenthesis_count)
+int	check_op_prep_condition(t_list *lst, ssize_t parenthesis_count)
 {
 	if (lst && !(check_op_type(lst) && !parenthesis_count)
 	&& parenthesis_count >= 0)

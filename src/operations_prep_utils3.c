@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 13:34:01 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 13:34:55 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	op_prep_args(t_operation *operation, t_list *lst)
 
 	parenthesis_count = 0;
 	n_args = 0;
-	while (check_prep_redirect_condition(lst, parenthesis_count))
+	while (check_op_prep_condition(lst, parenthesis_count))
 	{
 		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
 			parenthesis_count++;
@@ -49,7 +49,7 @@ void	op_get_args(t_operation *operation, t_list *lst)
 
 	parenthesis_count = 0;
 	i = 0;
-	while (check_prep_redirect_condition(lst, parenthesis_count))
+	while (check_op_prep_condition(lst, parenthesis_count))
 	{
 		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
 			parenthesis_count++;
