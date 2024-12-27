@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 11:50:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 13:18:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	op_get_redirections(t_operation *operation, t_list *lst)
 		}
 		else if (check_out_redirection(lst) && !parenthesis_count)
 		{
-			set_redirection_data(&operation->in_redirects[i_out], lst);
+			set_redirection_data(&operation->out_redirects[i_out], lst);
 			i_out++;
 		}
 		lst = lst->next;
@@ -116,6 +116,11 @@ int	op_data_collector(t_operation **operations, size_t i, t_list *lst)
 		return (0);
 	}
 	op_get_redirections(operations[i], lst);
-	
+	if (!op_prep_args(operations[i], lst))
+	{
+		free_operations(operations);
+		return (0);
+	}
+	op_get_args(operations[i], lst);
 	return (1);
 }

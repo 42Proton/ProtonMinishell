@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coderx64 <coderx64@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 11:37:06 by coderx64         ###   ########.fr       */
+/*   Updated: 2024/12/27 13:23:52 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,9 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int				op_prep_args(t_operation *operation, t_list *lst);
+void			op_get_args(t_operation *operation, t_list *lst);
+int				check_tok_prev_cmd(t_list *lst);
 void			set_redirection_data(t_redirect *redirect, t_list *lst);
 int				check_prep_redirect_condition(t_list *lst,
 					ssize_t parenthesis_count);
@@ -213,7 +216,7 @@ int				check_expander_env(char c, int mode);
 int				check_expander_default_mode(char c,
 					t_tok_expander *tok_exp);
 void			tokens_expander(t_minishell *mini);
-int				check_type(char *token, t_token *previous_token);
+int				check_type(char *token, t_token *previous_token, t_list *lst);
 void			clear_token(void *content);
 int				check_sep_operators_nl(char *line);
 int				check_operator_num(int type);

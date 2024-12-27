@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 11:49:08 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 13:12:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_type_main_conditions(char *token, int previous_type)
 	return (type);
 }
 
-int	check_type(char *token, t_token *previous_token)
+int	check_type(char *token, t_token *previous_token, t_list *lst)
 {
 	int	type;
 	int	previous_type;
@@ -47,11 +47,13 @@ int	check_type(char *token, t_token *previous_token)
 		type = get_redirection_type(token);
 	if (type != COMMAND)
 		return (type);
+	if (check_redirect_num(previous_type))
+		return (IDENTIFIER);
 	type = check_type_main_conditions(token, previous_type);
 	if (type != COMMAND)
 		return (type);
-	if (check_redirect_num(previous_type))
-		type = IDENTIFIER;
+	if (check_tok_prev_cmd(lst))
+		return (ARGUMENT);
 	return (type);
 }
 

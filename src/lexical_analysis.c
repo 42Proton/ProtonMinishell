@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:45:59 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/26 09:33:20 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 13:02:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_token	*lexing_token(t_list *tokens, t_token *prev_token,
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		return (0);
-	token->type = check_type(tokens->content, prev_token);
+	token->type = check_type(tokens->content, prev_token, *new_tokens);
 	token->token_word = tokens->content;
 	if (prev_token)
 		token->index = prev_token->index + 1;

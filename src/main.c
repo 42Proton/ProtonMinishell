@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 11:50:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/27 13:32:27 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,27 @@ void	print_redirections(t_redirect *redirections, size_t limit)
 
 	while (i < limit)
 	{
-		ft_printf("REDIRECT TYPE: %d, IDENTIFIER:%s\n", redirections[i].type, redirections[i].name);
+		printf("REDIRECT TYPE: %d, IDENTIFIER:%s\n", redirections[i].type, redirections[i].name);
 		i++;
 	}
+}
+
+void	print_args(char **args)
+{
+	printf("ARGS: ");
+	if (!args)
+	{
+		printf("NONE\n");
+		return ;
+	}
+	while (*args)
+	{
+		printf("%s", *args);
+		if (args[1])
+			printf(",");
+		args++;
+	}
+	printf("\n");
 }
 
 void	print_test(t_operation **operations, size_t lvl)
@@ -34,6 +52,7 @@ void	print_test(t_operation **operations, size_t lvl)
 		print_redirections(operations[i]->in_redirects, operations[i]->n_in);
 		printf("OUT REDIRECTIONS:\n");
 		print_redirections(operations[i]->out_redirects, operations[i]->n_out);
+		print_args(operations[i]->args);
 		if (operations[i]->operations)
 			print_test(operations[i]->operations, lvl);
 		i++;
