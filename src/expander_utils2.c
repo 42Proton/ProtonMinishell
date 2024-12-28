@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 15:06:31 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 11:49:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/29 02:44:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*expander_add_tok_helper(char *word, t_tok_expander *tok_exp)
 		&& tok_exp->mode != SINGLE_QUOTE_MODE)
 	{
 		new_str2 = ft_strtrim(new_str, "$");
+		free(new_str);
 		if (!new_str2)
 			return (0);
 		return (new_str2);

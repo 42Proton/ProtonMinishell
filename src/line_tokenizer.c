@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:29:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/06 19:17:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/29 02:38:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,26 @@ void	line_tokenizer(t_minishell *mini)
 {
 	t_tokens_split	tokens_split;
 	char			*line;
+	int				mode;
 
+	mode = DEFAULT_MODE;
 	ft_bzero(&tokens_split, sizeof(t_tokens_split));
 	line = mini->line_read;
 	while (line[tokens_split.end])
 	{
 		tokens_split.start += skip_spaces(line + tokens_split.start);
 		tokens_split.end = tokens_split.start;
-		while (check_sep(line + tokens_split.end))
+		while (check_sep(line + tokens_split.end) && mode == DEFAULT_MODE)
 			add_sep_tokens(mini, &tokens_split, line);
 		tokens_split.start += skip_spaces(line + tokens_split.start);
 		tokens_split.end = tokens_split.start;
-		if (line[tokens_split.end] && !check_sep(line + tokens_split.end))
+		if (check_expander_default_mode_basic(line[tokens_split.end], mode))
+			mode = DEFAULT_MODE;
+		else if (line[tokens_split.end] == '\'' && mode == SINGLE_QUOTE_MODE)
+			mode = SINGLE_QUOTE_MODE;
+		else if (line[tokens_split.end] == '"' && mode == DOUBLE_QUOTE_MODE)
+			mode = DOUBLE_QUOTE_MODE;
+		if (line[tokens_split.end])
 			add_token(mini, &tokens_split);
 	}
 }

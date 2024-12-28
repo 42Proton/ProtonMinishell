@@ -33,4 +33,5 @@ SRCS= \
 	operations_prep.c \
 	operations_prep_utils.c \
 	operations_prep_utils2.c \
-	operations_prep_utils3.c
+	operations_prep_utils3.c \
+	execute_process.c

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/26 10:14:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/29 02:26:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,14 @@ int	check_sep(char *line)
 	return (0);
 }
 
-int	check_sep_operators_nl(char *line)
+int	check_sep_operators_nl(t_token *tok)
 {
-	if (!ft_strncmp(line, "&&", 2) || !ft_strncmp(line, "||", 2))
+	int	tok_type;
+	
+	tok_type = tok->type;
+	if (tok_type == AND_OPERATOR || tok_type == OR_OPERATOR)
 		return (1);
-	if (*line == '|' || *line == '\n')
+	if (tok_type == PIPE || tok_type == NEWLINE_TOKEN)
 		return (1);
 	return (0);
 }

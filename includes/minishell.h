@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 13:35:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/29 02:31:24 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,6 @@
 # include <sys/types.h>
 # include <termcap.h>
 # include <termios.h>
-
-typedef struct s_minishell
-{
-	char					*line_read;
-	t_list					*line_tokens;
-	t_list					*tokens;
-	char					*cwd;
-	t_list					*env_lst;
-	int						last_exit_code;
-}							t_minishell;
 
 typedef struct s_env
 {
@@ -61,7 +51,17 @@ typedef struct s_operation
 	size_t				n_in;
 	char				*cmd;
 	char				**args;
-}	t_operation;
+}						t_operation;
+
+typedef struct s_minishell
+{
+	char					*line_read;
+	t_list					*line_tokens;
+	t_operation				**operations;
+	char					*cwd;
+	t_list					*env_lst;
+	int						last_exit_code;
+}							t_minishell;
 
 typedef struct s_tokens_split
 {
@@ -149,6 +149,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int				execute_process(t_minishell *mini);
 int				op_prep_args(t_operation *operation, t_list *lst);
 void			op_get_args(t_operation *operation, t_list *lst);
 int				check_tok_prev_cmd(t_list *lst);
@@ -217,7 +218,7 @@ int				check_expander_default_mode(char c,
 void			tokens_expander(t_minishell *mini);
 int				check_type(char *token, t_token *previous_token, t_list *lst);
 void			clear_token(void *content);
-int				check_sep_operators_nl(char *line);
+int				check_sep_operators_nl(t_token *tok);
 int				check_operator_num(int type);
 void			print_syntax_error(t_token *token);
 int				check_redirect_num(int type);
@@ -231,8 +232,6 @@ void			display_header(void);
 void			line_tokenizer(t_minishell *mini);
 void			add_token(t_minishell *mini,
 					t_tokens_split *tokens_split);
-void			add_sep_tokens(t_minishell *mini,
-					t_tokens_split *tokens_split, char *line);
 int				check_sep(char *line);
 size_t			skip_spaces(char *line);
 int				ft_unsetenv(t_minishell *minishell, char *name);

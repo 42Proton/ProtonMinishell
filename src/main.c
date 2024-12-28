@@ -6,67 +6,65 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 13:32:27 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/29 01:25:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	print_redirections(t_redirect *redirections, size_t limit)
-{
-	size_t	i = 0;
+// void	print_redirections(t_redirect *redirections, size_t limit)
+// {
+// 	size_t	i = 0;
 
-	while (i < limit)
-	{
-		printf("REDIRECT TYPE: %d, IDENTIFIER:%s\n", redirections[i].type, redirections[i].name);
-		i++;
-	}
-}
+// 	while (i < limit)
+// 	{
+// 		printf("REDIRECT TYPE: %d, IDENTIFIER:%s\n", redirections[i].type, redirections[i].name);
+// 		i++;
+// 	}
+// }
 
-void	print_args(char **args)
-{
-	printf("ARGS: ");
-	if (!args)
-	{
-		printf("NONE\n");
-		return ;
-	}
-	while (*args)
-	{
-		printf("%s", *args);
-		if (args[1])
-			printf(",");
-		args++;
-	}
-	printf("\n");
-}
+// void	print_args(char **args)
+// {
+// 	printf("ARGS: ");
+// 	if (!args)
+// 	{
+// 		printf("NONE\n");
+// 		return ;
+// 	}
+// 	while (*args)
+// 	{
+// 		printf("%s", *args);
+// 		if (args[1])
+// 			printf(",");
+// 		args++;
+// 	}
+// 	printf("\n");
+// }
 
-void	print_test(t_operation **operations, size_t lvl)
-{
-	size_t	i = 0;
-	lvl++;
-	while (operations[i])
-	{
-		printf("LVL:%ld, PTR:%p, TYPE:%d, CMD:%s\n", lvl, operations[i], operations[i]->operation_type, operations[i]->cmd);
-		printf("IN REDIRECTIONS:\n");
-		print_redirections(operations[i]->in_redirects, operations[i]->n_in);
-		printf("OUT REDIRECTIONS:\n");
-		print_redirections(operations[i]->out_redirects, operations[i]->n_out);
-		print_args(operations[i]->args);
-		if (operations[i]->operations)
-			print_test(operations[i]->operations, lvl);
-		i++;
-	}
-}
+// void	print_test(t_operation **operations, size_t lvl)
+// {
+// 	size_t	i = 0;
+// 	lvl++;
+// 	while (operations[i])
+// 	{
+// 		printf("LVL:%ld, PTR:%p, TYPE:%d, CMD:%s\n", lvl, operations[i], operations[i]->operation_type, operations[i]->cmd);
+// 		printf("IN REDIRECTIONS:\n");
+// 		print_redirections(operations[i]->in_redirects, operations[i]->n_in);
+// 		printf("OUT REDIRECTIONS:\n");
+// 		print_redirections(operations[i]->out_redirects, operations[i]->n_out);
+// 		print_args(operations[i]->args);
+// 		if (operations[i]->operations)
+// 			print_test(operations[i]->operations, lvl);
+// 		i++;
+// 	}
+// }
 
 static void	parse_line(t_minishell *mini)
 {
-	//execute_process(minishell);
-	//execute_inbuilt_command(minishell);
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	print_test(operations, 0);
+	mini->operations = operations;
 	free_operations(operations);
 	return ;
 }
