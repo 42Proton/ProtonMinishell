@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/29 01:25:00 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/30 13:25:00 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static void	parse_line(t_minishell *mini)
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	mini->operations = operations;
+	execute_process(mini);
 	free_operations(operations);
 	return ;
 }

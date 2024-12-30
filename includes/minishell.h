@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/29 02:31:24 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/30 14:43:33 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@
 # include <stdlib.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <termcap.h>
 # include <termios.h>
-
+# include <unistd.h>
 typedef struct s_env
 {
 	char					*name;
@@ -149,6 +150,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int				check_if_cmd_exist(char *cmd);
 int				execute_process(t_minishell *mini);
 int				op_prep_args(t_operation *operation, t_list *lst);
 void			op_get_args(t_operation *operation, t_list *lst);
@@ -267,5 +269,6 @@ void			add_token(t_minishell *mini,
 int				lexical_analysis(t_minishell *mini);
 int				execute_process(t_minishell *mini);
 int				check_pairs(t_minishell *mini);
+int	check_if_batata_path(char *cmd);
 
 #endif

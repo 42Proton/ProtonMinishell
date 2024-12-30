@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils3.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 13:34:55 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/30 15:12:09 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ int	op_prep_args(t_operation *operation, t_list *lst)
 		lst = lst->next;
 	}
 	if (n_args)
-		operation->args = ft_calloc(n_args + 1, sizeof(char *));
+		operation->args = ft_calloc(n_args + 2, sizeof(char *));
 	if (n_args && !operation->args)
 		return (0);
+	if (operation->args)
+		operation->args[0] = operation->cmd;
 	return (1);
 }
 
@@ -48,7 +50,7 @@ void	op_get_args(t_operation *operation, t_list *lst)
 	size_t	i;
 
 	parenthesis_count = 0;
-	i = 0;
+	i = 1;
 	while (check_op_prep_condition(lst, parenthesis_count))
 	{
 		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)

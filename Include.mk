@@ -20,6 +20,7 @@ SRCS= \
 	checks3.c \
 	checks4.c \
 	checks5.c \
+	checks6.c \
 	validate.c \
 	expander.c \
 	expander_utils.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:49:21 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 13:35:16 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/30 13:53:13 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,13 @@ int	check_tok_prev_cmd(t_list *lst)
 		last = last->prev;
 	}
 	return (0);
+}
+
+int	check_if_batata_path(char *cmd)
+{
+	if (!ft_strncmp(cmd, "../", 3)
+		|| !ft_strncmp(cmd, "./", 2)
+		|| ft_strchr(cmd, '/'))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

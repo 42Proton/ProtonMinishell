@@ -1,37 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_process.c                                  :+:      :+:    :+:   */
+/*   checks6.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/30 15:10:09 by abueskander      ###   ########.fr       */
+/*   Created: 2024/12/30 14:36:43 by abueskander       #+#    #+#             */
+/*   Updated: 2024/12/30 14:43:05 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-
-int	execute_process(t_minishell *mini)
+int	check_if_cmd_exist(char *cmd)
 {
-	//char *path;
-	if(check_if_batata_path(mini->operations[0]->cmd))
-	{
-		if (check_if_cmd_exist(mini->operations[0]->cmd))
-		{
-			int pid = fork();
-			if (!pid)
-				execve(mini->operations[0]->cmd, mini->operations[0]->args, 0);
-			wait(0);
-			return (1);
-		}
-		perror(mini->operations[0]->cmd);
+	if (access(cmd, F_OK) == -1)
 		return (0);
-	}
-	// }else
-	// {
-	// 	path = search_for_path(mini->operations[0]->cmd);
-	// }
-	return (EXIT_SUCCESS);
+	if (access(cmd, X_OK) == -1)
+		return (0);
+	return (1);
 }
