@@ -6,13 +6,13 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 12:25:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/01 13:16:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/01 01:15:12 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	*chech_cmd_dir(char *cmd, char *dir)
+static char	*chech_cmd_dir(char *cmd, char *dir, char *tmp_ref)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -27,10 +27,35 @@ static char	*chech_cmd_dir(char *cmd, char *dir)
 		return (0);
 	}
 	free(tmp);
-	if (!access(tmp2, X_OK))
+	if (!access(tmp2, F_OK))
 		return (tmp2);
 	free(tmp2);
-	return (0);
+	return (tmp_ref);
+}
+
+static char	*search_exec_path(char **path_split, char *cmd, char *tmp)
+{
+	size_t	i;
+	char	*res;
+
+	i = 0;
+	while (path_split[i])
+	{
+		res = chech_cmd_dir(cmd, path_split[i], tmp);
+		if (res && *res)
+		{
+			free_array((void **)path_split);
+			return (res);
+		}
+		else if (!res)
+		{
+			free_array((void **)path_split);
+			return (0);
+		}
+		i++;
+	}
+	free_array((void **)path_split);
+	return (tmp);
 }
 
 char	*get_exec_path(t_minishell *mini, char *cmd)
@@ -38,24 +63,24 @@ char	*get_exec_path(t_minishell *mini, char *cmd)
 	char	*path;
 	char	**path_split;
 	char	*res;
-	int		i;
+	char	*tmp;
 
-	i = -1;
+	tmp = ft_strdup("");
 	path = ft_getenv(mini, "PATH");
 	if (!path)
-		return (0);
+		return (tmp);
 	path_split = ft_split(path, ':');
 	if (!path_split)
-		return (0);
-	while (path_split[++i])
 	{
-		res = chech_cmd_dir(cmd, path_split[i]);
-		if (res)
-		{
-			free_array((void **)path_split);
-			return (res);
-		}
+		free(tmp);
+		return (0);
 	}
-	free_array((void **)path_split);
-	return (0);
+	res = search_exec_path(path_split, cmd, tmp);
+	if ((res && *res) || !res)
+		free(tmp);
+	if (res && *res)
+		return (res);
+	if (!res)
+		return (0);
+	return (tmp);
 }

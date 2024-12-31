@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/30 13:25:00 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/01 01:17:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,16 @@
 
 static void	parse_line(t_minishell *mini)
 {
+	int	status;
+
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	mini->operations = operations;
-	execute_process(mini);
+	status = execute_process(mini);
 	free_operations(operations);
+	if (status == EXIT_FAILURE)
+		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	return ;
 }
 
@@ -92,6 +96,7 @@ static void	start_shell(t_minishell *mini)
 	display_header();
 	while (1)
 	{
+		mini->curr_line++;
 		mini->line_read = readline("\001\033[35m\0020x90>\001\033[33m\002 ");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);

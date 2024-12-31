@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 04:24:59 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/01 01:46:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,13 @@ typedef struct s_operation
 	size_t				n_out;
 	size_t				n_in;
 	size_t				n_args;
+	int					parent_in_fd;
+	int					parent_out_fd;
+	char				*heredoc_buffer;
 	char				*cmd;
+	char				*cmd_path;
 	char				**args;
+	char				**env;
 }						t_operation;
 
 typedef struct s_minishell
@@ -63,6 +68,7 @@ typedef struct s_minishell
 	char					*cwd;
 	t_list					*env_lst;
 	int						last_exit_code;
+	size_t					curr_line;
 }							t_minishell;
 
 typedef struct s_tokens_split
@@ -151,6 +157,8 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void			print_heredoc_warning(t_minishell *mini,
+					t_operation *operation, size_t j);
 char			**env_lst_to_2d_arr(t_minishell *mini);
 int				check_if_cmd_exist(char *cmd);
 int				execute_process(t_minishell *mini);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2024/12/30 15:09:01 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/31 23:25:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ int	prep_subops_data(t_operation **operations, t_list *lst)
 		if (!prep_subop_main_conditions(lst, &parenthesis_count,
 				operations, &i))
 			return (0);
+		if (((t_token *)lst->content)->type == COMMAND
+			&& parenthesis_count == 1)
+			operations[i]->cmd = ((t_token *)lst->content)->token_word;
 		if ((((t_token *)lst->prev->content)->type == OPEN_PARENTHESIS
 				|| check_op_type(lst)) && parenthesis_count == 1)
 			if (!op_data_collector(operations, i, lst))
 				return (0);
-		if (((t_token *)lst->content)->type == COMMAND
-			&& parenthesis_count == 1)
-			operations[i]->cmd = ((t_token *)lst->content)->token_word;
 		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
 		lst = lst->next;

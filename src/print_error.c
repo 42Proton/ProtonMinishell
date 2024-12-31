@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/27 11:51:02 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/01 00:02:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,12 @@ void	print_syntax_error(t_token *token)
 	else
 		ft_putstr_fd(token->token_word, STDERR_FILENO);
 	ft_putstr_fd("'\n", STDERR_FILENO);
+}
+
+void	print_heredoc_warning(t_minishell *mini,
+	t_operation *operation, size_t j)
+{
+	printf("minishell 0x90: warning: here-document at line %ld delimited \
+by end-of-file (wanted '%s')\n", mini->curr_line,
+		operation->in_redirects[j].name);
 }
