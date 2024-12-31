@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/29 02:26:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/31 03:20:30 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_sep(char *line)
 int	check_sep_operators_nl(t_token *tok)
 {
 	int	tok_type;
-	
+
 	tok_type = tok->type;
 	if (tok_type == AND_OPERATOR || tok_type == OR_OPERATOR)
 		return (1);

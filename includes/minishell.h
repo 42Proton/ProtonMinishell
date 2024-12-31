@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/30 14:43:33 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/31 01:26:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_operation
 	t_redirect			*out_redirects;
 	size_t				n_out;
 	size_t				n_in;
+	size_t				n_args;
 	char				*cmd;
 	char				**args;
 }						t_operation;
@@ -150,6 +151,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+char			**env_lst_to_2d_arr(t_minishell *mini);
 int				check_if_cmd_exist(char *cmd);
 int				execute_process(t_minishell *mini);
 int				op_prep_args(t_operation *operation, t_list *lst);
@@ -269,6 +271,6 @@ void			add_token(t_minishell *mini,
 int				lexical_analysis(t_minishell *mini);
 int				execute_process(t_minishell *mini);
 int				check_pairs(t_minishell *mini);
-int	check_if_batata_path(char *cmd);
+int				check_if_batata_path(char *cmd);
 
 #endif

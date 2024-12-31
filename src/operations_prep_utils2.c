@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/30 15:12:09 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/31 00:54:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	op_data_collector(t_operation **operations, size_t i, t_list *lst)
 		free_operations(operations);
 		return (0);
 	}
-	if (operations[i]->args)
+	if (operations[i]->n_args)
 		op_get_args(operations[i], lst);
 	return (1);
 }

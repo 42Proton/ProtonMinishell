@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:49:21 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/30 13:53:13 by abueskander      ###   ########.fr       */
+/*   Updated: 2024/12/31 03:19:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_out_redirection(t_list *lst)
 int	check_op_prep_condition(t_list *lst, ssize_t parenthesis_count)
 {
 	if (lst && !(check_op_type(lst) && !parenthesis_count)
-	&& parenthesis_count >= 0)
+		&& parenthesis_count >= 0)
 		return (1);
 	return (0);
 }
@@ -53,11 +53,11 @@ int	check_tok_prev_cmd(t_list *lst)
 	return (0);
 }
 
-int	check_if_batata_path(char *cmd)
+int	check_if_cmd_exist(char *cmd)
 {
-	if (!ft_strncmp(cmd, "../", 3)
-		|| !ft_strncmp(cmd, "./", 2)
-		|| ft_strchr(cmd, '/'))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	if (access(cmd, F_OK) == -1)
+		return (0);
+	if (access(cmd, X_OK) == -1)
+		return (0);
+	return (1);
 }

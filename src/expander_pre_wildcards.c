@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 23:55:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 09:32:19 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/31 03:19:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static int	expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
 			if (check_expander_default_mode(s[tok_exp->split_se.end], tok_exp))
 				tok_exp->mode = DEFAULT_MODE;
 			else if (s[tok_exp->split_se.end] == '\''
-					&& tok_exp->mode == DEFAULT_MODE)
+				&& tok_exp->mode == DEFAULT_MODE)
 				tok_exp->mode = SINGLE_QUOTE_MODE;
 			else if (s[tok_exp->split_se.end] == '"'
-					&& tok_exp->mode == DEFAULT_MODE)
+				&& tok_exp->mode == DEFAULT_MODE)
 				tok_exp->mode = DOUBLE_QUOTE_MODE;
 			if (!expander_pre_wildcards_update(tok_exp, old_mode, quotes_range))
 				return (0);

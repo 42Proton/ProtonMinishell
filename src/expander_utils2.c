@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 15:06:31 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/29 02:44:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/31 03:14:06 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ char	*expander_add_tok_helper(char *word, t_tok_expander *tok_exp)
 	char	*new_str2;
 
 	split_se = tok_exp->split_se;
-	if (split_se.end - split_se.start == 1 && check_env_mode(tok_exp))
-		new_str = ft_strdup("");
-	else if (split_se.end - split_se.start == 1 && !check_env_mode(tok_exp))
-		new_str = ft_substr(word, split_se.start, 1);
-	else
+	if ((split_se.end - split_se.start > 1 && check_env_mode(tok_exp)) || (
+			split_se.end - split_se.start >= 1 && !check_env_mode(tok_exp)))
 		new_str = ft_substr(word, split_se.start, split_se.end
 				- split_se.start);
+	else
+		new_str = ft_strdup("");
 	if (!new_str)
 		return (0);
-	if (ft_strlen(new_str) > 2 && new_str[0] == '$' && new_str[1] != '?'
-		&& tok_exp->mode != SINGLE_QUOTE_MODE)
+	if (ft_strlen(new_str) >= 2 && new_str[0] == '$'
+		&& (new_str[1] != '?' && new_str[1] != '_') && check_env_mode(tok_exp))
 	{
 		new_str2 = ft_strtrim(new_str, "$");
 		free(new_str);
