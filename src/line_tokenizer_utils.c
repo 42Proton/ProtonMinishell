@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 00:09:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/05 19:58:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/31 04:37:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ static void	split_skip_to_end(char *line, t_tokens_split *tokens_split)
 {
 	while (line[tokens_split->end])
 	{
-		if (line[tokens_split->end] == ' ' || check_sep(line
-				+ tokens_split->end))
+		if (line[tokens_split->end] == ' '
+			|| line[tokens_split->end] == '\t'
+			|| check_sep(line + tokens_split->end))
 			break ;
 		if (line[tokens_split->end] == '"' || line[tokens_split->end] == '\'')
 			tokens_split->end += skip_quotes(line + tokens_split->end);
@@ -63,6 +64,8 @@ void	add_token(t_minishell *mini, t_tokens_split *tokens_split)
 	char	*content;
 
 	split_skip_to_end(mini->line_read, tokens_split);
+	if (tokens_split->end == tokens_split->start)
+		return ;
 	content = ft_substr(mini->line_read, tokens_split->start, tokens_split->end
 			- tokens_split->start);
 	lst = ft_lstnew(content);

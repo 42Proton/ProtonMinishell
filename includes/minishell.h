@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 01:26:28 by amsaleh          ###   ########.fr       */
+/*   Updated: 2024/12/31 04:24:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ void			line_tokenizer(t_minishell *mini);
 void			add_token(t_minishell *mini,
 					t_tokens_split *tokens_split);
 int				check_sep(char *line);
-size_t			skip_spaces(char *line);
+size_t			skip_spaces_tabs(char *line);
 int				ft_unsetenv(t_minishell *minishell, char *name);
 int				ft_setenv(t_minishell *minishell, char *name,
 					char *data);
