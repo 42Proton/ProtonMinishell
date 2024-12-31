@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/01 01:47:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/01 01:51:18 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	free_operations(t_operation **operations)
 		free(operations[i]->out_redirects);
 		free(operations[i]->heredoc_buffer);
 		free(operations[i]->cmd_path);
-		free_array((void **)operations[i]->env);
+		if (operations[i]->env)
+			free_array((void **)operations[i]->env);
 		free(operations[i]);
 		i++;
 	}
