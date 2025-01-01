@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/01 01:46:25 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/01 16:32:45 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct s_operation
 	size_t				n_args;
 	int					parent_in_fd;
 	int					parent_out_fd;
+	int				*pipe_fds_in;
+	int				*pipe_fds_out;
 	char				*heredoc_buffer;
 	char				*cmd;
 	char				*cmd_path;

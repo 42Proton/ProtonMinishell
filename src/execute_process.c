@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/01 01:47:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/01 17:16:29 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,48 @@ int	execute_cmd(t_minishell *mini, t_operation *operation)
 	if (pid == -1)
 		return (EXIT_FAILURE);
 	if (!pid)
-	{
+	{	
+		if(operation->pipe_fds_in)
+		{
+			fprintf(stderr," 1 cmd %s \n", operation->cmd_path);
+			dup2(operation->pipe_fds_in[0],STDIN_FILENO);
+		}
+		if(operation->pipe_fds_out)
+		{
+			fprintf(stderr," 2 cmd %s \n", operation->cmd_path);
+			dup2(operation->pipe_fds_out[1],STDOUT_FILENO);
+		}
 		execve(operation->cmd_path, operation->args, operation->env);
-		return (EXIT_SUCCESS);
 	}
+	if(operation->pipe_fds_in)
+		close(operation->pipe_fds_in[0]);
+	if(operation->pipe_fds_out)
+		close(operation->pipe_fds_out[1]);
 	wait(0);
+	return (EXIT_SUCCESS);
+}
+
+int	prep_pipeline(t_operation **operations)
+{
+	size_t	i;
+
+	i = 0;
+	while (operations[i])
+	{
+		if (i > 0 && operations[i - 1]->pipe_fds_out)
+			operations[i]->pipe_fds_in = operations[i - 1]->pipe_fds_out;
+		if (operations[i]->operations)
+			prep_pipeline(operations[i]->operations);
+		if (operations[i + 1] && operations[i + 1]->operation_type == OPERATION_PIPE)
+		{
+			operations[i]->pipe_fds_out = malloc(sizeof(int) * 2);
+			if (!operations[i]->pipe_fds_out)
+				return (EXIT_FAILURE);
+			if (pipe(operations[i]->pipe_fds_out) == -1)
+				return (EXIT_FAILURE);	
+		}
+		i++;
+	}	
 	return (EXIT_SUCCESS);
 }
 
@@ -135,6 +172,8 @@ int	execute_process(t_minishell *mini)
 	int		status;
 
 	if (!prep_redirections(mini, mini->operations))
+		return (EXIT_FAILURE);
+	if(prep_pipeline(mini->operations))
 		return (EXIT_FAILURE);
 	i = 0;
 	while (mini->operations[i])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 00:54:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/01 15:03:06 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,31 @@ void	op_get_redirections(t_operation *operation, t_list *lst)
 	}
 }
 
+void	op_collect_cmd(t_operation **operations, size_t i, t_list *lst)
+{
+	size_t	parenthesis_count;
+
+	parenthesis_count = 0;
+	while (lst && !check_op_type(lst))
+	{
+		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
+			parenthesis_count++;
+		else if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
+			parenthesis_count--;
+		if (((t_token *)lst->content)->type == COMMAND && !parenthesis_count)
+		{
+			operations[i]->cmd = ((t_token *)lst->content)->token_word;
+			break ;
+		}
+		lst = lst->next;
+	}
+}
+
 int	op_data_collector(t_operation **operations, size_t i, t_list *lst)
 {
 	if (check_op_type(lst))
 		lst = lst->next;
+	op_collect_cmd(operations, i, lst);
 	if (!op_prep_redirections(operations[i], lst))
 	{
 		free_operations(operations);
