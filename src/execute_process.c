@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 20:20:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/03 00:23:08 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,8 +184,6 @@ int	execute_cmd_redirections(t_operation *operation)
 		in_fd = operation->redirect_in_fd;
 	if (operation->redirect_out_fd != -1)
 		out_fd = operation->redirect_out_fd;
-	if (operation->pipe_fds_in)
-		close(operation->pipe_fds_in[1]);
 	if (operation->pipe_fds_out)
 		close(operation->pipe_fds_out[0]);
 	if (in_fd != -1)
@@ -194,6 +192,10 @@ int	execute_cmd_redirections(t_operation *operation)
 	if (out_fd != -1)
 		if (dup2(out_fd, STDOUT_FILENO) == -1)
 			return (0);
+	if (in_fd != -1)
+		close(in_fd);
+	if (out_fd != -1)
+		close(out_fd);
 	return (1);
 }
 
@@ -233,34 +235,29 @@ int	execute_cmd(t_minishell *mini, t_operation *operation, t_operation *next_op)
 		wait(&wstatus);
 		mini->last_exit_code = WEXITSTATUS(wstatus);
 	}
+	execute_cmd_close_fds(operation);
 	return (EXIT_SUCCESS);
 }
 
-int	prep_pipeline(t_operation **operations)
+int	prep_pipeline(t_operation *operation, t_operation *next_op)
 {
-	size_t	i;
-
-	i = 0;
-	while (operations[i])
+	if (next_op && next_op->operation_type == OPERATION_PIPE)
 	{
-		if (i > 0 && operations[i - 1]->pipe_fds_out)
-			operations[i]->pipe_fds_in = operations[i - 1]->pipe_fds_out;
-		if (operations[i]->operations)
-			prep_pipeline(operations[i]->operations);
-		if (operations[i + 1] && operations[i + 1]->operation_type == OPERATION_PIPE)
+		operation->pipe_fds_out = malloc(2 * sizeof(int));
+		if (!operation->pipe_fds_out)
 		{
-			operations[i]->pipe_fds_out = malloc(2 * sizeof(int));
-			if (!operations[i]->pipe_fds_out)
-				return (EXIT_FAILURE);
-			if (pipe(operations[i]->pipe_fds_out) == -1)
-			{
-				free(operations[i]->pipe_fds_out);
-				operations[i]->pipe_fds_out = 0;
-				return (EXIT_FAILURE);
-			}
+			if (operation->pipe_fds_in)
+				close(operation->pipe_fds_in[0]);
+			return (EXIT_FAILURE);
 		}
-		i++;
-	}	
+		if (pipe(operation->pipe_fds_out) == -1)
+		{
+			if (operation->pipe_fds_in)
+				close(operation->pipe_fds_in[0]);
+			return (EXIT_FAILURE);
+		}
+		next_op->pipe_fds_in = operation->pipe_fds_out;
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -271,11 +268,11 @@ int	execute_process(t_minishell *mini)
 
 	if (!prep_redirections(mini, mini->operations))
 		return (EXIT_FAILURE);
-	if (prep_pipeline(mini->operations))
-		return (EXIT_FAILURE);
 	i = 0;
 	while (mini->operations[i])
 	{
+		if (prep_pipeline(mini->operations[i], mini->operations[i + 1]))
+			return (EXIT_FAILURE);
 		create_trunc_out_files(mini->operations[i]);
 		process_in_redirects(mini->operations[i]);
 		if (mini->operations[i]->cmd)
