@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/01 01:51:18 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 14:00:26 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	add_operation_alloc(t_operation **operations, ssize_t i)
 		free(operations);
 		return (0);
 	}
+	temp->redirect_in_fd = -1;
+	temp->redirect_out_fd = -1;
 	operations[i] = temp;
 	return (1);
 }

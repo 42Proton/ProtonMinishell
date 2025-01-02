@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/01 17:16:29 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/02 16:16:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,65 @@ int	prep_redirections(t_minishell *mini, t_operation **operations)
 	return (1);
 }
 
+int	create_trunc_out_files(t_operation *operation)
+{
+	size_t	i;
+	int		fd;
+	int		flags;
+
+	i = 0;
+	while (i < operation->n_out)
+	{
+		flags = O_CREAT | O_WRONLY | O_TRUNC;
+		if (operation->out_redirects[i].type == REDIRECT_APPEND)
+			flags = O_CREAT | O_WRONLY | O_APPEND;
+		fd = open(operation->out_redirects[i].name, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		if (fd == -1)
+			return (0);
+		if (i != operation->n_out - 1)
+			close(fd);
+		else
+			operation->redirect_out_fd = fd;
+		i++;
+	}
+	return (1);
+}
+
+int	process_in_redirects_heredoc(t_operation *operation)
+{
+	int	pipefd[2];
+
+	if (pipe(pipefd) == -1)
+		return (-1);
+	write(pipefd[1], operation->heredoc_buffer,
+		ft_strlen(operation->heredoc_buffer));
+	close(pipefd[1]);
+	return (pipefd[0]);
+}
+
+int	process_in_redirects(t_operation *operation)
+{
+	size_t	i;
+	int		fd;
+
+	i = 0;
+	while (i < operation->n_in)
+	{
+		if (operation->in_redirects[i].type == REDIRECT_INFILE)
+			fd = open(operation->in_redirects[i].name, O_CREAT | O_RDONLY);
+		else
+			fd = process_in_redirects_heredoc(operation);
+		if (fd == -1)
+			return (0);
+		if (i != operation->n_in - 1)
+			close(fd);
+		else
+			operation->redirect_in_fd = fd;
+		i++;
+	}
+	return (1);
+}
+
 int	pre_execute_external_cmd(t_minishell *mini, t_operation *operation)
 {
 	char	*cmd_path;
@@ -110,9 +169,51 @@ int	pre_execute_external_cmd(t_minishell *mini, t_operation *operation)
 	return (1);
 }
 
-int	execute_cmd(t_minishell *mini, t_operation *operation)
+int	execute_cmd_redirections(t_operation *operation)
 {
-	int		pid;
+	int	in_fd;
+	int	out_fd;
+
+	in_fd = -1;
+	out_fd = -1;
+
+	if (operation->pipe_fds_in)
+		in_fd = operation->pipe_fds_in[0];
+	if (operation->pipe_fds_out)
+		out_fd = operation->pipe_fds_out[1];
+	if (operation->redirect_in_fd != -1)
+		in_fd = operation->redirect_in_fd;
+	if (operation->redirect_out_fd != -1)
+		out_fd = operation->redirect_out_fd;
+	if (operation->pipe_fds_in)
+		close(operation->pipe_fds_in[1]);
+	if (operation->pipe_fds_out)
+		close(operation->pipe_fds_out[0]);
+	if (in_fd != -1)
+		if (dup2(in_fd, STDIN_FILENO) == -1)
+			return (0);
+	if (out_fd != -1)
+		if (dup2(out_fd, STDOUT_FILENO) == -1)
+			return (0);
+	return (1);
+}
+
+void	execute_cmd_close_fds(t_operation *operation)
+{
+	if (operation->pipe_fds_in)
+		close(operation->pipe_fds_in[0]);
+	if (operation->pipe_fds_out)
+		close(operation->pipe_fds_out[1]);
+	if (operation->redirect_in_fd != -1)
+		close(operation->redirect_in_fd);
+	if (operation->redirect_out_fd != -1)
+		close(operation->redirect_out_fd);
+}
+
+int	execute_cmd(t_minishell *mini, t_operation *operation, t_operation *next_op)
+{
+	int	pid;
+	int status;
 
 	operation->env = env_lst_to_2d_arr(mini);
 	if (!operation->env)
@@ -121,24 +222,19 @@ int	execute_cmd(t_minishell *mini, t_operation *operation)
 	if (pid == -1)
 		return (EXIT_FAILURE);
 	if (!pid)
-	{	
-		if(operation->pipe_fds_in)
-		{
-			fprintf(stderr," 1 cmd %s \n", operation->cmd_path);
-			dup2(operation->pipe_fds_in[0],STDIN_FILENO);
-		}
-		if(operation->pipe_fds_out)
-		{
-			fprintf(stderr," 2 cmd %s \n", operation->cmd_path);
-			dup2(operation->pipe_fds_out[1],STDOUT_FILENO);
-		}
+	{
+		execute_cmd_redirections(operation);
 		execve(operation->cmd_path, operation->args, operation->env);
+		perror("execve");
+		execute_cmd_close_fds(operation);
+		return (EXIT_FAILURE);
 	}
-	if(operation->pipe_fds_in)
-		close(operation->pipe_fds_in[0]);
-	if(operation->pipe_fds_out)
-		close(operation->pipe_fds_out[1]);
-	wait(0);
+	if (!next_op || !(next_op && next_op->operation_type == OPERATION_PIPE))
+	{
+		waitpid(pid, &status, 0);
+		mini->last_exit_code = status;
+	}
+	execute_cmd_close_fds(operation);
 	return (EXIT_SUCCESS);
 }
 
@@ -155,11 +251,11 @@ int	prep_pipeline(t_operation **operations)
 			prep_pipeline(operations[i]->operations);
 		if (operations[i + 1] && operations[i + 1]->operation_type == OPERATION_PIPE)
 		{
-			operations[i]->pipe_fds_out = malloc(sizeof(int) * 2);
+			operations[i]->pipe_fds_out = malloc(2 * sizeof(int));
 			if (!operations[i]->pipe_fds_out)
 				return (EXIT_FAILURE);
 			if (pipe(operations[i]->pipe_fds_out) == -1)
-				return (EXIT_FAILURE);	
+				return (EXIT_FAILURE);
 		}
 		i++;
 	}	
@@ -173,20 +269,24 @@ int	execute_process(t_minishell *mini)
 
 	if (!prep_redirections(mini, mini->operations))
 		return (EXIT_FAILURE);
-	if(prep_pipeline(mini->operations))
+	if (prep_pipeline(mini->operations))
 		return (EXIT_FAILURE);
 	i = 0;
 	while (mini->operations[i])
 	{
+		create_trunc_out_files(mini->operations[i]);
+		process_in_redirects(mini->operations[i]);
 		if (mini->operations[i]->cmd)
 		{
 			status = pre_execute_external_cmd(mini, mini->operations[i]);
 			if (status == -1)
 				return (EXIT_FAILURE);
 			if (status)
-				execute_cmd(mini, mini->operations[i]);
+				execute_cmd(mini, mini->operations[i], mini->operations[i + 1]);
 		}
 		i++;
 	}
+	while (wait(0) != -1)
+		;
 	return (EXIT_SUCCESS);
 }

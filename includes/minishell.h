@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/01 16:32:45 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/02 12:29:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 # include <sys/ioctl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <termcap.h>
 # include <termios.h>
 # include <unistd.h>
+
 typedef struct s_env
 {
 	char					*name;
@@ -53,8 +55,10 @@ typedef struct s_operation
 	size_t				n_args;
 	int					parent_in_fd;
 	int					parent_out_fd;
-	int				*pipe_fds_in;
-	int				*pipe_fds_out;
+	int					redirect_in_fd;
+	int					redirect_out_fd;
+	int					*pipe_fds_in;
+	int					*pipe_fds_out;
 	char				*heredoc_buffer;
 	char				*cmd;
 	char				*cmd_path;
@@ -159,6 +163,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int				check_if_dir(char *path);
 void			print_heredoc_warning(t_minishell *mini,
 					t_operation *operation, size_t j);
 char			**env_lst_to_2d_arr(t_minishell *mini);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:49:21 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 03:19:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 01:32:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ int	check_tok_prev_cmd(t_list *lst)
 	return (0);
 }
 
-int	check_if_cmd_exist(char *cmd)
+int	check_if_dir(char *path)
 {
-	if (access(cmd, F_OK) == -1)
-		return (0);
-	if (access(cmd, X_OK) == -1)
-		return (0);
-	return (1);
+	struct stat	stat_buf;
+	if (stat(path, &stat_buf))
+		return (-1);
+	if (S_ISDIR(stat_buf.st_mode))
+		return (1);
+	return (0);
 }
