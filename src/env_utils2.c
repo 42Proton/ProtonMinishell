@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:49:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 11:49:33 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 21:03:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_env	*alloc_env(char *name, char *data)
 	return (env);
 }
 
-int	ft_unsetenv(t_minishell *minishell, char *name)
+int	ft_unsetenv(t_list **env_lst, char *name)
 {
 	t_list	*lst;
 
@@ -42,7 +42,7 @@ int	ft_unsetenv(t_minishell *minishell, char *name)
 		return (-1);
 	if (!*name)
 		return (-1);
-	lst = minishell->env_lst;
+	lst = *env_lst;
 	while (lst)
 	{
 		if (!ft_strcmp(((t_env *)lst->content)->name, name))
@@ -51,7 +51,7 @@ int	ft_unsetenv(t_minishell *minishell, char *name)
 			if (lst->prev)
 				lst->prev->next = lst->next;
 			else
-				minishell->env_lst = lst->next;
+				*env_lst = lst->next;
 			free(lst);
 			return (0);
 		}

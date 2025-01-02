@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/26 09:30:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 21:04:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ void	prep_minishell_env(t_minishell *minishell, char **ev)
 	}
 }
 
-char	*ft_getenv(t_minishell *minishell, char *env_name)
+char	*ft_getenv(t_list *env_lst, char *env_name)
 {
 	t_list	*lst;
 	t_env	*env;
 
-	lst = minishell->env_lst;
+	lst = env_lst;
 	while (lst)
 	{
 		env = (t_env *)lst->content;

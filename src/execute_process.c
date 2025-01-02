@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 16:16:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 20:20:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,6 @@ int	execute_cmd_redirections(t_operation *operation)
 
 	in_fd = -1;
 	out_fd = -1;
-
 	if (operation->pipe_fds_in)
 		in_fd = operation->pipe_fds_in[0];
 	if (operation->pipe_fds_out)
@@ -213,7 +212,7 @@ void	execute_cmd_close_fds(t_operation *operation)
 int	execute_cmd(t_minishell *mini, t_operation *operation, t_operation *next_op)
 {
 	int	pid;
-	int status;
+	int wstatus;
 
 	operation->env = env_lst_to_2d_arr(mini);
 	if (!operation->env)
@@ -229,12 +228,11 @@ int	execute_cmd(t_minishell *mini, t_operation *operation, t_operation *next_op)
 		execute_cmd_close_fds(operation);
 		return (EXIT_FAILURE);
 	}
-	if (!next_op || !(next_op && next_op->operation_type == OPERATION_PIPE))
+	if (next_op && next_op->operation_type != OPERATION_PIPE)
 	{
-		waitpid(pid, &status, 0);
-		mini->last_exit_code = status;
+		wait(&wstatus);
+		mini->last_exit_code = WEXITSTATUS(wstatus);
 	}
-	execute_cmd_close_fds(operation);
 	return (EXIT_SUCCESS);
 }
 
@@ -255,7 +253,11 @@ int	prep_pipeline(t_operation **operations)
 			if (!operations[i]->pipe_fds_out)
 				return (EXIT_FAILURE);
 			if (pipe(operations[i]->pipe_fds_out) == -1)
+			{
+				free(operations[i]->pipe_fds_out);
+				operations[i]->pipe_fds_out = 0;
 				return (EXIT_FAILURE);
+			}
 		}
 		i++;
 	}	
@@ -284,6 +286,7 @@ int	execute_process(t_minishell *mini)
 			if (status)
 				execute_cmd(mini, mini->operations[i], mini->operations[i + 1]);
 		}
+		execute_cmd_close_fds(mini->operations[i]);
 		i++;
 	}
 	while (wait(0) != -1)

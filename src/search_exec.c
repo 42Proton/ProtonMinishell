@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 12:25:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/01 01:15:12 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 21:08:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*get_exec_path(t_minishell *mini, char *cmd)
 	char	*tmp;
 
 	tmp = ft_strdup("");
-	path = ft_getenv(mini, "PATH");
+	path = ft_getenv(mini->env_lst, "PATH");
 	if (!path)
 		return (tmp);
 	path_split = ft_split(path, ':');

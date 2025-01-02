@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:17:28 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 03:15:38 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 21:09:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_env_safe(t_minishell *mini, char *new_str)
 		res = ft_strdup("$");
 		return (res);
 	}
-	res = ft_getenv(mini, new_str);
+	res = ft_getenv(mini->env_lst, new_str);
 	free(new_str);
 	if (!res)
 		res = ft_strdup("");

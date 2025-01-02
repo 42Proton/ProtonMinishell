@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/03 16:50:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 21:08:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	cd_cmd(t_minishell *minishell, char *arg2)
 			if (chdir(arg2) == -1)
 				perror("minishell: cd");
 	}
-	else if (chdir(ft_getenv(minishell, "HOME")) == -1)
+	else if (chdir(ft_getenv(minishell->env_lst, "HOME")) == -1)
 		perror("minishell: cd");
 }
 
@@ -85,5 +85,5 @@ void	unset_cmd(t_minishell *minishell, char *name)
 		ft_putstr_fd(": invalid parameter name\n", STDERR_FILENO);
 		return ;
 	}
-	ft_unsetenv(minishell, name);
+	ft_unsetenv(&minishell->env_lst, name);
 }

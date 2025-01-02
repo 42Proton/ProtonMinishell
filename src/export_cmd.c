@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:10:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/11/30 14:12:25 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/02 21:08:36 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	export_cmd(t_minishell *minishell, char *arg2)
 		export_print_error(env);
 		return (1);
 	}
-	ft_setenv(minishell, env->name, env->data);
+	ft_setenv(&minishell->env_lst, env->name, env->data);
 	free_env(env);
 	return (1);
 }

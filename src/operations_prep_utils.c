@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 14:00:26 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 20:43:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	free_operations(t_operation **operations)
 		free(operations[i]->cmd_path);
 		if (operations[i]->env)
 			free_array((void **)operations[i]->env);
+		free(operations[i]->pipe_fds_out);
 		free(operations[i]);
 		i++;
 	}

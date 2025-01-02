@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 12:29:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/02 21:06:26 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,16 +253,15 @@ void			add_token(t_minishell *mini,
 					t_tokens_split *tokens_split);
 int				check_sep(char *line);
 size_t			skip_spaces_tabs(char *line);
-int				ft_unsetenv(t_minishell *minishell, char *name);
-int				ft_setenv(t_minishell *minishell, char *name,
-					char *data);
+int				ft_unsetenv(t_list **env_lst, char *name);
+int				ft_setenv(t_list **env_lst, char *name, char *data);
 int				check_env_name(char *name);
 int				parse_env_data(char *data, t_env *env);
 int				export_cmd(t_minishell *minishell, char *arg2);
 int				sort_env(t_minishell *minishell,
 					t_list **sorted_env);
 int				sort_print_env(t_minishell *minishell);
-char			*ft_getenv(t_minishell *minishell, char *env_name);
+char			*ft_getenv(t_list *env_lst, char *env_name);
 char			*get_exec_path(t_minishell *minishell, char *cmd);
 void			prep_minishell_env(t_minishell *minishell,
 					char **ev);
