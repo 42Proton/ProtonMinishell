@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/03 00:23:08 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/03 15:47:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,39 @@ int	prep_pipeline(t_operation *operation, t_operation *next_op)
 		next_op->pipe_fds_in = operation->pipe_fds_out;
 	}
 	return (EXIT_SUCCESS);
+}
+
+int	execute_expander_process_helper(char *s, t_tok_expander *tok_exp, t_list *env_list, int lec)
+{
+	char	*tok;
+	t_split	split_se;
+
+	split_se = tok_exp->split_se;
+	tok = ft_substr(s, split_se.start, split_se.end - split_se.start)
+}
+
+char *execute_expander_process(int lec, t_list *env_list, char *s)
+{
+	t_tok_expander	*tok_exp;
+	char			*res;
+
+	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
+	if (!tok_exp)
+		return (0);
+	while (s[tok_exp->split_se.end])
+	{
+		if (ft_strncmp(s + tok_exp->split_se.end, "$?", 2)
+			|| ft_strncmp(s + tok_exp->split_se.end, "$_", 2))
+			execute_expander_process_helper(s, tok_exp, env_list, lec);
+		tok_exp->split_se.end++;
+	}
+	free(tok_exp);
+	return (res);
+}
+
+int	execute_expander(t_operation *operation)
+{
+	
 }
 
 int	execute_process(t_minishell *mini)
