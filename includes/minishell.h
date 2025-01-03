@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 21:06:26 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/03 17:50:42 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void			signal_execution();
+int				execute_expander_check(char *s);
 int				check_if_dir(char *path);
 void			print_heredoc_warning(t_minishell *mini,
 					t_operation *operation, size_t j);

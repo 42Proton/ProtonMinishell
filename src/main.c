@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 21:07:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/03 17:50:14 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,13 @@ static void	start_shell(t_minishell *mini)
 	display_header();
 	while (1)
 	{
+		signal_handler();
 		mini->curr_line++;
 		mini->line_read = readline("\001\033[35m\0020x90>\001\033[33m\002 ");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
-		if (*mini->line_read)
-		{
-			check_pairs(mini);
+		if (*mini->line_read || check_pairs(mini))
+		{				
 			line_add_newline(mini);
 			line_tokenizer(mini);
 			tokens_expander(mini);
@@ -124,9 +124,9 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	minishell = minishell_prep(env);
 	signal_handler();
+	minishell = minishell_prep(env);
 	if (terminals_config())
-		exit_handler(minishell, ERR_TERM);
+		exit_handler(NULL, ERR_TERM);
 	start_shell(minishell);
 }

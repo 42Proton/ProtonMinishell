@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/13 22:19:45 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/03 17:50:02 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,30 @@ static void	signal_test(int signum)
 {
 	if (signum == SIGQUIT)
 		return ;
-	ft_printf("\n");
 	rl_on_new_line();
+	ft_printf("\n");
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
-
 void	signal_handler(void)
 {
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = signal_test;
-	sa.sa_flags = 0;
+	sa.sa_flags =  0;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, signal_test);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	signal_execution(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags =  0;
+	sigaction(SIGINT, &sa, NULL);
 }
 
 int	terminals_config(void)

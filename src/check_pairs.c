@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_pairs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 13:59:05 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/27 11:49:03 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/03 17:44:30 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	check_counter(int checks[], char *line)
+int	check_counter(int checks[], char *line)
 {
 	int	i;
 
@@ -41,25 +41,14 @@ static int	check_counter(int checks[], char *line)
 int	check_pairs(t_minishell *mini)
 {
 	int		*checks;
-	char	*lmao;
-	char	*temp;
+
 
 	checks = ft_calloc(3, sizeof(int));
 	if (!checks)
 		return (EXIT_FAILURE);
 	if (check_counter(checks, mini->line_read))
 	{
-		lmao = readline(">");
-		if (!lmao)
-		{
-			free(checks);
-			exit_handler(mini, NONE);
-		}
-		temp = ft_strjoin(mini->line_read, lmao);
-		free(mini->line_read);
-		mini->line_read = temp;
-		check_pairs(mini);
-		free(lmao);
+		ft_putstr_fd("synatx error %d", check_counter(checks,mini->line_read));
 	}
 	free(checks);
 	return (EXIT_SUCCESS);

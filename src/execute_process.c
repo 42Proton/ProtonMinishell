@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/03 15:47:33 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/03 17:49:58 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ int	execute_cmd(t_minishell *mini, t_operation *operation, t_operation *next_op)
 	if (pid == -1)
 		return (EXIT_FAILURE);
 	if (!pid)
-	{
+	{	
 		execute_cmd_redirections(operation);
 		execve(operation->cmd_path, operation->args, operation->env);
 		perror("execve");
@@ -261,13 +261,91 @@ int	prep_pipeline(t_operation *operation, t_operation *next_op)
 	return (EXIT_SUCCESS);
 }
 
+int	execute_expander_process_helper2(char *s, t_tok_expander *tok_exp, t_list *env_list, int lec)
+{
+	char	*temp;
+	t_list	*lst;
+
+	if (!ft_strncmp(s + tok_exp->split_se.end, "$?", 2))
+	{
+		temp = ft_itoa(lec);
+		if (!temp)
+			return (0);
+		lst = ft_lstnew(temp);
+		if (!lst)
+		{
+			free(temp);
+			return (0);
+		}
+		ft_lstadd_back(&tok_exp->lst, lst);
+	}
+	if (!ft_strncmp(s + tok_exp->split_se.end, "$_", 2))
+	{
+		lst = ft_lstnew(ft_strdup(ft_getenv(env_list, "_")));
+		if (!lst)
+			return (0);
+		ft_lstadd_back(&tok_exp->lst, lst);
+	}
+	return (1);
+}
+
+void	inc_split_index2(t_split *split_se, size_t i)
+{
+	split_se->start += i;
+	split_se->end += i;
+}
+
+void	free_execute_expander(t_tok_expander *tok_exp)
+{
+	ft_lstclear(&tok_exp->lst, free);
+	free(tok_exp);
+}
+
+char	*execute_expander_subtok_join(t_tok_expander *tok_exp)
+{
+	t_list	*lst;
+	char	*res;
+	char	*temp;
+
+	lst = tok_exp->lst;
+	res = ft_strdup("");
+	while (lst)
+	{
+		temp = ft_strjoin(res, (char *)lst->content);
+		free(res);
+		if (!temp)
+		{
+			free_execute_expander(tok_exp);
+			return (0);
+		}
+		res = temp;
+		lst = lst->next;
+	}
+	ft_lstclear(&tok_exp->lst, free);
+	free(tok_exp);
+	return (res);
+}
+
 int	execute_expander_process_helper(char *s, t_tok_expander *tok_exp, t_list *env_list, int lec)
 {
-	char	*tok;
+	char	*temp;
 	t_split	split_se;
-
+	t_list	*lst;
+	
 	split_se = tok_exp->split_se;
-	tok = ft_substr(s, split_se.start, split_se.end - split_se.start)
+	if (split_se.start != split_se.end)
+	{
+		temp = ft_substr(s, split_se.start, split_se.end - split_se.start);
+		lst = ft_lstnew(temp);
+		ft_lstadd_back(&tok_exp->lst, lst);
+		tok_exp->split_se.start = tok_exp->split_se.end;
+	}
+	if (execute_expander_check(s + tok_exp->split_se.end))
+	{
+		execute_expander_process_helper2(s, tok_exp, env_list, lec);
+		inc_split_index2(&tok_exp->split_se, 2);
+	}
+	return (1);
 }
 
 char *execute_expander_process(int lec, t_list *env_list, char *s)
@@ -280,30 +358,50 @@ char *execute_expander_process(int lec, t_list *env_list, char *s)
 		return (0);
 	while (s[tok_exp->split_se.end])
 	{
-		if (ft_strncmp(s + tok_exp->split_se.end, "$?", 2)
-			|| ft_strncmp(s + tok_exp->split_se.end, "$_", 2))
+		if (execute_expander_check(s + tok_exp->split_se.end))
+		{
 			execute_expander_process_helper(s, tok_exp, env_list, lec);
+		}
 		tok_exp->split_se.end++;
 	}
-	free(tok_exp);
+	execute_expander_process_helper(s, tok_exp, env_list, lec);
+	res = execute_expander_subtok_join(tok_exp);
 	return (res);
 }
 
-int	execute_expander(t_operation *operation)
+int	execute_expander(int lec, t_list *env_list, t_operation *operation)
 {
-	
+	char	*temp;
+	char	**args;
+
+	temp = execute_expander_process(lec, env_list, operation->cmd);
+	if (!temp)
+		return (0);
+	operation->cmd = temp;
+	args = operation->args;
+	while (*args)
+	{
+		temp = execute_expander_process(lec, env_list, *args);
+		if (!temp)
+			return (0);
+		*args = temp;
+		args++;
+	}
+	return (1);
 }
 
 int	execute_process(t_minishell *mini)
 {
 	size_t	i;
 	int		status;
-
+	
+	signal_handler();
 	if (!prep_redirections(mini, mini->operations))
 		return (EXIT_FAILURE);
 	i = 0;
 	while (mini->operations[i])
 	{
+		execute_expander(mini->last_exit_code, mini->env_lst, mini->operations[i]);
 		if (prep_pipeline(mini->operations[i], mini->operations[i + 1]))
 			return (EXIT_FAILURE);
 		create_trunc_out_files(mini->operations[i]);
@@ -319,7 +417,9 @@ int	execute_process(t_minishell *mini)
 		execute_cmd_close_fds(mini->operations[i]);
 		i++;
 	}
+	signal_execution();
 	while (wait(0) != -1)
 		;
+	signal_handler();
 	return (EXIT_SUCCESS);
 }
