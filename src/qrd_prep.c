@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   qrd_prep.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 02:32:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 16:10:41 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/04 17:28:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ static int	qrd_process(t_list *tok, t_list *quotes_range_lst, t_qrd **qrd)
 		}
 		else if (((t_token *)tok->content)->type == CLOSE_PARENTHESIS)
 			p_count--;
-		else if (check_op_type(tok) && !p_count)
+		else if (check_operator_num(((t_token *)tok->content)->type) && !p_count)
 			qrd++;
 		if (!qrd_process_helper(tok, &quotes_range_lst, qrd, p_count))
 			return (0);
