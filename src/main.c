@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/03 17:50:14 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/04 07:12:32 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,34 @@
 // 	}
 // }
 
-static void	parse_line(t_minishell *mini)
+static void	apply_qrd_operations(t_qrd **qrd, t_operation **operations)
 {
-	int	status;
+	while (*qrd)
+	{
+		if ((*qrd)->qrd)
+			apply_qrd_operations((*qrd)->qrd, (*operations)->operations);
+		(*operations)->qrd = *qrd;
+		qrd++;
+		operations++;
+	}
+}
 
+static void	start_execution(t_minishell *mini)
+{
+	int		status;
+	t_qrd	**qrd;
+	
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+	qrd = qrd_setup(mini->line_tokens, mini->quotes_range_lst);
+	apply_qrd_operations(qrd, operations);
 	mini->operations = operations;
 	status = execute_process(mini);
 	free_operations(operations);
 	if (status == EXIT_FAILURE)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+	ft_lstclear(&mini->quotes_range_lst, free);
 	return ;
 }
 
@@ -107,9 +123,7 @@ static void	start_shell(t_minishell *mini)
 			line_tokenizer(mini);
 			tokens_expander(mini);
 			if (lexical_analysis(mini))
-			{
-				parse_line(mini);
-			}
+				start_execution(mini);
 			mini->line_read[ft_strlen(mini->line_read) - 1] = 0;
 			add_history(mini->line_read);
 			ft_lstclear(&mini->line_tokens, clear_token);

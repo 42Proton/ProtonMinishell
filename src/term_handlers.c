@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/03 17:50:02 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/03 19:22:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	signal_test(int signum)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
 void	signal_handler(void)
 {
 	struct sigaction	sa;

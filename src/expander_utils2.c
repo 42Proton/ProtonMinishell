@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 15:06:31 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 03:14:06 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/04 00:59:18 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,12 @@ void	exp_env_condition(t_minishell *mini, char *s, t_tok_expander *tok_exp)
 		tok_exp->split_se.end++;
 	else
 		inc_split_index(&tok_exp->split_se);
+}
+
+void	tokens_exp_clean_exit(t_minishell *mini,
+	t_list *quotes_range, char *s)
+{
+	ft_lstclear(&quotes_range, free);
+	free(s);
+	exit_handler(mini, ERR_MALLOC_POSTMINI);
 }

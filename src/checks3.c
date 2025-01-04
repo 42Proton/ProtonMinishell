@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 02:20:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/04 05:20:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,29 @@ int	check_env_sep(char c)
 	return (0);
 }
 
-int	check_str_wildcard(char *s)
+int	check_str_wildcard(char *s, t_list *quotes_range)
 {
-	int	mode;
+	t_list	*lst;
+	size_t	*range;
+	size_t	i;
 
-	mode = DEFAULT_MODE;
-	while (*s)
+	i = 0;
+	while (s[i])
 	{
-		if (check_quotes(*s))
+		if (s[i] == '*')
 		{
-			if (check_expander_default_mode_basic(*s, mode))
-				mode = DEFAULT_MODE;
-			else if (*s == '\'' && mode == DEFAULT_MODE)
-				mode = SINGLE_QUOTE_MODE;
-			else if (*s == '"' && mode == DEFAULT_MODE)
-				mode = DOUBLE_QUOTE_MODE;
+			if (!quotes_range)
+				return (1);
+			lst = quotes_range;
+			while (lst)
+			{
+				range = ((t_qr *)quotes_range->content)->arr;
+				if (i >= range[0] && i <= range[1])
+					return (1);
+				lst = lst->next;
+			}
 		}
-		if (mode == DEFAULT_MODE && *s == '*')
-			return (1);
-		s++;
+		i++;
 	}
 	return (0);
 }

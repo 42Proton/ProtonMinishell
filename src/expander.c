@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 02:16:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/04 06:06:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,29 +84,71 @@ static char	*expand_tok(t_minishell *mini, char *s)
 	return (res);
 }
 
+t_list	*tokens_expander_helper(t_minishell *mini, t_list *tokens)
+{
+	char	*expanded_str;
+	t_list	*quotes_range;
+	t_list	*lst;
+
+	quotes_range = 0;
+	expanded_str = expand_tok(mini, (char *)tokens->content);
+	free(tokens->content);
+	expander_pre_wildcards(mini, expanded_str, &quotes_range);
+	if (!quotes_range)
+	{
+		lst = ft_lstnew(0);
+		if (!lst)
+		{
+			free(expanded_str);
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
+		}
+		ft_lstadd_back(&mini->quotes_range_lst, lst);
+	}
+	else
+		ft_lstadd_back(&mini->quotes_range_lst, quotes_range);
+	tokens->content = expander_remove_quotes(mini, expanded_str,
+			&quotes_range);
+	return (quotes_range);
+}
+
+void	fill_empty_qr(t_minishell *mini, t_list *old_tokens, t_list *tokens)
+{
+	size_t	i;
+	t_list	*lst;
+
+	i = 0;
+	old_tokens = old_tokens->next;
+	while (old_tokens != tokens)
+	{
+		i++;
+		old_tokens = old_tokens->next;
+	}
+	while (i)
+	{
+		lst = ft_lstnew(0);
+		if (!lst)
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
+		ft_lstadd_back(&mini->quotes_range_lst, lst);
+		i--;
+	}
+}
+
 void	tokens_expander(t_minishell *mini)
 {
 	t_list	*tokens;
 	t_list	*quotes_range;
-	char	*expanded_str;
-	int		is_wildcard;
+	t_list	*old_tokens;
 
 	tokens = mini->line_tokens;
-	quotes_range = 0;
 	while (tokens)
 	{
-		expanded_str = expand_tok(mini, (char *)tokens->content);
-		free(tokens->content);
-		is_wildcard = check_str_wildcard(expanded_str);
-		if (is_wildcard)
-			expander_pre_wildcards(mini, expanded_str, &quotes_range);
-		tokens->content = expander_remove_quotes(mini, expanded_str,
-				&quotes_range);
-		if (is_wildcard)
+		quotes_range = tokens_expander_helper(mini, tokens);
+		if (check_str_wildcard(tokens->content, quotes_range))
 		{
+			old_tokens = tokens->prev;
 			expand_tok_wildcards(mini, &tokens, &mini->line_tokens,
 				quotes_range);
-			ft_lstclear(&quotes_range, free);
+			fill_empty_qr(mini, old_tokens, tokens);
 		}
 		tokens = tokens->next;
 	}

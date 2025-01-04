@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 22:12:32 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/15 03:52:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/04 04:58:52 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	insert_sorted_entries(t_list *lst_entries_sorted, t_list **lst,
 		lst_prev->next = lst_entries_sorted;
 	lst_last = ft_lstlast(lst_entries_sorted);
 	lst_last->next = lst_next;
-	lst_next->prev = lst_last;
+	if (lst_next)
+		lst_next->prev = lst_last;
 	*lst = lst_last;
 }

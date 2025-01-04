@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/03 17:50:42 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/04 05:28:32 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,29 @@ typedef struct s_redirect
 	char					*name;
 }							t_redirect;
 
+typedef struct s_qrd
+{
+	struct s_qrd	**qrd;
+	t_list 			*in_redirects_qr;
+	t_list 			*out_redirects_qr;
+	t_list 			*cmd_qr;
+	t_list 			*args_qr;
+}	t_qrd;
+
+typedef struct s_exp_execute
+{
+	int		lec;
+	t_list	*env_lst;
+	char	*s;
+	t_list	*qr;
+}	t_exp_execute;
+
+typedef struct s_qr
+{
+	size_t	arr[2];
+	int		is_sq;
+}	t_qr;
+
 typedef struct s_operation
 {
 	int					operation_type;
@@ -53,6 +76,7 @@ typedef struct s_operation
 	size_t				n_out;
 	size_t				n_in;
 	size_t				n_args;
+	t_qrd				*qrd;
 	int					parent_in_fd;
 	int					parent_out_fd;
 	int					redirect_in_fd;
@@ -75,6 +99,7 @@ typedef struct s_minishell
 	t_list					*env_lst;
 	int						last_exit_code;
 	size_t					curr_line;
+	t_list					*quotes_range_lst;
 }							t_minishell;
 
 typedef struct s_tokens_split
@@ -163,6 +188,11 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int				check_if_index_sqr(size_t i, t_list *qr);
+int				execute_expander(int lec, t_list *env_list, t_operation *operation);
+t_qrd			**qrd_setup(t_list *tok, t_list *quotes_range_lst);
+void			tokens_exp_clean_exit(t_minishell *mini,
+					t_list *quotes_range, char *s);
 void			signal_execution();
 int				execute_expander_check(char *s);
 int				check_if_dir(char *path);
@@ -222,7 +252,7 @@ void			del_non_matching_entries(t_list **lst_entries,
 					char *pattern, t_list *quotes_range);
 void			insert_sorted_entries(t_list *lst_entries_sorted,
 					t_list **lst, t_list **main_lst);
-int				check_str_wildcard(char *s);
+int				check_str_wildcard(char *s, t_list *quotes_range);
 void			inc_split_index(t_split *split_se);
 void			expander_clean_exit(t_minishell *mini,
 					t_tok_expander *tok_exp, t_list **quotes_range);
@@ -287,6 +317,5 @@ void			add_token(t_minishell *mini,
 int				lexical_analysis(t_minishell *mini);
 int				execute_process(t_minishell *mini);
 int				check_pairs(t_minishell *mini);
-int				check_if_batata_path(char *cmd);
 
 #endif

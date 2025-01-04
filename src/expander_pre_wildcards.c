@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 23:55:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 03:19:31 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/04 06:51:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	expander_pre_wildcards(t_minishell *mini, char *s,
 		t_list **quotes_range)
 {
 	t_tok_expander	*tok_exp;
+	t_list			*lst;
 	int				old_mode;
 
 	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
@@ -91,5 +92,14 @@ void	expander_pre_wildcards(t_minishell *mini, char *s,
 		free(tok_exp);
 		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	}
+	lst = ft_lstnew(0);
+	if (!lst)
+	{
+		free(s);
+		ft_lstclear(quotes_range, free);
+		free(tok_exp);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
+	}
+	ft_lstadd_back(quotes_range, lst);
 	free(tok_exp);
 }
