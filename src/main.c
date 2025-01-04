@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 07:12:32 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/04 15:22:35 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,17 @@ static void	start_execution(t_minishell *mini)
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+	// t_list *temp = mini->quotes_range_lst;
+	// while (temp)
+	// {
+	// 	if (temp->content)
+	// 		printf("%ld %ld\n", ((t_qr *)temp->content)->arr[0], ((t_qr *)temp->content)->arr[1]);
+	// 	else
+	// 		printf("SEP\n");
+	// 	temp = temp->next;
+	// }
 	qrd = qrd_setup(mini->line_tokens, mini->quotes_range_lst);
+	//printf("%ld %ld\n", ((t_qr *)qrd[0]->args_qr->content)->arr[0], ((t_qr *)qrd[0]->args_qr->content)->arr[1]);
 	apply_qrd_operations(qrd, operations);
 	mini->operations = operations;
 	status = execute_process(mini);
