@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:23:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:23:21 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/05 20:05:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static ssize_t	pre_validate_tokens_helper(t_token *token, t_token *prev_token,
 		if (check_sep_operators(prev_token)
 			&& (check_sep_operators(token)))
 			return (token->index);
-		if ((check_sep_operators(token) || check_redirect_num(token->type)) && !next_lst)
-			return (-2);
 		if (check_redirect_num(prev_token->type)
 			&& (check_redirect_num(token->type)
 				|| check_sep_operators(token)))
@@ -57,6 +55,8 @@ static ssize_t	pre_validate_tokens_helper(t_token *token, t_token *prev_token,
 			if (token->type == OPEN_PARENTHESIS)
 				return (prev_token->index);
 	}
+	if ((check_sep_operators(token) || check_redirect_num(token->type)) && !next_lst)
+			return (-2);
 	return (-1);
 }
 
