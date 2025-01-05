@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 09:54:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 10:09:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ static void	start_execution(t_minishell *mini)
 	apply_qrd_operations(qrd, operations);
 	mini->operations = operations;
 	status = execute_process(mini);
-	printf("TEST:%s\n", operations[0]->args[1]);
 	free_operations(operations);
 	free_qrd(qrd);
 	if (status == EXIT_FAILURE)
