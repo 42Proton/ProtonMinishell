@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 05:28:32 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 08:50:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void			free_qrd(t_qrd **qrd);
 int				check_if_index_sqr(size_t i, t_list *qr);
 int				execute_expander(int lec, t_list *env_list, t_operation *operation);
 t_qrd			**qrd_setup(t_list *tok, t_list *quotes_range_lst);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 15:22:35 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/05 09:54:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,12 @@ static void	start_execution(t_minishell *mini)
 	// 	temp = temp->next;
 	// }
 	qrd = qrd_setup(mini->line_tokens, mini->quotes_range_lst);
-	//printf("%ld %ld\n", ((t_qr *)qrd[0]->args_qr->content)->arr[0], ((t_qr *)qrd[0]->args_qr->content)->arr[1]);
 	apply_qrd_operations(qrd, operations);
 	mini->operations = operations;
 	status = execute_process(mini);
+	printf("TEST:%s\n", operations[0]->args[1]);
 	free_operations(operations);
+	free_qrd(qrd);
 	if (status == EXIT_FAILURE)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	ft_lstclear(&mini->quotes_range_lst, free);
@@ -128,7 +129,7 @@ static void	start_shell(t_minishell *mini)
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read || check_pairs(mini))
-		{				
+		{
 			line_add_newline(mini);
 			line_tokenizer(mini);
 			tokens_expander(mini);

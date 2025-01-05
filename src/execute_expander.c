@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:57:19 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 06:26:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 09:59:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ static char	*execute_expander_subtok_join(t_tok_expander *tok_exp)
 		res = temp;
 		lst = lst->next;
 	}
-	ft_lstclear(&tok_exp->lst, free);
-	free(tok_exp);
+	free_execute_expander(tok_exp);
 	return (res);
 }
 
@@ -194,21 +193,23 @@ int	execute_expander_args(t_exp_execute *exp_execute, t_operation *operation)
 	char	**args;
 	char	*temp;
 	t_list	*args_qr;
+	size_t	i;
 
 	args = operation->args;
 	args_qr = operation->qrd->args_qr;
-	while (*args)
+	i = 0;
+	while (args[i])
 	{
 		exp_execute->qr = args_qr;
-		exp_execute->s = *args;
+		exp_execute->s = args[i];
 		temp = execute_expander_process(exp_execute);
 		if (!temp)
 		{
 			free(exp_execute);
 			return (0);
 		}
-		*args = temp;
-		args++;
+		operation->args[i] = temp;
+		i++;
 		if (args_qr)
 			args_qr = args_qr->next;
 	}
@@ -225,8 +226,15 @@ int	execute_expander(int lec, t_list *env_lst, t_operation *operation)
 	exp_execute->lec = lec;
 	exp_execute->env_lst = env_lst;
 	if (!execute_expander_cmd(exp_execute, operation))
+	{
+		free(exp_execute);
 		return (0);
+	}
 	if (!execute_expander_args(exp_execute, operation))
+	{
+		free(exp_execute);
 		return (0);
+	}
+	free(exp_execute);
 	return (1);
 }

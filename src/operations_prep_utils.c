@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 20:43:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 10:01:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,19 @@ int	add_operation_alloc(t_operation **operations, ssize_t i)
 	return (1);
 }
 
+void	free_operations_args(char **args)
+{
+	size_t	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
+}
+
 void	free_operations(t_operation **operations)
 {
 	size_t	i;
@@ -60,7 +73,8 @@ void	free_operations(t_operation **operations)
 	{
 		if (operations[i]->operations)
 			free_operations(operations[i]->operations);
-		free(operations[i]->args);
+		free_operations_args(operations[i]->args);
+		free(operations[i]->cmd);
 		free(operations[i]->in_redirects);
 		free(operations[i]->out_redirects);
 		free(operations[i]->heredoc_buffer);

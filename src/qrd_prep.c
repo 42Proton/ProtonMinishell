@@ -6,22 +6,30 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 02:32:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 17:28:31 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 09:25:07 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <minishell.h>
 
-static void	free_qrd(t_qrd **qrd)
+void	free_qrd(t_qrd **qrd)
 {
-	while (*qrd)
+	size_t	i;
+
+	i = 0;
+	while (qrd[i])
 	{
-		if ((*qrd)->qrd)
-			free_qrd((*qrd)->qrd);
-		free(*qrd);
-		qrd++;
+		if (qrd[i]->qrd)
+			free_qrd(qrd[i]->qrd);
+		ft_lstclear(&qrd[i]->args_qr, free);
+		ft_lstclear(&qrd[i]->cmd_qr, free);
+		ft_lstclear(&qrd[i]->in_redirects_qr, free);
+		ft_lstclear(&qrd[i]->out_redirects_qr, free);
+		free(qrd[i]);
+		i++;
 	}
+	free(qrd);
 }
 
 static int	qrd_prep_helper(t_qrd **qrd, ssize_t qrd_count)
@@ -52,7 +60,7 @@ static t_qrd	**qrd_prep(t_list *tok)
 
 	p_count = 0;
 	qrd_count = 1;
-	while (tok)
+	while (tok && qrd_count > -1)
 	{
 		if (((t_token *)tok->content)->type == OPEN_PARENTHESIS)
 			p_count++;
