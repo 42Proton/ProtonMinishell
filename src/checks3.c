@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 05:20:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 08:19:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int	check_str_wildcard(char *s, t_list *quotes_range)
 	{
 		if (s[i] == '*')
 		{
-			if (!quotes_range)
+			if (!quotes_range->content)
 				return (1);
 			lst = quotes_range;
-			while (lst)
+			while (lst->content)
 			{
-				range = ((t_qr *)quotes_range->content)->arr;
-				if (i >= range[0] && i <= range[1])
+				range = ((t_qr *)lst->content)->arr;
+				if (!(i >= range[0] && i <= range[1]))
 					return (1);
 				lst = lst->next;
 			}
