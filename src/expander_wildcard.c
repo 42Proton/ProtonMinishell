@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_wildcard.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 23:48:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 03:20:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 14:23:34 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	sort_dir_entries(t_list *lst_entries, t_list **lst_entries_sorted)
 		if (!*lst_entries_sorted)
 			*lst_entries_sorted = lst_new;
 		else if (ft_strcmp((char *)lst_new->content,
-			(char *)(*lst_entries_sorted)->content) <= 0)
+				(char *)(*lst_entries_sorted)->content) <= 0)
 			ft_lstadd_front(lst_entries_sorted, lst_new);
 		else
 			sort_dir_entry(lst_new, lst_entries_sorted);

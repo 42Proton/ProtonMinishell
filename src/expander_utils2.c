@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 15:06:31 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 00:59:18 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 14:23:09 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

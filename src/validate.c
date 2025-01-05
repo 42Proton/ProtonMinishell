@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:23:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/29 03:25:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:23:21 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,21 @@ static ssize_t	validate_tokens_parenthesis(t_minishell *mini)
 	return (-1);
 }
 
-static ssize_t	pre_validate_tokens_helper(t_token *token, t_token *prev_token)
+static ssize_t	pre_validate_tokens_helper(t_token *token, t_token *prev_token,
+		t_list *next_lst)
 {
 	if (check_operator_num(token->type) && !prev_token)
 		return (token->index);
 	if (prev_token)
 	{
-		if (check_sep_operators_nl(prev_token)
-			&& check_sep_operators_nl(token))
+		if (check_sep_operators(prev_token)
+			&& (check_sep_operators(token)))
 			return (token->index);
+		if ((check_sep_operators(token) || check_redirect_num(token->type)) && !next_lst)
+			return (-2);
 		if (check_redirect_num(prev_token->type)
 			&& (check_redirect_num(token->type)
-				|| check_sep_operators_nl(token)))
+				|| check_sep_operators(token)))
 			return (token->index);
 		if (prev_token->type == OPEN_PARENTHESIS
 			&& token->type == CLOSE_PARENTHESIS)
@@ -69,7 +72,7 @@ static ssize_t	pre_validate_tokens(t_minishell *mini)
 	while (tokens)
 	{
 		token = tokens->content;
-		result = pre_validate_tokens_helper(token, prev_token);
+		result = pre_validate_tokens_helper(token, prev_token, tokens->next);
 		if (result != -1)
 			return (result);
 		tokens = tokens->next;
@@ -85,7 +88,10 @@ int	validate_tokens(t_minishell *mini)
 	result = pre_validate_tokens(mini);
 	if (result != -1)
 	{
-		print_syntax_error(get_token_num(mini->line_tokens, result));
+		if (result == -2)
+			print_syntax_error(0);
+		else
+			print_syntax_error(get_token_num(mini->line_tokens, result));
 		return (0);
 	}
 	result = validate_tokens_parenthesis(mini);

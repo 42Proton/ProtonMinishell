@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/03 19:22:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	signal_handler(void)
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = signal_test;
-	sa.sa_flags =  0;
+	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 }
@@ -39,7 +39,7 @@ void	signal_execution(void)
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = SIG_IGN;
-	sa.sa_flags =  0;
+	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 }
 

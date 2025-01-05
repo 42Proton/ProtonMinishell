@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:10:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 21:08:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static int	check_export_arg(char *arg)
-{
-	while (*arg != '=' && *arg)
-		arg++;
-	if (*arg != '=')
-		return (0);
-	return (1);
-}
 
 static void	export_print_error(t_env *env)
 {

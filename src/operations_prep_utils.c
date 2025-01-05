@@ -3,35 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 10:01:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-t_operation	**operations_alloc(ssize_t sep_count)
-{
-	t_operation	**operations;
-	ssize_t		i;
-
-	i = 1;
-	operations = ft_calloc(sizeof(void *), sep_count + 2);
-	if (!operations)
-		return (0);
-	if (!add_operation_alloc(operations, 0))
-		return (0);
-	while (sep_count)
-	{
-		if (!add_operation_alloc(operations, i))
-			return (0);
-		sep_count--;
-		i++;
-	}
-	return (operations);
-}
 
 int	add_operation_alloc(t_operation **operations, ssize_t i)
 {

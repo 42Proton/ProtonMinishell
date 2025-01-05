@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   line_tokenizer_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 00:09:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 04:37:28 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:10:38 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static void	split_skip_to_end(char *line, t_tokens_split *tokens_split)
 	while (line[tokens_split->end])
 	{
 		if (line[tokens_split->end] == ' '
-			|| line[tokens_split->end] == '\t'
 			|| check_sep(line + tokens_split->end))
 			break ;
 		if (line[tokens_split->end] == '"' || line[tokens_split->end] == '\'')

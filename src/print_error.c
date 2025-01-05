@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/01 00:02:15 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:10:53 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_syntax_error(t_token *token)
 {
 	ft_putstr_fd("minishell 0x90: syntax error near unexpected token '",
 		STDERR_FILENO);
-	if (token->type == NEWLINE_TOKEN)
+	if (!token)
 		ft_putstr_fd("newline", STDERR_FILENO);
 	else
 		ft_putstr_fd(token->token_word, STDERR_FILENO);

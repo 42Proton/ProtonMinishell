@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2024/12/31 03:20:30 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:10:38 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ int	check_sep(char *line)
 		return (2);
 	if (*line == '|' || *line == '(' || *line == ')')
 		return (1);
-	if (*line == '<' || *line == '>' || *line == '\n')
+	if (*line == '<' || *line == '>')
 		return (1);
 	return (0);
 }
 
-int	check_sep_operators_nl(t_token *tok)
+int	check_sep_operators(t_token *tok)
 {
 	int	tok_type;
 
 	tok_type = tok->type;
 	if (tok_type == AND_OPERATOR || tok_type == OR_OPERATOR)
 		return (1);
-	if (tok_type == PIPE || tok_type == NEWLINE_TOKEN)
+	if (tok_type == PIPE)
 		return (1);
 	return (0);
 }

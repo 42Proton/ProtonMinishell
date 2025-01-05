@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils3.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 00:54:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:11:34 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

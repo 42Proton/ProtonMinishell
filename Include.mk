@@ -37,4 +37,6 @@ SRCS= \
 	operations_prep_utils3.c \
 	execute_process.c \
 	qrd_prep.c \
-	execute_expander.c
+	execute_expander.c\
+	expander_helper.c\
+	builtin_helper.c

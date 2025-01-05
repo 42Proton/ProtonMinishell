@@ -3,61 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 10:09:03 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:10:38 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-// void	print_redirections(t_redirect *redirections, size_t limit)
-// {
-// 	size_t	i = 0;
-
-// 	while (i < limit)
-// 	{
-// 		printf("REDIRECT TYPE: %d, IDENTIFIER:%s\n", redirections[i].type, redirections[i].name);
-// 		i++;
-// 	}
-// }
-
-// void	print_args(char **args)
-// {
-// 	printf("ARGS: ");
-// 	if (!args)
-// 	{
-// 		printf("NONE\n");
-// 		return ;
-// 	}
-// 	while (*args)
-// 	{
-// 		printf("%s", *args);
-// 		if (args[1])
-// 			printf(",");
-// 		args++;
-// 	}
-// 	printf("\n");
-// }
-
-// void	print_test(t_operation **operations, size_t lvl)
-// {
-// 	size_t	i = 0;
-// 	lvl++;
-// 	while (operations[i])
-// 	{
-// 		printf("LVL:%ld, PTR:%p, TYPE:%d, CMD:%s\n", lvl, operations[i], operations[i]->operation_type, operations[i]->cmd);
-// 		printf("IN REDIRECTIONS:\n");
-// 		print_redirections(operations[i]->in_redirects, operations[i]->n_in);
-// 		printf("OUT REDIRECTIONS:\n");
-// 		print_redirections(operations[i]->out_redirects, operations[i]->n_out);
-// 		print_args(operations[i]->args);
-// 		if (operations[i]->operations)
-// 			print_test(operations[i]->operations, lvl);
-// 		i++;
-// 	}
-// }
 
 static void	apply_qrd_operations(t_qrd **qrd, t_operation **operations)
 {
@@ -79,15 +32,6 @@ static void	start_execution(t_minishell *mini)
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	// t_list *temp = mini->quotes_range_lst;
-	// while (temp)
-	// {
-	// 	if (temp->content)
-	// 		printf("%ld %ld\n", ((t_qr *)temp->content)->arr[0], ((t_qr *)temp->content)->arr[1]);
-	// 	else
-	// 		printf("SEP\n");
-	// 	temp = temp->next;
-	// }
 	qrd = qrd_setup(mini->line_tokens, mini->quotes_range_lst);
 	apply_qrd_operations(qrd, operations);
 	mini->operations = operations;
@@ -96,7 +40,6 @@ static void	start_execution(t_minishell *mini)
 	free_qrd(qrd);
 	if (status == EXIT_FAILURE)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	ft_lstclear(&mini->quotes_range_lst, free);
 	return ;
 }
 
@@ -124,19 +67,19 @@ static void	start_shell(t_minishell *mini)
 	{
 		signal_handler();
 		mini->curr_line++;
-		mini->line_read = readline("\001\033[35m\0020x90>\001\033[33m\002 ");
+		mini->line_read = readline("\001\033[35m\002ProtonShell>\001\033[33m\002 ");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read || check_pairs(mini))
 		{
-			line_add_newline(mini);
 			line_tokenizer(mini);
 			tokens_expander(mini);
 			if (lexical_analysis(mini))
 				start_execution(mini);
-			mini->line_read[ft_strlen(mini->line_read) - 1] = 0;
 			add_history(mini->line_read);
 			ft_lstclear(&mini->line_tokens, clear_token);
+			free_lst(mini->quotes_range_lst);
+			mini->quotes_range_lst = 0;
 			free(mini->line_read);
 		}
 	}

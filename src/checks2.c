@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/27 13:12:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	check_type_main_conditions(char *token, int previous_type)
 	return (type);
 }
 
-int	check_type(char *token, t_token *previous_token, t_list *lst)
+int	check_type(char *token, t_token *previous_token,
+		t_list *lst, t_list *qr_lst)
 {
 	int	type;
 	int	previous_type;
@@ -41,15 +42,16 @@ int	check_type(char *token, t_token *previous_token, t_list *lst)
 	previous_type = -1;
 	if (previous_token)
 		previous_type = previous_token->type;
-	if (*token == '\n')
-		return (NEWLINE_TOKEN);
-	if (check_redirect(token))
-		type = get_redirection_type(token);
-	if (type != COMMAND)
-		return (type);
-	if (check_redirect_num(previous_type))
-		return (IDENTIFIER);
-	type = check_type_main_conditions(token, previous_type);
+	if (!qr_lst->content)
+	{
+		if (check_redirect(token))
+			type = get_redirection_type(token);
+		if (type != COMMAND)
+			return (type);
+		if (check_redirect_num(previous_type))
+			return (IDENTIFIER);
+		type = check_type_main_conditions(token, previous_type);
+	}
 	if (type != COMMAND)
 		return (type);
 	if (check_tok_prev_cmd(lst))

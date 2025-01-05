@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/03 16:21:09 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,19 @@ void	free_env(t_env *env)
 	free(env->data);
 	free(env);
 }
+
 int	shell_level(t_env *env)
 {
-	char *new_level;	
-	
+	char	*new_level;	
+
 	new_level = ft_itoa(atoi(env->data) + 1);
-	if(!new_level)
-		return(1);
+	if (!new_level)
+		return (1);
 	free(env->data);
 	env->data = new_level;
 	return (0);
 }
+
 int	parse_env_data(char *data, t_env *env)
 {
 	int	i;
@@ -53,7 +55,7 @@ int	parse_env_data(char *data, t_env *env)
 		return (0);
 	if (j != i)
 		ft_strlcpy(env->data, data + i, (j - i) + 1);
-	if(!ft_strncmp(env->name,"SHLVL",5))
+	if (!ft_strncmp(env->name, "SHLVL", 5))
 		i = shell_level(env);
 	return (1 - (i));
 }

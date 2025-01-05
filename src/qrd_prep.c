@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   qrd_prep.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 02:32:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 09:25:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <minishell.h>
 
@@ -69,7 +68,7 @@ static t_qrd	**qrd_prep(t_list *tok)
 		else if (check_op_type(tok) && !p_count)
 			qrd_count++;
 		if (p_count < 0)
-			break;
+			break ;
 		tok = tok->next;
 	}
 	res = ft_calloc(qrd_count + 1, sizeof(t_qrd *));
@@ -78,6 +77,33 @@ static t_qrd	**qrd_prep(t_list *tok)
 	if (!qrd_prep_helper(res, qrd_count))
 		return (0);
 	return (res);
+}
+
+static int	qrd_process_helper2(t_list **quotes_range_lst,
+		t_qrd **qrd, t_list *tok)
+{
+	t_list	*lst;
+
+	while (*quotes_range_lst && (*quotes_range_lst)->content)
+	{
+		lst = ft_lstnew((*quotes_range_lst)->content);
+		if (!lst)
+			return (0);
+		if (((t_token *)tok->content)->type == COMMAND)
+		{
+			ft_lstadd_back(&(*qrd)->cmd_qr, lst);
+			lst = ft_lstnew(0);
+			if (!lst)
+				return (0);
+			ft_lstadd_back(&(*qrd)->args_qr, lst);
+		}
+		if (((t_token *)tok->content)->type == ARGUMENT)
+			ft_lstadd_back(&(*qrd)->args_qr, lst);
+		*quotes_range_lst = (*quotes_range_lst)->next;
+	}
+	lst = ft_lstnew(0);
+	ft_lstadd_back(&(*qrd)->args_qr, lst);
+	return (1);
 }
 
 static int	qrd_process_helper(t_list *tok, t_list **quotes_range_lst,
@@ -105,27 +131,8 @@ static int	qrd_process_helper(t_list *tok, t_list **quotes_range_lst,
 	}
 	if (((t_token *)tok->content)->type == COMMAND
 		|| ((t_token *)tok->content)->type == ARGUMENT)
-	{
-		while (*quotes_range_lst && (*quotes_range_lst)->content)
-		{
-			lst = ft_lstnew((*quotes_range_lst)->content);
-			if (!lst)
-				return (0);
-			if (((t_token *)tok->content)->type == COMMAND)
-			{
-				ft_lstadd_back(&(*qrd)->cmd_qr, lst);
-				lst = ft_lstnew(0);
-				if (!lst)
-					return (0);
-				ft_lstadd_back(&(*qrd)->args_qr, lst);
-			}
-			if (((t_token *)tok->content)->type == ARGUMENT)
-				ft_lstadd_back(&(*qrd)->args_qr, lst);
-			*quotes_range_lst = (*quotes_range_lst)->next;
-		}
-		lst = ft_lstnew(0);
-		ft_lstadd_back(&(*qrd)->args_qr, lst);
-	}
+		if (!qrd_process_helper2(quotes_range_lst, qrd, tok))
+			return (0);
 	return (1);
 }
 
@@ -136,7 +143,6 @@ static int	qrd_process(t_list *tok, t_list *quotes_range_lst, t_qrd **qrd)
 	p_count = 0;
 	while (tok && p_count > -1)
 	{
-		
 		if (((t_token *)tok->content)->type == OPEN_PARENTHESIS)
 		{
 			(*qrd)->qrd = qrd_setup(tok, quotes_range_lst);
@@ -146,7 +152,8 @@ static int	qrd_process(t_list *tok, t_list *quotes_range_lst, t_qrd **qrd)
 		}
 		else if (((t_token *)tok->content)->type == CLOSE_PARENTHESIS)
 			p_count--;
-		else if (check_operator_num(((t_token *)tok->content)->type) && !p_count)
+		else if (check_operator_num(((t_token *)tok->content)->type)
+			&& !p_count)
 			qrd++;
 		if (!qrd_process_helper(tok, &quotes_range_lst, qrd, p_count))
 			return (0);

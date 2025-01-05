@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_pre_wildcards.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 23:55:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 06:51:15 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,19 @@ char	*expander_remove_quotes(t_minishell *mini, char *s,
 	return (res);
 }
 
+void	check_lst_free(t_list *lst, t_list **quotes_range,
+		t_tok_expander *tok_exp, t_minishell *mini)
+{
+	if (!lst)
+	{
+		ft_lstclear(quotes_range, free);
+		free(tok_exp);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
+	}
+	ft_lstadd_back(quotes_range, lst);
+	free(tok_exp);
+}
+
 void	expander_pre_wildcards(t_minishell *mini, char *s,
 		t_list **quotes_range)
 {
@@ -94,12 +107,6 @@ void	expander_pre_wildcards(t_minishell *mini, char *s,
 	}
 	lst = ft_lstnew(0);
 	if (!lst)
-	{
 		free(s);
-		ft_lstclear(quotes_range, free);
-		free(tok_exp);
-		exit_handler(mini, ERR_MALLOC_POSTMINI);
-	}
-	ft_lstadd_back(quotes_range, lst);
-	free(tok_exp);
+	check_lst_free(lst, quotes_range, tok_exp, mini);
 }

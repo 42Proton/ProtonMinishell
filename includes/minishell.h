@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 08:50:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 15:10:38 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ typedef struct s_redirect
 typedef struct s_qrd
 {
 	struct s_qrd	**qrd;
-	t_list 			*in_redirects_qr;
-	t_list 			*out_redirects_qr;
-	t_list 			*cmd_qr;
-	t_list 			*args_qr;
+	t_list			*in_redirects_qr;
+	t_list			*out_redirects_qr;
+	t_list			*cmd_qr;
+	t_list			*args_qr;
 }	t_qrd;
 
 typedef struct s_exp_execute
@@ -187,14 +187,20 @@ enum						e_expander_modes
 	DOUBLE_QUOTE_ENV_MODE,
 	ENV_MODE
 };
-
+int	check_export_arg(char *arg);
+int	prep_op_main_conditions(t_list *lst, size_t *p_count,
+	t_operation **operations, size_t *i);
+t_operation	**operations_alloc(ssize_t sep_count);
+void	expander_quotes_condition(t_minishell *mini, char *s,
+		t_tok_expander *tok_exp);
 void			free_qrd(t_qrd **qrd);
 int				check_if_index_sqr(size_t i, t_list *qr);
-int				execute_expander(int lec, t_list *env_list, t_operation *operation);
+int				execute_expander(int lec,
+					t_list *env_list, t_operation *operation);
 t_qrd			**qrd_setup(t_list *tok, t_list *quotes_range_lst);
 void			tokens_exp_clean_exit(t_minishell *mini,
 					t_list *quotes_range, char *s);
-void			signal_execution();
+void			signal_execution(void);
 int				execute_expander_check(char *s);
 int				check_if_dir(char *path);
 void			print_heredoc_warning(t_minishell *mini,
@@ -268,9 +274,10 @@ int				check_expander_env(char c, int mode);
 int				check_expander_default_mode(char c,
 					t_tok_expander *tok_exp);
 void			tokens_expander(t_minishell *mini);
-int				check_type(char *token, t_token *previous_token, t_list *lst);
+int				check_type(char *token, t_token *previous_token,
+					t_list *lst, t_list *qr_lst);
 void			clear_token(void *content);
-int				check_sep_operators_nl(t_token *tok);
+int				check_sep_operators(t_token *tok);
 int				check_operator_num(int type);
 void			print_syntax_error(t_token *token);
 int				check_redirect_num(int type);
@@ -318,5 +325,6 @@ void			add_token(t_minishell *mini,
 int				lexical_analysis(t_minishell *mini);
 int				execute_process(t_minishell *mini);
 int				check_pairs(t_minishell *mini);
-
+void			expander_add_quote_tok(t_minishell *mini, char *word,
+					t_tok_expander *tok_exp);
 #endif
