@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 14:17:28 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 21:09:14 by amsaleh          ###   ########.fr       */
+/*   Created: 2025/01/05 23:06:15 by amsaleh           #+#    #+#             */
+/*   Updated: 2025/01/05 23:09:22 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,37 @@
 
 void	inc_split_index(t_split *split_se)
 {
-	split_se->start += 1;
-	split_se->end += 1;
+	split_se->start++;
+	split_se->end++;
 }
 
-void	expander_clean_exit(t_minishell *mini, t_tok_expander *tok_exp,
-		t_list **quotes_range)
+void	exp_clean(t_tok_expander *tok_exp)
 {
-	ft_lstclear(quotes_range, free);
 	ft_lstclear(&tok_exp->lst, free);
 	free(tok_exp);
-	exit_handler(mini, ERR_MALLOC_POSTMINI);
 }
 
-char	*get_env_safe(t_minishell *mini, char *new_str)
+char	*get_env_safe(t_list *env_lst, char *new_str, t_tok_expander *tok_exp)
 {
 	char	*res;
 
 	if (!*new_str)
-	{
-		free(new_str);
 		res = ft_strdup("$");
-		return (res);
-	}
-	res = ft_getenv(mini->env_lst, new_str);
-	free(new_str);
-	if (!res)
-		res = ft_strdup("");
+	else if (*new_str == '?' && !new_str[1])
+		res = ft_itoa(tok_exp->lec);
 	else
-		res = ft_strdup(res);
+	{
+		res = ft_getenv(env_lst, new_str);
+		if (!res)
+			res = ft_strdup("");
+		else
+			res = ft_strdup(res);
+	}
+	free(new_str);
 	return (res);
 }
 
-void	expander_add_tok(t_minishell *mini, char *word, t_tok_expander *tok_exp,
-		t_list **quotes_range)
-{
-	char	*new_str;
-	t_list	*lst;
-
-	if (!check_expander_if_split(tok_exp))
-		return ;
-	new_str = expander_add_tok_helper(word, tok_exp);
-	if (!new_str)
-		expander_clean_exit(mini, tok_exp, quotes_range);
-	if (check_env_mode(tok_exp) && !(ft_strlen(new_str) == 2
-			&& (new_str[0] == '$' && (new_str[1] == '?' || new_str[1] == '_'))))
-	{
-		new_str = get_env_safe(mini, new_str);
-		if (!new_str)
-			expander_clean_exit(mini, tok_exp, quotes_range);
-	}
-	lst = ft_lstnew(new_str);
-	if (!lst)
-	{
-		free(new_str);
-		expander_clean_exit(mini, tok_exp, quotes_range);
-	}
-	ft_lstadd_back(&tok_exp->lst, lst);
-	tok_exp->split_se.start = tok_exp->split_se.end;
-}
-
-char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp,
-		t_list **quotes_range)
+char	*expander_join_subtok(t_tok_expander *tok_exp)
 {
 	char	*res;
 	char	*temp;
@@ -84,17 +53,49 @@ char	*expander_join_subtok(t_minishell *mini, t_tok_expander *tok_exp,
 	res = ft_strdup("");
 	if (!res)
 	{
-		ft_lstclear(quotes_range, free);
-		exit_handler(mini, ERR_MALLOC_POSTMINI);
+		exp_clean(tok_exp);
+		return (0);
 	}
 	lst = tok_exp->lst;
 	while (lst)
 	{
 		temp = ft_strjoin(res, (char *)lst->content);
+		if (!temp)
+		{
+			exp_clean(tok_exp);
+			return (0);
+		}
 		free(res);
 		res = temp;
 		lst = lst->next;
 	}
-	ft_lstclear(&tok_exp->lst, free);
+	exp_clean(tok_exp);
 	return (res);
+}
+
+int	expander_add_tok(char *word, t_tok_expander *tok_exp, t_list *env_lst)
+{
+	char	*new_str;
+	t_list	*lst;
+
+	if (!check_expander_if_split(tok_exp))
+		return (1);
+	new_str = expander_add_tok_helper(word, tok_exp);
+	if (!new_str)
+		return (0);
+	if (check_env_mode(tok_exp))
+	{
+		new_str = get_env_safe(env_lst, new_str, tok_exp);
+		if (!new_str)
+			return (0);
+	}
+	lst = ft_lstnew(new_str);
+	if (!lst)
+	{
+		free(new_str);
+		return (0);
+	}
+	ft_lstadd_back(&tok_exp->lst, lst);
+	tok_exp->split_se.start = tok_exp->split_se.end;
+	return (1);
 }

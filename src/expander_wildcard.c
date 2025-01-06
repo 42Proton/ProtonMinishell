@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_wildcard.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 23:48:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 14:23:34 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/06 08:03:32 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static int	sort_dir_entries(t_list *lst_entries, t_list **lst_entries_sorted)
 	return (1);
 }
 
-void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst,
+int	expand_tok_wildcards(char *pattern, t_list **main_lst,
 		t_list *quotes_range)
 {
 	DIR		*dir;
@@ -113,16 +113,16 @@ void	expand_tok_wildcards(t_minishell *mini, t_list **lst, t_list **main_lst,
 
 	dir = opendir(".");
 	if (!dir)
-		return ;
-	if (!get_dir_entries(dir, *(char *)(*lst)->content, &lst_entries))
-		exit_handler(mini, ERR_MALLOC_POSTMINI);
+		return (1);
+	if (!get_dir_entries(dir, *pattern, &lst_entries))
+		return (0);
 	if (!lst_entries)
-		return ;
-	del_non_matching_entries(&lst_entries, (char *)(*lst)->content,
-		quotes_range);
+		return (1);
+	del_non_matching_entries(&lst_entries, pattern, quotes_range);
 	if (!lst_entries)
-		return ;
+		return (1);
 	if (!sort_dir_entries(lst_entries, &lst_entries_sorted))
-		exit_handler(mini, ERR_MALLOC_POSTMINI);
-	insert_sorted_entries(lst_entries_sorted, lst, main_lst);
+		return (0);
+	ft_lstadd_back(main_lst, lst_entries_sorted);
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/05 20:46:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ int	check_type_main_conditions(char *token, int previous_type)
 	int	type;
 
 	type = COMMAND;
-	if (*token == '(')
+	if (*token == '(' && !token[1])
 		type = OPEN_PARENTHESIS;
-	else if (*token == ')')
+	else if (*token == ')' && !token[1])
 		type = CLOSE_PARENTHESIS;
-	else if (!ft_strcmp(token, "&&"))
+	else if (!ft_strcmp(token, "&&") && ft_strlen(token) == 2)
 		type = AND_OPERATOR;
-	else if (!ft_strcmp(token, "||"))
+	else if (!ft_strcmp(token, "||") && ft_strlen(token) == 2)
 		type = OR_OPERATOR;
-	else if (*token == '|')
+	else if (*token == '|' && !token[1])
 		type = PIPE;
 	else if (previous_type == COMMAND || previous_type == ARGUMENT)
 		type = ARGUMENT;
@@ -33,7 +33,7 @@ int	check_type_main_conditions(char *token, int previous_type)
 }
 
 int	check_type(char *token, t_token *previous_token,
-		t_list *lst, t_list *qr_lst)
+		t_list *lst)
 {
 	int	type;
 	int	previous_type;
@@ -42,16 +42,13 @@ int	check_type(char *token, t_token *previous_token,
 	previous_type = -1;
 	if (previous_token)
 		previous_type = previous_token->type;
-	if (!qr_lst->content)
-	{
-		if (check_redirect(token))
-			type = get_redirection_type(token);
-		if (type != COMMAND)
-			return (type);
-		if (check_redirect_num(previous_type))
-			return (IDENTIFIER);
-		type = check_type_main_conditions(token, previous_type);
-	}
+	if (check_redirect(token))
+		type = get_redirection_type(token);
+	if (type != COMMAND)
+		return (type);
+	if (check_redirect_num(previous_type))
+		return (IDENTIFIER);
+	type = check_type_main_conditions(token, previous_type);
 	if (type != COMMAND)
 		return (type);
 	if (check_tok_prev_cmd(lst))

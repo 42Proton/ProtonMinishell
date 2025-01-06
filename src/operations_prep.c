@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2025/01/01 14:59:01 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/05 22:33:22 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,24 @@ static ssize_t	separators_counter_subop(t_list *lst)
 	return (counter);
 }
 
+int	prep_op_main_conditions(t_list *lst, size_t *p_count,
+	t_operation **operations, size_t *i)
+{
+	if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
+	{
+		if (!*p_count)
+			if (!add_subop(operations, *i, lst))
+				return (0);
+		(*p_count)++;
+	}
+	if (check_op_type(lst) && !*p_count)
+	{
+		(*i)++;
+		operations[*i]->operation_type = check_op_type(lst);
+	}
+	return (1);
+}
+
 int	prep_ops_data(t_operation **operations, t_list *lst)
 {
 	size_t	i;
@@ -104,6 +122,27 @@ int	prep_subops_data(t_operation **operations, t_list *lst)
 		lst = lst->next;
 	}
 	return (1);
+}
+
+t_operation	**operations_alloc(ssize_t sep_count)
+{
+	t_operation	**operations;
+	ssize_t		i;
+
+	i = 1;
+	operations = ft_calloc(sizeof(void *), sep_count + 2);
+	if (!operations)
+		return (0);
+	if (!add_operation_alloc(operations, 0))
+		return (0);
+	while (sep_count)
+	{
+		if (!add_operation_alloc(operations, i))
+			return (0);
+		sep_count--;
+		i++;
+	}
+	return (operations);
 }
 
 t_operation	**operations_prep(t_list *lst, int is_subop)
