@@ -25,10 +25,11 @@ SRCS= \
 	expander.c \
 	expander_utils.c \
 	expander_utils2.c \
-	expander_pre_wildcards.c \
-	expander_pre_wildcards_utils.c \
+	expander_utils3.c \
+	expander_utils4.c \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
+	execute_expander.c \
 	handlers2.c \
 	check_pairs.c \
 	operations_prep.c \
@@ -36,7 +37,4 @@ SRCS= \
 	operations_prep_utils2.c \
 	operations_prep_utils3.c \
 	execute_process.c \
-	qrd_prep.c \
-	execute_expander.c\
-	expander_helper.c\
 	builtin_helper.c

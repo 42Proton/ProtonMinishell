@@ -3,41 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:10:38 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/06 09:28:26 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	apply_qrd_operations(t_qrd **qrd, t_operation **operations)
-{
-	while (*qrd)
-	{
-		if ((*qrd)->qrd)
-			apply_qrd_operations((*qrd)->qrd, (*operations)->operations);
-		(*operations)->qrd = *qrd;
-		qrd++;
-		operations++;
-	}
-}
-
 static void	start_execution(t_minishell *mini)
 {
 	int		status;
-	t_qrd	**qrd;
 	
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	qrd = qrd_setup(mini->line_tokens, mini->quotes_range_lst);
-	apply_qrd_operations(qrd, operations);
 	mini->operations = operations;
 	status = execute_process(mini);
 	free_operations(operations);
-	free_qrd(qrd);
 	if (status == EXIT_FAILURE)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	return ;
@@ -67,19 +51,16 @@ static void	start_shell(t_minishell *mini)
 	{
 		signal_handler();
 		mini->curr_line++;
-		mini->line_read = readline("\001\033[35m\002ProtonShell>\001\033[33m\002 ");
+		mini->line_read = readline("\001\033[35m\002ProtonShell>\001\033[33m\002");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read || check_pairs(mini))
 		{
 			line_tokenizer(mini);
-			tokens_expander(mini);
 			if (lexical_analysis(mini))
 				start_execution(mini);
 			add_history(mini->line_read);
 			ft_lstclear(&mini->line_tokens, clear_token);
-			free_lst(mini->quotes_range_lst);
-			mini->quotes_range_lst = 0;
 			free(mini->line_read);
 		}
 	}

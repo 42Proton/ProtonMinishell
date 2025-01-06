@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:10:38 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/06 09:07:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,6 @@ typedef struct s_redirect
 	char					*name;
 }							t_redirect;
 
-typedef struct s_qrd
-{
-	struct s_qrd	**qrd;
-	t_list			*in_redirects_qr;
-	t_list			*out_redirects_qr;
-	t_list			*cmd_qr;
-	t_list			*args_qr;
-}	t_qrd;
-
-typedef struct s_exp_execute
-{
-	int		lec;
-	t_list	*env_lst;
-	char	*s;
-	t_list	*qr;
-}	t_exp_execute;
-
 typedef struct s_qr
 {
 	size_t	arr[2];
@@ -76,7 +59,6 @@ typedef struct s_operation
 	size_t				n_out;
 	size_t				n_in;
 	size_t				n_args;
-	t_qrd				*qrd;
 	int					parent_in_fd;
 	int					parent_out_fd;
 	int					redirect_in_fd;
@@ -128,6 +110,7 @@ typedef struct s_tok_expander
 	size_t					quotes_iter_count;
 	t_split					split_se;
 	t_list					*lst;
+	int						lec;
 }							t_tok_expander;
 
 enum						e_token_type
@@ -187,21 +170,23 @@ enum						e_expander_modes
 	DOUBLE_QUOTE_ENV_MODE,
 	ENV_MODE
 };
-int	check_export_arg(char *arg);
-int	prep_op_main_conditions(t_list *lst, size_t *p_count,
-	t_operation **operations, size_t *i);
-t_operation	**operations_alloc(ssize_t sep_count);
-void	expander_quotes_condition(t_minishell *mini, char *s,
-		t_tok_expander *tok_exp);
-void			free_qrd(t_qrd **qrd);
+
+int				expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
+					int *old_mode, t_list **quotes_range);
+int				expander_remove_quotes_iter(char *s, t_tok_expander *tok_exp);
+int				exp_pre_wildcards_quotes_condition(char *s, t_tok_expander *tok_exp);
+void			exp_clean(t_tok_expander *tok_exp);
+int				tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst);
+int				check_export_arg(char *arg);
+int				prep_op_main_conditions(t_list *lst, size_t *p_count,
+					t_operation **operations, size_t *i);
+t_operation		**operations_alloc(ssize_t sep_count);
+int				expander_quotes_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst);
 int				check_if_index_sqr(size_t i, t_list *qr);
-int				execute_expander(int lec,
-					t_list *env_list, t_operation *operation);
-t_qrd			**qrd_setup(t_list *tok, t_list *quotes_range_lst);
+int				execute_expander(int lec, t_list *env_lst, t_operation *operation);
 void			tokens_exp_clean_exit(t_minishell *mini,
 					t_list *quotes_range, char *s);
 void			signal_execution(void);
-int				execute_expander_check(char *s);
 int				check_if_dir(char *path);
 void			print_heredoc_warning(t_minishell *mini,
 					t_operation *operation, size_t j);
@@ -232,50 +217,39 @@ int				add_subop(t_operation **operations, size_t i, t_list *lst);
 int				add_operation_alloc(t_operation **operations, ssize_t i);
 t_operation		**operations_alloc(ssize_t sep_count);
 t_operation		**operations_prep(t_list *lst, int is_subop);
-void			exp_env_condition(t_minishell *mini, char *s,
-					t_tok_expander *tok_exp);
+int				exp_env_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst);
 int				check_env_mode(t_tok_expander *tok_exp);
-void			exp_rm_quotes_add_tok(t_minishell *mini, char *word,
-					t_tok_expander *tok_exp, t_list **quotes_range);
-char			*expander_add_tok_helper(char *word,
-					t_tok_expander *tok_exp);
+int				exp_rm_quotes_add_tok(char *word, t_tok_expander *tok_exp);
+char			*expander_add_tok_helper(char *word, t_tok_expander *tok_exp);
 int				expander_pre_wildcards_update(t_tok_expander *tok_exp,
 					int *old_mode, t_list **quotes_range);
 int				check_quotes_ex_literal(char c,
 					t_tok_expander *tok_exp);
 int				check_if_wildcard(char c, size_t i,
 					t_list *quotes_range);
-char			*expander_remove_quotes(t_minishell *mini, char *s,
-					t_list **quotes_range);
 int				check_expander_default_mode_basic(char c, int mode);
 int				check_env_end(char *s, t_tok_expander *tok_exp);
-void			expander_pre_wildcards(t_minishell *mini, char *s,
-					t_list **quotes_range);
 void			free_tokens(void *tokens);
 int				check_expander_if_split(t_tok_expander *tok_exp);
-void			expand_tok_wildcards(t_minishell *mini, t_list **lst,
-					t_list **main_lst, t_list *quotes_range);
+int				expand_tok_wildcards(char *pattern, t_list **main_lst,
+					t_list *quotes_range);
 void			del_non_matching_entries(t_list **lst_entries,
 					char *pattern, t_list *quotes_range);
-void			insert_sorted_entries(t_list *lst_entries_sorted,
-					t_list **lst, t_list **main_lst);
 int				check_str_wildcard(char *s, t_list *quotes_range);
 void			inc_split_index(t_split *split_se);
 void			expander_clean_exit(t_minishell *mini,
 					t_tok_expander *tok_exp, t_list **quotes_range);
-char			*get_env_safe(t_minishell *mini, char *new_str);
-void			expander_add_tok(t_minishell *mini, char *word,
-					t_tok_expander *tok_exp, t_list **quotes_range);
-char			*expander_join_subtok(t_minishell *mini,
-					t_tok_expander *tok_exp, t_list **quotes_range);
+char			*get_env_safe(t_list *env_lst, char *new_str, t_tok_expander *tok_exp);
+int				expander_add_tok(char *word, t_tok_expander *tok_exp, t_list *env_lst);
+char			*expander_join_subtok(t_tok_expander *tok_exp);
 int				check_env_sep(char c);
 int				check_quotes(char c);
 int				check_expander_env(char c, int mode);
 int				check_expander_default_mode(char c,
 					t_tok_expander *tok_exp);
-void			tokens_expander(t_minishell *mini);
+int				token_expander(char *s, t_list **tokens, t_list *env_lst, int lec);
 int				check_type(char *token, t_token *previous_token,
-					t_list *lst, t_list *qr_lst);
+					t_list *lst);
 void			clear_token(void *content);
 int				check_sep_operators(t_token *tok);
 int				check_operator_num(int type);
@@ -325,6 +299,5 @@ void			add_token(t_minishell *mini,
 int				lexical_analysis(t_minishell *mini);
 int				execute_process(t_minishell *mini);
 int				check_pairs(t_minishell *mini);
-void			expander_add_quote_tok(t_minishell *mini, char *word,
-					t_tok_expander *tok_exp);
+int				expander_add_quote_tok(char *word, t_tok_expander *tok_exp);
 #endif

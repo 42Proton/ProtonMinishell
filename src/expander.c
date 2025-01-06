@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/06 09:24:45 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,109 +14,133 @@
 
 /*Written with devil in mind	DON'T READ IT OR TOUCH IT*/
 
-static void	expand_iter_tok(t_minishell *mini, char *s, t_tok_expander *tok_exp)
-{
-	if (check_env_end(s, tok_exp))
-	{
-		if (s[tok_exp->split_se.end] == '?' && tok_exp->split_se.end
-			- tok_exp->split_se.start == 1)
-			tok_exp->split_se.end++;
-		expander_add_tok(mini, s, tok_exp, 0);
-		if (tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
-			tok_exp->mode = DOUBLE_QUOTE_MODE;
-		else
-			tok_exp->mode = DEFAULT_MODE;
-	}
-	else if (check_quotes(s[tok_exp->split_se.end]))
-		expander_quotes_condition(mini, s, tok_exp);
-	else if (check_expander_env(s[tok_exp->split_se.end], tok_exp->mode))
-		exp_env_condition(mini, s, tok_exp);
-	else
-		tok_exp->split_se.end++;
-}
-
-static char	*expand_tok(t_minishell *mini, char *s)
+static char	*token_expander_env(char *s, t_list *env_lst, int lec)
 {
 	t_tok_expander	*tok_exp;
 	char			*res;
 
 	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
 	if (!tok_exp)
-		exit_handler(mini, ERR_MALLOC_POSTMINI);
+		return (0);
+	tok_exp->lec = lec;
 	while (s[tok_exp->split_se.end])
-		expand_iter_tok(mini, s, tok_exp);
-	expander_add_tok(mini, s, tok_exp, 0);
-	res = expander_join_subtok(mini, tok_exp, 0);
-	free(tok_exp);
+	{
+		if (!tokens_expander_env_iter(s, tok_exp, env_lst))
+		{
+			exp_clean(tok_exp);
+			return (0);
+		}
+	}
+	if (!expander_add_tok(s, tok_exp, env_lst))
+	{
+		exp_clean(tok_exp);
+		return (0);
+	}
+	res = expander_join_subtok(tok_exp);
 	return (res);
 }
 
-t_list	*tokens_expander_helper(t_minishell *mini, t_list *tokens)
+static int	expander_pre_wildcards(char *s, t_list **quotes_range)
 {
-	char	*expanded_str;
-	t_list	*quotes_range;
+	t_tok_expander	*tok_exp;
+	int				old_mode;
+
+	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
+	if (!tok_exp)
+		return (0);
+	old_mode = DEFAULT_MODE;
+	while (s[tok_exp->split_se.end])
+	{
+		if (!expander_pre_wildcards_iter(s, tok_exp, &old_mode, quotes_range))
+		{
+			ft_lstclear(quotes_range, free);
+			free(tok_exp);
+			return (0);
+		}
+	}
+	free(tok_exp);
+	return (1);
+}
+
+static char	*expander_remove_quotes(char *s)
+{
+	t_tok_expander	*tok_exp;
+	char			*res;
+
+	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
+	if (!tok_exp)
+		return (0);
+	if (!expander_remove_quotes_iter(s, tok_exp))
+	{
+		exp_clean(tok_exp);
+		free(s);
+		return (0);
+	}
+	if (!exp_rm_quotes_add_tok(s, tok_exp))
+	{
+		exp_clean(tok_exp);
+		free(s);
+		return (0);
+	}
+	res = expander_join_subtok(tok_exp);
+	free(s);
+	return (res);
+}
+
+int	token_expander_helper(char *exp_str, t_list **tokens, t_list *quotes_range)
+{
 	t_list	*lst;
 
-	quotes_range = 0;
-	expanded_str = expand_tok(mini, (char *)tokens->content);
-	free(tokens->content);
-	expander_pre_wildcards(mini, expanded_str, &quotes_range);
-	if (!quotes_range)
+	if (check_str_wildcard(exp_str, quotes_range))
 	{
-		lst = ft_lstnew(0);
-		if (!lst)
+		if (!expand_tok_wildcards(exp_str, tokens, quotes_range))
+			return (0);
+		if (!*tokens)
 		{
-			free(expanded_str);
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			lst = ft_lstnew(exp_str);
+			if (!lst)
+				return (0);
+			ft_lstadd_back(tokens, lst);
 		}
-		ft_lstadd_back(&mini->quotes_range_lst, lst);
 	}
 	else
-		ft_lstadd_back(&mini->quotes_range_lst, quotes_range);
-	tokens->content = expander_remove_quotes(mini, expanded_str,
-			&quotes_range);
-	return (quotes_range);
-}
-
-void	fill_empty_qr(t_minishell *mini, t_list *old_tokens, t_list *tokens)
-{
-	size_t	i;
-	t_list	*lst;
-
-	i = 0;
-	old_tokens = old_tokens->next;
-	while (old_tokens != tokens)
 	{
-		i++;
-		old_tokens = old_tokens->next;
-	}
-	while (i)
-	{
-		lst = ft_lstnew(0);
+		lst = ft_lstnew(exp_str);
 		if (!lst)
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
-		ft_lstadd_back(&mini->quotes_range_lst, lst);
-		i--;
+			return (0);
+		ft_lstadd_back(tokens, lst);
 	}
+	return (1);
 }
 
-void	tokens_expander(t_minishell *mini)
+int	token_expander(char *s, t_list **tokens, t_list *env_lst, int lec)
 {
-	t_list	*tokens;
 	t_list	*quotes_range;
-	t_list	*old_tokens;
+	char	*exp_str;
+	char	*exp_str2;
 
-	tokens = mini->line_tokens;
-	while (tokens)
+	quotes_range = 0;
+	exp_str = token_expander_env(s, env_lst, lec);
+	if (!exp_str)
+		return (0);
+	if (!expander_pre_wildcards(exp_str, &quotes_range))
 	{
-		quotes_range = tokens_expander_helper(mini, tokens);
-		if (check_str_wildcard(tokens->content, quotes_range))
-		{
-			old_tokens = tokens->prev;
-			expand_tok_wildcards(mini, &tokens, &mini->line_tokens,
-				quotes_range);
-			fill_empty_qr(mini, old_tokens, tokens);
-		}
-		tokens = tokens->next;
+		free(exp_str);
+		return (0);
 	}
+	exp_str2 = expander_remove_quotes(exp_str);
+	if (!exp_str2)
+	{
+		ft_lstclear(&quotes_range, free);
+		return (0);
+	}
+	if (!token_expander_helper(exp_str2, tokens, quotes_range))
+	{
+		ft_lstclear(&quotes_range, free);
+		free(exp_str2);
+		ft_lstclear(tokens, free);
+		return (0);
+	}
+	ft_lstclear(&quotes_range, free);
+	return (1);
 }

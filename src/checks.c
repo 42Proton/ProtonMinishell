@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:18:52 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/05 15:10:38 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/05 20:45:27 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int	check_sep_operators(t_token *tok)
 
 int	check_redirect(char *token)
 {
-	if (!ft_strncmp(token, "<<", 2))
+	if (!ft_strncmp(token, "<<", 2) && ft_strlen(token) == 2)
 		return (1);
-	if (!ft_strncmp(token, ">>", 2))
+	if (!ft_strncmp(token, ">>", 2) && ft_strlen(token) == 2)
 		return (1);
-	if (*token == '<' || *token == '>')
+	if ((*token == '<' || *token == '>') && !token[1])
 		return (1);
 	return (0);
 }

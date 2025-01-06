@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils3.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:11:34 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/06 08:59:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	op_prep_args(t_operation *operation, t_list *lst)
 	operation->args = ft_calloc(n_args + 2, sizeof(char *));
 	if (!operation->args)
 		return (0);
-	operation->args[0] = operation->cmd;
 	operation->n_args = n_args;
 	return (1);
 }

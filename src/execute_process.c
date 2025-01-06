@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/04 05:55:22 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/06 09:12:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,8 +223,9 @@ int	execute_cmd(t_minishell *mini, t_operation *operation, t_operation *next_op)
 	if (pid == -1)
 		return (EXIT_FAILURE);
 	if (!pid)
-	{	
+	{
 		execute_cmd_redirections(operation);
+		operation->args[0] = operation->cmd_path;
 		execve(operation->cmd_path, operation->args, operation->env);
 		perror("execve");
 		execute_cmd_close_fds(operation);
@@ -272,7 +273,6 @@ int	execute_process(t_minishell *mini)
 	i = 0;
 	while (mini->operations[i])
 	{
-		execute_expander(mini->last_exit_code, mini->env_lst, mini->operations[i]);
 		if (prep_pipeline(mini->operations[i], mini->operations[i + 1]))
 			return (EXIT_FAILURE);
 		create_trunc_out_files(mini->operations[i]);
@@ -283,7 +283,10 @@ int	execute_process(t_minishell *mini)
 			if (status == -1)
 				return (EXIT_FAILURE);
 			if (status)
+			{
+				execute_expander(mini->last_exit_code, mini->env_lst, mini->operations[i]);
 				execute_cmd(mini, mini->operations[i], mini->operations[i + 1]);
+			}
 		}
 		execute_cmd_close_fds(mini->operations[i]);
 		i++;

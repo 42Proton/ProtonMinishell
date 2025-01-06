@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 13:59:24 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/05 20:24:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,6 @@ t_token	*get_token_num(t_list *tokens, size_t index)
 		i++;
 	}
 	return (0);
-}
-
-void	print_tokens(t_minishell *mini)
-{
-	t_list	*node;
-
-	node = mini->line_tokens;
-	while (node)
-	{
-		ft_printf("TYPE: %d, CONTENT: %s\n", ((t_token *)node->content)->type,
-			((t_token *)node->content)->token_word);
-		node = node->next;
-	}
 }
 
 void	display_header(void)
