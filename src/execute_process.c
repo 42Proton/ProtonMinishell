@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 09:12:39 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/06 18:04:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	process_in_redirects(t_operation *operation)
 	while (i < operation->n_in)
 	{
 		if (operation->in_redirects[i].type == REDIRECT_INFILE)
-			fd = open(operation->in_redirects[i].name, O_CREAT | O_RDONLY);
+			fd = open(operation->in_redirects[i].name, O_RDONLY);
 		else
 			fd = process_in_redirects_heredoc(operation);
 		if (fd == -1)
@@ -267,33 +267,32 @@ int	execute_process(t_minishell *mini)
 	size_t	i;
 	int		status;
 	
-	signal_handler();
 	if (!prep_redirections(mini, mini->operations))
 		return (EXIT_FAILURE);
 	i = 0;
 	while (mini->operations[i])
 	{
-		if (prep_pipeline(mini->operations[i], mini->operations[i + 1]))
-			return (EXIT_FAILURE);
-		create_trunc_out_files(mini->operations[i]);
-		process_in_redirects(mini->operations[i]);
-		if (mini->operations[i]->cmd)
+		status = execute_expander(mini->last_exit_code, mini->env_lst, mini->operations[i]);
+		if (status > 0)
 		{
-			status = pre_execute_external_cmd(mini, mini->operations[i]);
-			if (status == -1)
+			if (prep_pipeline(mini->operations[i], mini->operations[i + 1]))
 				return (EXIT_FAILURE);
-			if (status)
+			create_trunc_out_files(mini->operations[i]);
+			process_in_redirects(mini->operations[i]);
+			if (mini->operations[i]->cmd)
 			{
-				execute_expander(mini->last_exit_code, mini->env_lst, mini->operations[i]);
-				execute_cmd(mini, mini->operations[i], mini->operations[i + 1]);
+				status = pre_execute_external_cmd(mini, mini->operations[i]);
+				if (status == -1)
+					return (EXIT_FAILURE);
+				if (status)
+					execute_cmd(mini, mini->operations[i], mini->operations[i + 1]);
 			}
+			execute_cmd_close_fds(mini->operations[i]);
 		}
-		execute_cmd_close_fds(mini->operations[i]);
 		i++;
 	}
 	signal_execution();
 	while (wait(0) != -1)
 		;
-	signal_handler();
 	return (EXIT_SUCCESS);
 }
