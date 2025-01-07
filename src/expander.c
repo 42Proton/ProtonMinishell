@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 09:24:45 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 17:58:20 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	token_expander_helper(char *exp_str, t_list **tokens, t_list *quotes_range)
 				return (0);
 			ft_lstadd_back(tokens, lst);
 		}
+		else
+			free(exp_str);
 	}
 	else
 	{
