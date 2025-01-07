@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 20:24:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:19:45 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	display_header(void)
 
 	clear_cmd = tgetstr("cl", NULL);
 	if (clear_cmd)
-		ft_putstr_fd(clear_cmd, STDOUT_FILENO);
+		ft_printf(clear_cmd);
 	fd = open("header.txt", O_RDONLY);
 	if (!fd)
 		return ;
 	line = get_next_line(fd);
 	while (line)
 	{
-		ft_putstr_fd(line, STDOUT_FILENO);
+		ft_printf(line);
 		free(line);
 		line = get_next_line(fd);
 	}

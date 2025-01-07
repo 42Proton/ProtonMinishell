@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 18:04:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/06 20:41:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ int	execute_cmd(t_minishell *mini, t_operation *operation, t_operation *next_op)
 	if (!pid)
 	{
 		execute_cmd_redirections(operation);
-		operation->args[0] = operation->cmd_path;
+		operation->args[0] = operation->cmd;
 		execve(operation->cmd_path, operation->args, operation->env);
 		perror("execve");
 		execute_cmd_close_fds(operation);

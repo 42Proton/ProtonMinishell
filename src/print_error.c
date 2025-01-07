@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/05 15:10:53 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/07 16:18:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,18 @@ void	print_error(int error)
 
 void	print_syntax_error(t_token *token)
 {
-	ft_putstr_fd("minishell 0x90: syntax error near unexpected token '",
-		STDERR_FILENO);
-	if (!token)
-		ft_putstr_fd("newline", STDERR_FILENO);
+	if (token)
+		ft_dprintf(STDERR_FILENO, "minishell 0x90: syntax error \
+near unexpected token '%s'\n", token->token_word);
 	else
-		ft_putstr_fd(token->token_word, STDERR_FILENO);
-	ft_putstr_fd("'\n", STDERR_FILENO);
+		ft_dprintf(STDERR_FILENO, "minishell 0x90: syntax error \
+near unexpected token 'newline'\n");
 }
 
 void	print_heredoc_warning(t_minishell *mini,
 	t_operation *operation, size_t j)
 {
-	printf("minishell 0x90: warning: here-document at line %ld delimited \
-by end-of-file (wanted '%s')\n", mini->curr_line,
+	ft_dprintf(STDERR_FILENO, "minishell 0x90: warning: here-document \
+at line %ld delimited by end-of-file (wanted '%s')\n", mini->curr_line,
 		operation->in_redirects[j].name);
 }

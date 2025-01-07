@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 14:52:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:22:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int	execute_expander_stage2_helper(int lec, t_list *env_lst, t_operation *operat
 			return (-1);
 		if (ft_lstsize(*tokens) > 1)
 		{
-			ft_printf("%s: ambiguous redirect\n", operation->in_redirects[i].name);
+			ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
+				operation->in_redirects[i].name);
 			return (0);
 		}
 		free(operation->in_redirects[i].name);
@@ -110,7 +111,8 @@ int execute_expander_stage2(int lec, t_list *env_lst, t_operation *operation, t_
 			return (-1);
 		if (ft_lstsize(*tokens) > 1)
 		{
-			ft_printf("%s: ambiguous redirect\n", operation->out_redirects[i].name);
+			ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
+				operation->in_redirects[i].name);
 			return (0);
 		}
 		free(operation->out_redirects[i].name);

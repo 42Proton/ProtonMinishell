@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/02 21:08:15 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:24:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,12 @@ void	unset_cmd(t_minishell *minishell, char *name)
 {
 	if (!name)
 	{
-		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+		ft_dprintf(STDERR_FILENO, "unset: not enough arguments\n");
 		return ;
 	}
 	if (!check_env_name(name))
 	{
-		ft_putstr_fd("unset: ", STDERR_FILENO);
-		ft_putstr_fd(name, STDERR_FILENO);
-		ft_putstr_fd(": invalid parameter name\n", STDERR_FILENO);
+		ft_dprintf(STDERR_FILENO, "unset: %s: invalid parameter name\n", name);
 		return ;
 	}
 	ft_unsetenv(&minishell->env_lst, name);

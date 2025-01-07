@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:10:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/07 16:21:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 static void	export_print_error(t_env *env)
 {
-	ft_putstr_fd("export: not valid in this context: ", STDERR_FILENO);
-	ft_putstr_fd(env->name, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
+	ft_dprintf(STDERR_FILENO, "export: not valid in this context: %s\n",
+		env->name);
 	free_env(env);
 }
 
