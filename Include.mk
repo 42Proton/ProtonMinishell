@@ -20,6 +20,7 @@ SRCS= \
 	checks3.c \
 	checks4.c \
 	checks5.c \
+	checks6.c \
 	validate.c \
 	expander.c \
 	expander_utils.c \
@@ -30,7 +31,6 @@ SRCS= \
 	expander_wildcard_utils.c \
 	execute_expander.c \
 	handlers2.c \
-	check_pairs.c \
 	operations_prep.c \
 	operations_prep_utils.c \
 	operations_prep_utils2.c \

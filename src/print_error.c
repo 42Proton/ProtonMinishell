@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/07 17:04:27 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 22:13:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ near unexpected token '%s'\n", token->token_word);
 near unexpected token 'newline'\n");
 }
 
-void	print_heredoc_warning(t_minishell *mini,
+void	print_heredoc_warning(t_op_ref *op_ref,
 	t_operation *operation, size_t j)
 {
 	ft_dprintf(STDERR_FILENO, "minishell 0x90: warning: here-document \
-at line %d delimited by end-of-file (wanted '%s')\n", mini->curr_line,
+at line %u delimited by end-of-file (wanted '%s')\n", op_ref->curr_line,
 		operation->in_redirects[j].name);
 }

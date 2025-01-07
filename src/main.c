@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 16:48:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 23:09:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,27 @@
 
 static void	start_execution(t_minishell *mini)
 {
-	int		status;
+	int			status;
+	t_op_ref	*op_ref;
 	
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	mini->operations = operations;
-	status = execute_process(mini);
+	op_ref = malloc(sizeof(t_op_ref));
+	if (!op_ref)
+	{
+		free_operations(operations);
+		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+	}
+	op_ref->lec = &mini->last_exit_code;
+	op_ref->env_lst = mini->env_lst;
+	op_ref->curr_line = mini->curr_line;
+	op_ref->wait_childs = 0;
+	status = execute_process(operations, op_ref);
 	free_operations(operations);
+	free(op_ref);
 	if (status == EXIT_FAILURE)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	return ;
 }
 
 static t_minishell	*minishell_prep(char **environ)
@@ -44,6 +54,29 @@ static t_minishell	*minishell_prep(char **environ)
 	return (mini);
 }
 
+static void	start_shell_helper(t_minishell *mini)
+{
+	int status;
+
+	if (pre_process_check(mini->line_read))
+	{
+		line_tokenizer(mini);
+		status = lexical_analysis(mini);
+		if (status)
+			start_execution(mini);
+		else
+			mini->last_exit_code = 2;
+	}
+	else
+	{
+		ft_dprintf(STDERR_FILENO, "Proton: syntax error, unclosed quotes/parenthesis\n");
+		mini->last_exit_code = 2;
+	}
+	add_history(mini->line_read);
+	ft_lstclear(&mini->line_tokens, clear_token);
+	free(mini->line_read);
+}
+
 static void	start_shell(t_minishell *mini)
 {
 	display_header();
@@ -54,16 +87,8 @@ static void	start_shell(t_minishell *mini)
 		mini->line_read = readline("\001\033[35m\002ProtonShell>\001\033[33m\002");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
-		if (*mini->line_read || check_pairs(mini))
-		{
-			line_tokenizer(mini);
-			if (lexical_analysis(mini))
-				start_execution(mini);
-			add_history(mini->line_read);
-			ft_lstclear(&mini->line_tokens, clear_token);
-			mini->line_tokens = 0;
-			free(mini->line_read);
-		}
+		if (*mini->line_read)
+			start_shell_helper(mini);
 	}
 }
 

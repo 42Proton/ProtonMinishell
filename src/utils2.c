@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:51:13 by amsaleh           #+#    #+#             */
-/*   Updated: 2024/12/31 03:20:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 22:32:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,19 @@ static char	*env_join_name_data(t_env *env)
 	return (res);
 }
 
-char	**env_lst_to_2d_arr(t_minishell *mini)
+char	**env_lst_to_2d_arr(t_op_ref *op_ref)
 {
 	char	**res;
 	size_t	lst_size;
 	size_t	i;
 	t_list	*lst;
 
-	lst_size = ft_lstsize(mini->env_lst);
+	lst_size = ft_lstsize(op_ref->env_lst);
 	res = ft_calloc(lst_size + 1, sizeof(char *));
 	if (!res)
 		return (0);
 	i = 0;
-	lst = mini->env_lst;
+	lst = op_ref->env_lst;
 	while (i < lst_size)
 	{
 		res[i] = env_join_name_data((t_env *)lst->content);

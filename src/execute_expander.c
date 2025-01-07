@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 17:54:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 22:26:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
 	return (1);
 }
 
-int	execute_expander_stage1(int lec, t_list *env_lst, t_operation *operation, t_list **tokens)
+int	execute_expander_stage1(t_op_ref *op_ref, t_operation *operation, t_list **tokens)
 {
 	char	**args;
 
 	if (operation->cmd)
 	{
-		if (!token_expander(operation->cmd, tokens, env_lst, lec))
+		if (!token_expander(operation->cmd, tokens, op_ref))
 			return (-1);
 		args = operation->args;
 		args++;
@@ -60,7 +60,7 @@ int	execute_expander_stage1(int lec, t_list *env_lst, t_operation *operation, t_
 		{
 			while (*args)
 			{
-				if (!token_expander(*args, tokens, env_lst, lec))
+				if (!token_expander(*args, tokens, op_ref))
 					return (-1);
 				args++;
 			}
@@ -72,14 +72,14 @@ int	execute_expander_stage1(int lec, t_list *env_lst, t_operation *operation, t_
 	return (1);
 }
 
-int	execute_expander_stage2_helper(int lec, t_list *env_lst, t_operation *operation, t_list **tokens)
+int	execute_expander_stage2_helper(t_op_ref *op_ref, t_operation *operation, t_list **tokens)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < operation->n_in)
 	{
-		if (!token_expander(operation->in_redirects[i].name, tokens, env_lst, lec))
+		if (!token_expander(operation->in_redirects[i].name, tokens, op_ref))
 			return (-1);
 		if (ft_lstsize(*tokens) > 1)
 		{
@@ -95,18 +95,18 @@ int	execute_expander_stage2_helper(int lec, t_list *env_lst, t_operation *operat
 	return (1);
 }
 
-int execute_expander_stage2(int lec, t_list *env_lst, t_operation *operation, t_list **tokens)
+int execute_expander_stage2(t_op_ref *op_ref, t_operation *operation, t_list **tokens)
 {
 	size_t	i;
 	int		status;
 
 	i = 0;
-	status = execute_expander_stage2_helper(lec, env_lst, operation, tokens);
+	status = execute_expander_stage2_helper(op_ref, operation, tokens);
 	if (status <= 0)
 		return (status);
 	while (i < operation->n_out)
 	{
-		if (!token_expander(operation->out_redirects[i].name, tokens, env_lst, lec))
+		if (!token_expander(operation->out_redirects[i].name, tokens, op_ref))
 			return (-1);
 		if (ft_lstsize(*tokens) > 1)
 		{
@@ -122,19 +122,19 @@ int execute_expander_stage2(int lec, t_list *env_lst, t_operation *operation, t_
 	return (1);
 }
 
-int	execute_expander(int lec, t_list *env_lst, t_operation *operation)
+int	execute_expander(t_op_ref *op_ref, t_operation *operation)
 {
 	t_list	*tokens;
 	int		status;
 
 	tokens = 0;
-	if (execute_expander_stage1(lec, env_lst, operation, &tokens) == -1)
+	if (execute_expander_stage1(op_ref, operation, &tokens) == -1)
 	{
 		ft_lstclear(&tokens, free);
 		return (-1);
 	}
 	tokens = 0;
-	status = execute_expander_stage2(lec, env_lst, operation, &tokens);
+	status = execute_expander_stage2(op_ref, operation, &tokens);
 	if (!status || status == -1)
 	{
 		ft_lstclear(&tokens, free);

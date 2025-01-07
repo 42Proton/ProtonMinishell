@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 17:03:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 23:03:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,21 @@ typedef struct s_qr
 	int		is_sq;
 }	t_qr;
 
+typedef	struct s_op_ref
+{
+	int			*lec;
+	int			wait_childs;
+	int			is_exit;
+	u_int32_t	curr_line;
+	t_list		*env_lst;
+}	t_op_ref;
+
+typedef struct s_pre_process
+{
+	size_t	parenthesis_count;
+	int		mode;
+}	t_pre_process;
+
 typedef struct s_operation
 {
 	int					operation_type;
@@ -69,18 +84,16 @@ typedef struct s_operation
 	char				*cmd;
 	char				*cmd_path;
 	char				**args;
-	char				**env;
 }						t_operation;
 
 typedef struct s_minishell
 {
 	char					*line_read;
 	t_list					*line_tokens;
-	t_operation				**operations;
 	char					*cwd;
 	t_list					*env_lst;
 	int						last_exit_code;
-	int						curr_line;
+	u_int32_t				curr_line;
 	t_list					*quotes_range_lst;
 }							t_minishell;
 
@@ -126,8 +139,7 @@ enum						e_token_type
 	APPEND_REDIRECTION,
 	OPEN_PARENTHESIS,
 	CLOSE_PARENTHESIS,
-	IDENTIFIER,
-	NEWLINE_TOKEN
+	IDENTIFIER
 };
 
 enum						e_uncompleted
@@ -171,6 +183,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int				pre_process_check(char *s);
 int				expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
 					int *old_mode, t_list **quotes_range);
 int				expander_remove_quotes_iter(char *s, t_tok_expander *tok_exp);
@@ -183,16 +196,16 @@ int				prep_op_main_conditions(t_list *lst, size_t *p_count,
 t_operation		**operations_alloc(ssize_t sep_count);
 int				expander_quotes_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst);
 int				check_if_index_sqr(size_t i, t_list *qr);
-int				execute_expander(int lec, t_list *env_lst, t_operation *operation);
+int				execute_expander(t_op_ref *op_ref, t_operation *operation);
 void			tokens_exp_clean_exit(t_minishell *mini,
 					t_list *quotes_range, char *s);
 void			signal_execution(void);
 int				check_if_dir(char *path);
-void			print_heredoc_warning(t_minishell *mini,
+void			print_heredoc_warning(t_op_ref *op_ref,
 					t_operation *operation, size_t j);
-char			**env_lst_to_2d_arr(t_minishell *mini);
+char			**env_lst_to_2d_arr(t_op_ref *op_ref);
 int				check_if_cmd_exist(char *cmd);
-int				execute_process(t_minishell *mini);
+int				execute_process(t_operation **operations, t_op_ref *op_ref);
 int				op_prep_args(t_operation *operation, t_list *lst);
 void			op_get_args(t_operation *operation, t_list *lst);
 int				check_tok_prev_cmd(t_list *lst);
@@ -247,7 +260,7 @@ int				check_quotes(char c);
 int				check_expander_env(char c, int mode);
 int				check_expander_default_mode(char c,
 					t_tok_expander *tok_exp);
-int				token_expander(char *s, t_list **tokens, t_list *env_lst, int lec);
+int				token_expander(char *s, t_list **tokens, t_op_ref *op_ref);
 int				check_type(char *token, t_token *previous_token,
 					t_list *lst);
 void			clear_token(void *content);
@@ -276,7 +289,7 @@ int				sort_env(t_minishell *minishell,
 					t_list **sorted_env);
 int				sort_print_env(t_minishell *minishell);
 char			*ft_getenv(t_list *env_lst, char *env_name);
-char			*get_exec_path(t_minishell *minishell, char *cmd);
+char			*get_exec_path(t_op_ref *op_ref, char *cmd);
 void			prep_minishell_env(t_minishell *minishell,
 					char **ev);
 void			execute_inbuilt_command(t_minishell *minishell);
@@ -297,7 +310,5 @@ void			add_sep_tokens(t_minishell *mini,
 void			add_token(t_minishell *mini,
 					t_tokens_split *tokens_split);
 int				lexical_analysis(t_minishell *mini);
-int				execute_process(t_minishell *mini);
-int				check_pairs(t_minishell *mini);
 int				expander_add_quote_tok(char *word, t_tok_expander *tok_exp);
 #endif
