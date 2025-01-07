@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 09:07:03 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 17:03:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_minishell
 	char					*cwd;
 	t_list					*env_lst;
 	int						last_exit_code;
-	size_t					curr_line;
+	int						curr_line;
 	t_list					*quotes_range_lst;
 }							t_minishell;
 
