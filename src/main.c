@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 16:25:24 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:48:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	start_shell(t_minishell *mini)
 			if (lexical_analysis(mini))
 				start_execution(mini);
 			add_history(mini->line_read);
-			free_lst(mini->line_tokens);
+			ft_lstclear(&mini->line_tokens, clear_token);
 			mini->line_tokens = 0;
 			free(mini->line_read);
 		}

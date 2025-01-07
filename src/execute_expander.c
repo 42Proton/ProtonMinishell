@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 16:22:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:51:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	execute_expander_stage2_helper(int lec, t_list *env_lst, t_operation *operat
 				operation->in_redirects[i].name);
 			return (0);
 		}
-		free(operation->in_redirects[i].name);
 		operation->in_redirects[i].name = (char *)(*tokens)->content;
 		free_lst(*tokens);
 		*tokens = 0;
@@ -115,7 +114,6 @@ int execute_expander_stage2(int lec, t_list *env_lst, t_operation *operation, t_
 				operation->in_redirects[i].name);
 			return (0);
 		}
-		free(operation->out_redirects[i].name);
 		operation->out_redirects[i].name = (char *)(*tokens)->content;
 		free_lst(*tokens);
 		*tokens = 0;

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 08:32:27 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:56:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,19 @@ void	free_operations_args(char **args)
 	free(args);
 }
 
+void	free_operations_redirects(t_redirect *redirects, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		free(redirects[i].name);
+		i++;
+	}
+	free(redirects);
+}
+
 void	free_operations(t_operation **operations)
 {
 	size_t	i;
@@ -54,8 +67,10 @@ void	free_operations(t_operation **operations)
 			free_operations(operations[i]->operations);
 		free_operations_args(operations[i]->args);
 		free(operations[i]->cmd);
-		free(operations[i]->in_redirects);
-		free(operations[i]->out_redirects);
+		free_operations_redirects(operations[i]->in_redirects,
+			operations[i]->n_in);
+		free_operations_redirects(operations[i]->out_redirects,
+			operations[i]->n_out);
 		free(operations[i]->heredoc_buffer);
 		free(operations[i]->cmd_path);
 		if (operations[i]->env)
