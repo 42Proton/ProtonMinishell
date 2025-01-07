@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 22:26:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 00:48:25 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
 		tokens = tokens->next;
 		i++;
 	}
-	free_array((void **)operation->args);
+	free(operation->args);
 	operation->args = args;
 	return (1);
 }

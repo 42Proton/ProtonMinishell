@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 23:08:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 00:37:42 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,9 +228,8 @@ int	execute_cmd(t_op_ref *op_ref, t_operation *operation, t_operation *next_op)
 		execute_cmd_redirections(operation);
 		operation->args[0] = operation->cmd;
 		execve(operation->cmd_path, operation->args, env);
-		perror("execve");
 		execute_cmd_close_fds(operation);
-		return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
 	}
 	free_array((void **)env);
 	if (next_op && next_op->operation_type != OPERATION_PIPE)
