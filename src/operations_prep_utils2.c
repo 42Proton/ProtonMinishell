@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/08 11:39:02 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	op_prep_redirections(t_operation *operation, t_list *lst)
 	return (1);
 }
 
-void	op_get_redirections(t_operation *operation, t_list *lst)
+int	op_get_redirections(t_operation *operation, t_list *lst)
 {
 	size_t	i_in;
 	size_t	i_out;
@@ -76,19 +76,22 @@ void	op_get_redirections(t_operation *operation, t_list *lst)
 			parenthesis_count--;
 		if (check_in_redirection(lst) && !parenthesis_count)
 		{
-			set_redirection_data(&operation->in_redirects[i_in], lst);
+			if (!set_redirection_data(&operation->in_redirects[i_in], lst))
+				return (0);
 			i_in++;
 		}
 		else if (check_out_redirection(lst) && !parenthesis_count)
 		{
-			set_redirection_data(&operation->out_redirects[i_out], lst);
+			if (!set_redirection_data(&operation->out_redirects[i_out], lst))
+				return (0);
 			i_out++;
 		}
 		lst = lst->next;
 	}
+	return (1);
 }
 
-void	op_collect_cmd(t_operation **operations, size_t i, t_list *lst)
+int	op_collect_cmd(t_operation **operations, size_t i, t_list *lst)
 {
 	size_t	parenthesis_count;
 
@@ -101,30 +104,47 @@ void	op_collect_cmd(t_operation **operations, size_t i, t_list *lst)
 			parenthesis_count--;
 		if (((t_token *)lst->content)->type == COMMAND && !parenthesis_count)
 		{
-			operations[i]->cmd = ((t_token *)lst->content)->token_word;
+			operations[i]->cmd = ft_strdup(((t_token *)lst->content)->token_word);
+			if (!operations[i]->cmd)
+				return (0);
 			break ;
 		}
 		lst = lst->next;
 	}
+	return (1);
 }
 
 int	op_data_collector(t_operation **operations, size_t i, t_list *lst)
 {
 	if (check_op_type(lst))
 		lst = lst->next;
-	op_collect_cmd(operations, i, lst);
+	if (!op_collect_cmd(operations, i, lst))
+	{
+		free_operations(operations);
+		return (0);
+	}
 	if (!op_prep_redirections(operations[i], lst))
 	{
 		free_operations(operations);
 		return (0);
 	}
-	op_get_redirections(operations[i], lst);
+	if (!op_get_redirections(operations[i], lst))
+	{
+		free_operations(operations);
+		return (0);
+	}
 	if (!op_prep_args(operations[i], lst))
 	{
 		free_operations(operations);
 		return (0);
 	}
 	if (operations[i]->n_args)
-		op_get_args(operations[i], lst);
+	{
+		if (!op_get_args(operations[i], lst))
+		{
+			free_operations(operations);
+			return (0);
+		}
+	}
 	return (1);
 }

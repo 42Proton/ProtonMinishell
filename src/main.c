@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 23:09:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 15:22:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	start_execution(t_minishell *mini)
 	t_op_ref	*op_ref;
 	
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
+	ft_lstclear(&mini->line_tokens, free_tokens);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	op_ref = malloc(sizeof(t_op_ref));
@@ -35,6 +36,8 @@ static void	start_execution(t_minishell *mini)
 	free(op_ref);
 	if (status == EXIT_FAILURE)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+	if (status == -1)
+		exit_handler(mini, NONE);
 }
 
 static t_minishell	*minishell_prep(char **environ)
@@ -73,7 +76,6 @@ static void	start_shell_helper(t_minishell *mini)
 		mini->last_exit_code = 2;
 	}
 	add_history(mini->line_read);
-	ft_lstclear(&mini->line_tokens, clear_token);
 	free(mini->line_read);
 }
 

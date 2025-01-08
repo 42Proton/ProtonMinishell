@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 23:03:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 11:42:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,9 +207,9 @@ char			**env_lst_to_2d_arr(t_op_ref *op_ref);
 int				check_if_cmd_exist(char *cmd);
 int				execute_process(t_operation **operations, t_op_ref *op_ref);
 int				op_prep_args(t_operation *operation, t_list *lst);
-void			op_get_args(t_operation *operation, t_list *lst);
+int				op_get_args(t_operation *operation, t_list *lst);
 int				check_tok_prev_cmd(t_list *lst);
-void			set_redirection_data(t_redirect *redirect, t_list *lst);
+int				set_redirection_data(t_redirect *redirect, t_list *lst);
 int				check_op_prep_condition(t_list *lst, ssize_t parenthesis_count);
 int				check_out_redirection(t_list *lst);
 int				check_in_redirection(t_list *lst);
@@ -263,7 +263,6 @@ int				check_expander_default_mode(char c,
 int				token_expander(char *s, t_list **tokens, t_op_ref *op_ref);
 int				check_type(char *token, t_token *previous_token,
 					t_list *lst);
-void			clear_token(void *content);
 int				check_sep_operators(t_token *tok);
 int				check_operator_num(int type);
 void			print_syntax_error(t_token *token);

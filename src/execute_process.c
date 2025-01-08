@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/08 00:37:42 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 15:27:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ int	create_trunc_out_files(t_operation *operation)
 		flags = O_CREAT | O_WRONLY | O_TRUNC;
 		if (operation->out_redirects[i].type == REDIRECT_APPEND)
 			flags = O_CREAT | O_WRONLY | O_APPEND;
-		fd = open(operation->out_redirects[i].name, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		fd = open(operation->out_redirects[i].name, flags,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		if (fd == -1)
 			return (0);
 		if (i != operation->n_out - 1)
@@ -228,8 +229,9 @@ int	execute_cmd(t_op_ref *op_ref, t_operation *operation, t_operation *next_op)
 		execute_cmd_redirections(operation);
 		operation->args[0] = operation->cmd;
 		execve(operation->cmd_path, operation->args, env);
+		free_array((void **)env);
 		execute_cmd_close_fds(operation);
-		return (EXIT_SUCCESS);
+		return (-1);
 	}
 	free_array((void **)env);
 	if (next_op && next_op->operation_type != OPERATION_PIPE)
@@ -272,6 +274,7 @@ int	execute_process(t_operation **operations, t_op_ref *op_ref)
 	if (!prep_redirections(op_ref, operations))
 		return (EXIT_FAILURE);
 	i = 0;
+	signal_execution();
 	while (operations[i])
 	{
 		status = execute_expander(op_ref, operations[i]);
@@ -287,13 +290,15 @@ int	execute_process(t_operation **operations, t_op_ref *op_ref)
 				if (status == -1)
 					return (EXIT_FAILURE);
 				if (status)
-					execute_cmd(op_ref, operations[i], operations[i + 1]);
+					status = execute_cmd(op_ref, operations[i], operations[i + 1]);
+				if (status == -1)
+					return (status);
 			}
-			execute_cmd_close_fds(operations[i]);
+			else
+				execute_cmd_close_fds(operations[i]);
 		}
 		i++;
 	}
-	signal_execution();
 	while (wait(&wstatus) != -1)
 		*op_ref->lec = WEXITSTATUS(wstatus);
 	return (EXIT_SUCCESS);

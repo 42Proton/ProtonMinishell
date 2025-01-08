@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/05 13:42:55 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/08 11:42:21 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@ static void	clear_env(void *content)
 	free(env->data);
 	free(env->name);
 	free(env);
-}
-
-void	clear_token(void *content)
-{
-	t_token	*token;
-
-	token = (t_token *)content;
-	free(token->token_word);
-	free(token);
 }
 
 void	free_lst(t_list *lst)

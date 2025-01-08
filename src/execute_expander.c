@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/08 00:48:25 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 11:52:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,22 @@ int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
 	size_t	lst_size;
 	size_t	i;
 
+	free(operation->cmd);
 	operation->cmd = tokens->content;
 	tokens = tokens->next;
 	lst_size = ft_lstsize(tokens);
 	args = ft_calloc(lst_size + 2, sizeof(char *));
 	if (!args)
 		return (-1);
-	i = 1;
-	while (i < lst_size + 1)
+	i = 0;
+	while (i++ < lst_size)
 	{
 		args[i] = (char *)tokens->content;
 		tokens = tokens->next;
-		i++;
 	}
+	i = 0;
+	while (operation->args[++i])
+		free(operation->args[i]);
 	free(operation->args);
 	operation->args = args;
 	return (1);
@@ -87,6 +90,7 @@ int	execute_expander_stage2_helper(t_op_ref *op_ref, t_operation *operation, t_l
 				operation->in_redirects[i].name);
 			return (0);
 		}
+		free(operation->in_redirects[i].name);
 		operation->in_redirects[i].name = (char *)(*tokens)->content;
 		free_lst(*tokens);
 		*tokens = 0;
@@ -114,6 +118,7 @@ int execute_expander_stage2(t_op_ref *op_ref, t_operation *operation, t_list **t
 				operation->in_redirects[i].name);
 			return (0);
 		}
+		free(operation->out_redirects[i].name);
 		operation->out_redirects[i].name = (char *)(*tokens)->content;
 		free_lst(*tokens);
 		*tokens = 0;

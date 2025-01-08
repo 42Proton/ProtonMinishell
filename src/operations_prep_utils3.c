@@ -6,16 +6,19 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 08:59:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 11:38:16 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	set_redirection_data(t_redirect *redirect, t_list *lst)
+int	set_redirection_data(t_redirect *redirect, t_list *lst)
 {
 	redirect->type = op_type_to_redirection(lst);
-	redirect->name = ((t_token *)lst->next->content)->token_word;
+	redirect->name = ft_strdup(((t_token *)lst->next->content)->token_word);
+	if (!redirect->name)
+		return (0);
+	return (1);
 }
 
 int	op_prep_args(t_operation *operation, t_list *lst)
@@ -42,7 +45,7 @@ int	op_prep_args(t_operation *operation, t_list *lst)
 	return (1);
 }
 
-void	op_get_args(t_operation *operation, t_list *lst)
+int	op_get_args(t_operation *operation, t_list *lst)
 {
 	ssize_t	parenthesis_count;
 	size_t	i;
@@ -57,9 +60,12 @@ void	op_get_args(t_operation *operation, t_list *lst)
 			parenthesis_count--;
 		if (((t_token *)lst->content)->type == ARGUMENT && !parenthesis_count)
 		{
-			operation->args[i] = ((t_token *)lst->content)->token_word;
+			operation->args[i] = ft_strdup(((t_token *)lst->content)->token_word);
+			if (!operation->args[i])
+				return (0);
 			i++;
 		}
 		lst = lst->next;
 	}
+	return (1);
 }
