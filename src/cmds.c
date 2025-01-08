@@ -6,28 +6,38 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/07 16:24:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 17:42:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	cd_cmd(t_minishell *minishell, char *arg2)
+void	cd_cmd(t_op_ref *op_ref, char **args)
 {
-	if (arg2)
+	size_t	i;
+
+	i = 1;
+	if (!args[i])
 	{
-		if (*arg2)
-			if (chdir(arg2) == -1)
+		if (chdir(ft_getenv(op_ref->env_lst, "HOME")) == -1)
+			perror("minishell: cd");
+	}
+	else
+	{
+		i++;
+		if (args[i])
+			ft_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
+		else
+			if (chdir(args[i - 1]) == -1)
 				perror("minishell: cd");
 	}
-	else if (chdir(ft_getenv(minishell->env_lst, "HOME")) == -1)
-		perror("minishell: cd");
 }
 
-void	pwd_cmd(t_minishell *minishell)
+void	pwd_cmd(t_op_ref *op_ref)
 {
-	if (getcwd(minishell->cwd, PATH_MAX))
-		ft_putendl_fd(minishell->cwd, 1);
+	char	cwd[PATH_MAX + 1];
+	if (getcwd(cwd, PATH_MAX))
+		ft_printf("%s\n", cwd);
 	else
 		perror("minishell: pwd");
 }
