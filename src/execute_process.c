@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 13:08:03 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/09 17:48:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,15 +271,18 @@ int	builtin_cmd_process(t_operation **operations, size_t i, t_op_ref *op_ref)
 
 	if (op_ref->is_child)
 		op_ref->is_exit = 1;
-	fds[1] = dup(STDOUT_FILENO);
-	//execute_cmd_redirections(operations[i]);
-	if (operations[i]->redirect_out_fd != -1)
-		dup2(operations[i]->redirect_out_fd, STDOUT_FILENO);
+	else
+	{
+		fds[0] = dup(STDIN_FILENO);
+		fds[1] = dup(STDOUT_FILENO);
+	}
+	execute_cmd_redirections(operations[i]);
 	execute_inbuilt_command(op_ref, operations[i]->cmd, operations[i]->args);
+	if (operations[i]->redirect_in_fd != -1)
+		dup2(fds[0], STDIN_FILENO);
 	if (operations[i]->redirect_out_fd != -1)
 		dup2(fds[1], STDOUT_FILENO);
 	op_ref->exit_code = 0;
-	//execute_cmd_close_fds(operations[i]);
 	return (EXIT_SUCCESS);
 }
 
