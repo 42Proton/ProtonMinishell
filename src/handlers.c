@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/08 17:39:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 12:14:41 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	free_tokens(void *tokens)
 
 void	exit_handler(t_minishell *mini, int error)
 {
+	int	lec;
+
 	print_error(error);
 	if (error > ERR_MALLOC_MINI)
 	{
@@ -54,9 +56,10 @@ void	exit_handler(t_minishell *mini, int error)
 		else
 			ft_lstclear(&mini->line_tokens, free);
 		free_lst(mini->quotes_range_lst);
+		lec = mini->last_exit_code;
 		free(mini);
 	}
 	if (error != NONE)
 		exit(EXIT_FAILURE);
-	exit(EXIT_SUCCESS);
+	exit(lec);
 }

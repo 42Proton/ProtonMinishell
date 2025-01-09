@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   execute_inbuilt_command.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 10:06:18 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 12:22:09 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	execute_inbuilt_command(t_op_ref *op_ref, char **args)
+int	execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args)
 {
-	if (!ft_strcmp(args[0], "cd"))
+	if (!ft_strcmp(cmd, "cd"))
 		cd_cmd(op_ref, args);
-	if (!ft_strcmp(args[0], "pwd"))
+	if (!ft_strcmp(cmd, "pwd"))
 		pwd_cmd();
-	if (!ft_strcmp(args[0], "echo"))
+	if (!ft_strcmp(cmd, "echo"))
 		echo_cmd(args);
-	if (!ft_strcmp(args[0], "env"))
+	if (!ft_strcmp(cmd, "env"))
 		env_cmd(op_ref);
-	if (!ft_strcmp(args[0], "unset"))
+	if (!ft_strcmp(cmd, "unset"))
 		unset_cmd(op_ref, args);
-	// if (!ft_strcmp(args[0], "export"))
+	// if (!ft_strcmp(cmd, "export"))
 	// 	export_cmd(minishell, args[1]);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 10:06:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 12:21:15 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef	struct s_op_ref
 	int			*lec;
 	int			wait_childs;
 	int			is_exit;
+	int			is_child;
+	int			exit_code;
 	u_int32_t	curr_line;
 	t_list		*env_lst;
 }	t_op_ref;
@@ -205,7 +207,7 @@ void			print_heredoc_warning(t_op_ref *op_ref,
 					t_operation *operation, size_t j);
 char			**env_lst_to_2d_arr(t_op_ref *op_ref);
 int				check_if_cmd_exist(char *cmd);
-int				execute_process(t_operation **operations, t_op_ref *op_ref);
+int				execute_process(t_minishell *mini, t_operation **operations, t_op_ref *op_ref);
 int				op_prep_args(t_operation *operation, t_list *lst);
 int				op_get_args(t_operation *operation, t_list *lst);
 int				check_tok_prev_cmd(t_list *lst);
@@ -291,7 +293,7 @@ char			*ft_getenv(t_list *env_lst, char *env_name);
 char			*get_exec_path(t_op_ref *op_ref, char *cmd);
 void			prep_minishell_env(t_minishell *minishell,
 					char **ev);
-int				execute_inbuilt_command(t_op_ref *op_ref, char **args);
+int				execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args);
 void			exit_handler(t_minishell *minishell, int error);
 void			print_error(int error);
 void			cd_cmd(t_op_ref *op_ref, char **args);

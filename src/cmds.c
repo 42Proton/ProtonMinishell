@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/09 10:06:06 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 12:28:07 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	env_cmd_helper(char **res, t_env *env)
 	free(*res);
 	if (!temp)
 		return (0);
+	*res = temp;
 	return (1);
 }
 
@@ -134,6 +135,7 @@ int	env_cmd(t_op_ref *op_ref)
 		lst = lst->next;
 	}
 	ft_printf("%s", res);
+	free(res);
 	return (EXIT_SUCCESS);
 }
 

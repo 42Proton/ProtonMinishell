@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 10:05:26 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 13:07:02 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static void	start_execution(t_minishell *mini)
 	op_ref->env_lst = mini->env_lst;
 	op_ref->curr_line = mini->curr_line;
 	op_ref->wait_childs = 0;
-	status = execute_process(operations, op_ref);
+	op_ref->is_child = 0;
+	op_ref->is_exit = 0;
+	status = execute_process(mini, operations, op_ref);
 	free_operations(operations);
 	free(op_ref);
 	if (status == EXIT_FAILURE)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 10:06:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 13:08:03 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,43 @@ int	prep_pipeline(t_operation *operation, t_operation *next_op)
 	return (EXIT_SUCCESS);
 }
 
-int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
+int	builtin_cmd_process(t_operation **operations, size_t i, t_op_ref *op_ref)
+{
+	int	fds[2];
+
+	if (op_ref->is_child)
+		op_ref->is_exit = 1;
+	fds[1] = dup(STDOUT_FILENO);
+	//execute_cmd_redirections(operations[i]);
+	if (operations[i]->redirect_out_fd != -1)
+		dup2(operations[i]->redirect_out_fd, STDOUT_FILENO);
+	execute_inbuilt_command(op_ref, operations[i]->cmd, operations[i]->args);
+	if (operations[i]->redirect_out_fd != -1)
+		dup2(fds[1], STDOUT_FILENO);
+	op_ref->exit_code = 0;
+	//execute_cmd_close_fds(operations[i]);
+	return (EXIT_SUCCESS);
+}
+
+int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
+{
+	int	pid;
+	
+	if (operations[i]->operation_type == OPERATION_PIPE)
+		op_ref->is_child = 1;
+	if (operations[i + 1] && operations[i + 1]->operation_type == OPERATION_PIPE)
+		op_ref->is_child = 1;
+	if (op_ref->is_child)
+	{
+		pid = fork();
+		if (!pid)
+			builtin_cmd_process(operations, i, op_ref);
+	}
+	else
+		builtin_cmd_process(operations, i, op_ref);
+	return (EXIT_SUCCESS);
+}
+int	execute_process_helper(t_minishell *mini, t_operation **operations, size_t i, t_op_ref *op_ref)
 {
 	int	status;
 
@@ -278,13 +314,25 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 		process_in_redirects(operations[i]);
 		if (operations[i]->cmd)
 		{
-			status = pre_execute_external_cmd(op_ref, operations[i]);
-			if (status == -1)
-				return (EXIT_FAILURE);
-			if (status)
-				status = execute_cmd(op_ref, operations[i], operations[i + 1]);
-			if (status == -1)
-				return (status);
+			if (check_if_builtin(operations[i]->cmd))
+			{
+				builtin_cmd(operations,i,op_ref);
+				if (op_ref->is_exit)
+				{
+					mini->last_exit_code = op_ref->exit_code;
+					return (-1);
+				}
+			}
+			else
+			{
+				status = pre_execute_external_cmd(op_ref, operations[i]);
+				if (status == -1)
+					return (EXIT_FAILURE);
+				if (status)
+					status = execute_cmd(op_ref, operations[i], operations[i + 1]);
+				if (status == -1)
+					return (status);
+			}
 		}
 		else
 			execute_cmd_close_fds(operations[i]);
@@ -292,7 +340,7 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 	return (1);
 }
 
-int	execute_process(t_operation **operations, t_op_ref *op_ref)
+int	execute_process(t_minishell *mini, t_operation **operations, t_op_ref *op_ref)
 {
 	size_t	i;
 	int		wstatus;
@@ -303,7 +351,9 @@ int	execute_process(t_operation **operations, t_op_ref *op_ref)
 	signal_execution();
 	while (operations[i])
 	{
-		execute_process_helper(operations, i, op_ref);
+		if (execute_process_helper(mini, operations, i, op_ref) == -1)
+			return (-1);
+		op_ref->is_child = 0;
 		i++;
 	}
 	while (wait(&wstatus) != -1)
