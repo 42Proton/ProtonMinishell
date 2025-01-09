@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 08:29:19 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/08 23:12:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,17 @@ int	check_str_wildcard(char *s, t_list *quotes_range)
 
 int	check_if_builtin(char *token)
 {
-	if (ft_strncmp(token, "cd", 2) == 0)
+	if (!ft_strcmp(token, "exit"))
 		return (1);
-	if (ft_strcmp(token, "export") == 0)
+	if (!ft_strcmp(token, "cd"))
 		return (1);
-	if (ft_strcmp(token, "unset") == 0)
+	if (!ft_strcmp(token, "export"))
 		return (1);
-	if (ft_strcmp(token, "pwd") == 0)
+	if (!ft_strcmp(token, "unset"))
 		return (1);
-	if (ft_strcmp(token, "env") == 0)
+	if (!ft_strcmp(token, "pwd"))
+		return (1);
+	if (!ft_strcmp(token, "env"))
 		return (1);
 	return (0);
 }

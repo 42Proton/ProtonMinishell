@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/08 17:42:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 10:06:06 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@ void	cd_cmd(t_op_ref *op_ref, char **args)
 	}
 	else
 	{
-		i++;
-		if (args[i])
+		if (args[i + 1])
 			ft_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
 		else
-			if (chdir(args[i - 1]) == -1)
+			if (chdir(args[i]) == -1)
 				perror("minishell: cd");
 	}
 }
 
-void	pwd_cmd(t_op_ref *op_ref)
+void	pwd_cmd()
 {
 	char	cwd[PATH_MAX + 1];
 	if (getcwd(cwd, PATH_MAX))
@@ -42,56 +41,108 @@ void	pwd_cmd(t_op_ref *op_ref)
 		perror("minishell: pwd");
 }
 
-void	echo_cmd(char **args)
+int	echo_cmd_helper(char **res, char **args)
 {
-	int	newline;
+	char	*temp;
+	size_t	i;
+
+	i = 0;
+	while (args[i])
+	{
+		temp = ft_strjoin(*res, args[i]);
+		free(*res);
+		if (!temp)
+			return (0);
+		*res = temp;
+		if (args[i + 1])
+			temp = ft_strjoin(*res, " ");
+		free(*res);
+		if (!temp)
+			return (0);
+		*res = temp;
+		args++;
+	}
+	return (1);
+}
+
+int	echo_cmd(char **args)
+{
+	int		newline;
+	char	*res;
 
 	newline = 1;
+	res = ft_strdup("");
+	if (!res)
+		return (EXIT_FAILURE);
 	if (args[1])
 	{
-		if (!ft_strcmp(args[1], "-n"))
+		if (!ft_strncmp(args[1], "-n", 2))
 		{
 			newline = 0;
 			args++;
 		}
 	}
 	args++;
-	while (*args)
-	{
-		ft_putstr_fd(*args, STDOUT_FILENO);
-		if (*(args + 1))
-			ft_putchar_fd(' ', STDOUT_FILENO);
-		args++;
-	}
+	if (!echo_cmd_helper(&res, args))
+		return (EXIT_FAILURE);
 	if (newline)
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_printf("%s\n", res);
+	else
+		ft_printf("%s", res);
+	return (EXIT_SUCCESS);
 }
 
-void	env_cmd(t_minishell *minishell)
+int	env_cmd_helper(char **res, t_env *env)
+{
+	char	*temp;
+
+	temp = ft_strjoin(*res, env->name);
+	free(*res);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin(*res, "=");
+	free(*res);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin(*res, env->name);
+	free(*res);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin(*res, "\n");
+	free(*res);
+	if (!temp)
+		return (0);
+	return (1);
+}
+
+int	env_cmd(t_op_ref *op_ref)
 {
 	t_list	*lst;
-	t_env	*env;
+	char	*res;
 
-	lst = minishell->env_lst;
+	lst = op_ref->env_lst;
+	res = ft_strdup("");
+	if (!res)
+		return (EXIT_FAILURE);
 	while (lst)
 	{
-		env = (t_env *)lst->content;
-		ft_printf("%s=%s\n", env->name, env->data);
+		if (!env_cmd_helper(&res, (t_env *)lst->content))
+			return (EXIT_FAILURE);
 		lst = lst->next;
 	}
+	ft_printf("%s", res);
+	return (EXIT_SUCCESS);
 }
 
-void	unset_cmd(t_minishell *minishell, char *name)
+void	unset_cmd(t_op_ref *op_ref, char **args)
 {
-	if (!name)
+	args++;
+	while (*args)
 	{
-		ft_dprintf(STDERR_FILENO, "unset: not enough arguments\n");
-		return ;
+		ft_unsetenv(&op_ref->env_lst, *args);
+		args++;
 	}
-	if (!check_env_name(name))
-	{
-		ft_dprintf(STDERR_FILENO, "unset: %s: invalid parameter name\n", name);
-		return ;
-	}
-	ft_unsetenv(&minishell->env_lst, name);
 }

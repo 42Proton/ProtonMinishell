@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/08 16:19:30 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 10:06:47 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,10 +265,36 @@ int	prep_pipeline(t_operation *operation, t_operation *next_op)
 	return (EXIT_SUCCESS);
 }
 
+int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
+{
+	int	status;
+
+	status = execute_expander(op_ref, operations[i]);
+	if (status > 0)
+	{
+		if (prep_pipeline(operations[i], operations[i + 1]))
+			return (EXIT_FAILURE);
+		create_trunc_out_files(operations[i]);
+		process_in_redirects(operations[i]);
+		if (operations[i]->cmd)
+		{
+			status = pre_execute_external_cmd(op_ref, operations[i]);
+			if (status == -1)
+				return (EXIT_FAILURE);
+			if (status)
+				status = execute_cmd(op_ref, operations[i], operations[i + 1]);
+			if (status == -1)
+				return (status);
+		}
+		else
+			execute_cmd_close_fds(operations[i]);
+	}
+	return (1);
+}
+
 int	execute_process(t_operation **operations, t_op_ref *op_ref)
 {
 	size_t	i;
-	int		status;
 	int		wstatus;
 	
 	if (!prep_redirections(op_ref, operations))
@@ -277,26 +303,7 @@ int	execute_process(t_operation **operations, t_op_ref *op_ref)
 	signal_execution();
 	while (operations[i])
 	{
-		status = execute_expander(op_ref, operations[i]);
-		if (status > 0)
-		{
-			if (prep_pipeline(operations[i], operations[i + 1]))
-				return (EXIT_FAILURE);
-			create_trunc_out_files(operations[i]);
-			process_in_redirects(operations[i]);
-			if (operations[i]->cmd)
-			{
-				status = pre_execute_external_cmd(op_ref, operations[i]);
-				if (status == -1)
-					return (EXIT_FAILURE);
-				if (status)
-					status = execute_cmd(op_ref, operations[i], operations[i + 1]);
-				if (status == -1)
-					return (status);
-			}
-			else
-				execute_cmd_close_fds(operations[i]);
-		}
+		execute_process_helper(operations, i, op_ref);
 		i++;
 	}
 	while (wait(&wstatus) != -1)

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/08 15:22:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/09 10:05:26 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ static t_minishell	*minishell_prep(char **environ)
 	mini = ft_calloc(1, sizeof(t_minishell));
 	if (!mini)
 		exit_handler(mini, ERR_MALLOC_MINI);
-	mini->cwd = malloc(PATH_MAX + 1);
-	if (!mini->cwd)
-		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	if (*environ)
 		prep_minishell_env(mini, environ);
 	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) <= 0)
