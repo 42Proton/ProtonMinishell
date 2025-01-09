@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 12:21:15 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/10 00:51:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ typedef	struct s_op_ref
 	int			*lec;
 	int			wait_childs;
 	int			is_exit;
-	int			is_child;
-	int			exit_code;
 	u_int32_t	curr_line;
 	t_list		*env_lst;
 }	t_op_ref;
@@ -184,6 +182,9 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void			execute_cmd_close_fds(t_operation *operation);
+int				execute_cmd_redirections(t_operation *operation);
+int				builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref);
 int				check_if_builtin(char *token);
 int				pre_process_check(char *s);
 int				expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
@@ -207,7 +208,7 @@ void			print_heredoc_warning(t_op_ref *op_ref,
 					t_operation *operation, size_t j);
 char			**env_lst_to_2d_arr(t_op_ref *op_ref);
 int				check_if_cmd_exist(char *cmd);
-int				execute_process(t_minishell *mini, t_operation **operations, t_op_ref *op_ref);
+int				execute_process(t_operation **operations, t_op_ref *op_ref);
 int				op_prep_args(t_operation *operation, t_list *lst);
 int				op_get_args(t_operation *operation, t_list *lst);
 int				check_tok_prev_cmd(t_list *lst);

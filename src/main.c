@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 13:07:02 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/10 00:55:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	start_execution(t_minishell *mini)
 {
 	int			status;
+	int			is_exit;
 	t_op_ref	*op_ref;
 	
 	t_operation **operations = operations_prep(mini->line_tokens, 0);
@@ -31,14 +32,14 @@ static void	start_execution(t_minishell *mini)
 	op_ref->env_lst = mini->env_lst;
 	op_ref->curr_line = mini->curr_line;
 	op_ref->wait_childs = 0;
-	op_ref->is_child = 0;
 	op_ref->is_exit = 0;
-	status = execute_process(mini, operations, op_ref);
+	status = execute_process(operations, op_ref);
 	free_operations(operations);
+	is_exit = op_ref->is_exit;
 	free(op_ref);
 	if (status == EXIT_FAILURE)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	if (status == -1)
+	if (is_exit)
 		exit_handler(mini, NONE);
 }
 

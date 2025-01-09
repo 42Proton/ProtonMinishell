@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/08 23:12:39 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 00:38:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	check_if_builtin(char *token)
 	if (!ft_strcmp(token, "pwd"))
 		return (1);
 	if (!ft_strcmp(token, "env"))
+		return (1);
+	if (!ft_strcmp(token, "echo"))
 		return (1);
 	return (0);
 }

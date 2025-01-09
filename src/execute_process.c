@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 17:48:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 00:53:56 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,14 +187,12 @@ int	execute_cmd_redirections(t_operation *operation)
 		out_fd = operation->redirect_out_fd;
 	if (operation->pipe_fds_out)
 		close(operation->pipe_fds_out[0]);
-	if (in_fd != -1)
-		if (dup2(in_fd, STDIN_FILENO) == -1)
-			return (0);
-	if (out_fd != -1)
-		if (dup2(out_fd, STDOUT_FILENO) == -1)
-			return (0);
+	if (in_fd != -1 && dup2(in_fd, STDIN_FILENO) == -1)
+		return (0);
 	if (in_fd != -1)
 		close(in_fd);
+	if (out_fd != -1 && dup2(out_fd, STDOUT_FILENO) == -1)
+		return (0);
 	if (out_fd != -1)
 		close(out_fd);
 	return (1);
@@ -265,46 +263,7 @@ int	prep_pipeline(t_operation *operation, t_operation *next_op)
 	return (EXIT_SUCCESS);
 }
 
-int	builtin_cmd_process(t_operation **operations, size_t i, t_op_ref *op_ref)
-{
-	int	fds[2];
-
-	if (op_ref->is_child)
-		op_ref->is_exit = 1;
-	else
-	{
-		fds[0] = dup(STDIN_FILENO);
-		fds[1] = dup(STDOUT_FILENO);
-	}
-	execute_cmd_redirections(operations[i]);
-	execute_inbuilt_command(op_ref, operations[i]->cmd, operations[i]->args);
-	if (operations[i]->redirect_in_fd != -1)
-		dup2(fds[0], STDIN_FILENO);
-	if (operations[i]->redirect_out_fd != -1)
-		dup2(fds[1], STDOUT_FILENO);
-	op_ref->exit_code = 0;
-	return (EXIT_SUCCESS);
-}
-
-int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
-{
-	int	pid;
-	
-	if (operations[i]->operation_type == OPERATION_PIPE)
-		op_ref->is_child = 1;
-	if (operations[i + 1] && operations[i + 1]->operation_type == OPERATION_PIPE)
-		op_ref->is_child = 1;
-	if (op_ref->is_child)
-	{
-		pid = fork();
-		if (!pid)
-			builtin_cmd_process(operations, i, op_ref);
-	}
-	else
-		builtin_cmd_process(operations, i, op_ref);
-	return (EXIT_SUCCESS);
-}
-int	execute_process_helper(t_minishell *mini, t_operation **operations, size_t i, t_op_ref *op_ref)
+int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 {
 	int	status;
 
@@ -319,12 +278,9 @@ int	execute_process_helper(t_minishell *mini, t_operation **operations, size_t i
 		{
 			if (check_if_builtin(operations[i]->cmd))
 			{
-				builtin_cmd(operations,i,op_ref);
+				status = builtin_cmd(operations, i, op_ref);
 				if (op_ref->is_exit)
-				{
-					mini->last_exit_code = op_ref->exit_code;
-					return (-1);
-				}
+					return (status);
 			}
 			else
 			{
@@ -334,16 +290,16 @@ int	execute_process_helper(t_minishell *mini, t_operation **operations, size_t i
 				if (status)
 					status = execute_cmd(op_ref, operations[i], operations[i + 1]);
 				if (status == -1)
-					return (status);
+					return (EXIT_FAILURE);
 			}
 		}
 		else
 			execute_cmd_close_fds(operations[i]);
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
-int	execute_process(t_minishell *mini, t_operation **operations, t_op_ref *op_ref)
+int	execute_process(t_operation **operations, t_op_ref *op_ref)
 {
 	size_t	i;
 	int		wstatus;
@@ -354,9 +310,10 @@ int	execute_process(t_minishell *mini, t_operation **operations, t_op_ref *op_re
 	signal_execution();
 	while (operations[i])
 	{
-		if (execute_process_helper(mini, operations, i, op_ref) == -1)
-			return (-1);
-		op_ref->is_child = 0;
+		if (execute_process_helper(operations, i, op_ref) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		if (op_ref->is_exit)
+			return (EXIT_SUCCESS);
 		i++;
 	}
 	while (wait(&wstatus) != -1)

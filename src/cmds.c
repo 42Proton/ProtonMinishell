@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/09 12:28:07 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/10 00:56:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ int	echo_cmd_helper(char **res, char **args)
 			return (0);
 		*res = temp;
 		if (args[i + 1])
+		{
 			temp = ft_strjoin(*res, " ");
-		free(*res);
+			free(*res);
+		}
 		if (!temp)
 			return (0);
 		*res = temp;
@@ -89,6 +91,7 @@ int	echo_cmd(char **args)
 		ft_printf("%s\n", res);
 	else
 		ft_printf("%s", res);
+	free(res);
 	return (EXIT_SUCCESS);
 }
 
