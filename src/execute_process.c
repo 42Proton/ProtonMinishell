@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 00:53:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 01:09:18 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,8 +279,7 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 			if (check_if_builtin(operations[i]->cmd))
 			{
 				status = builtin_cmd(operations, i, op_ref);
-				if (op_ref->is_exit)
-					return (status);
+				return (status);
 			}
 			else
 			{
