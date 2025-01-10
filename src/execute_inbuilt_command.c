@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 22:02:38 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 22:10:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args)
 	int	status;
 
 	status = EXIT_SUCCESS;
-	op_ref->lec = 0;
+	*op_ref->lec = 0;
 	if (!ft_strcmp(cmd, "cd"))
 		cd_cmd(op_ref, args);
 	if (!ft_strcmp(cmd, "pwd"))
