@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 22:02:17 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 22:42:45 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,8 +292,7 @@ int				sort_env(t_list *lst, t_list **sorted_env);
 int				sort_print_env(t_list *lst);
 char			*ft_getenv(t_list *env_lst, char *env_name);
 char			*get_exec_path(t_op_ref *op_ref, char *cmd);
-void			prep_minishell_env(t_minishell *minishell,
-					char **ev);
+void			prep_minishell_env(t_minishell *mini, char **ev);
 int				execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args);
 void			exit_handler(t_minishell *minishell, int error);
 void			print_error(int error);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/10 22:42:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,23 @@ void	free_env(t_env *env)
 	free(env);
 }
 
-int	shell_level(t_env *env)
+void	shell_level(t_minishell *mini, t_list *env_lst)
 {
-	char	*new_level;	
+	char	*new_level;
+	t_env	*env;
 
-	new_level = ft_itoa(atoi(env->data) + 1);
+	while (env_lst)
+	{
+		env = (t_env *)env_lst->content;
+		if (!ft_strcmp(env->name, "SHLVL"))
+			break;
+		env_lst = env_lst->next;
+	}
+	new_level = ft_itoa(ft_atoi(env->data) + 1);
 	if (!new_level)
-		return (1);
+		exit_handler(mini, ERR_MALLOC_POSTMINI);
 	free(env->data);
 	env->data = new_level;
-	return (0);
 }
 
 int	parse_env_data(char *data, t_env *env)
@@ -55,12 +62,10 @@ int	parse_env_data(char *data, t_env *env)
 		return (0);
 	if (j != i)
 		ft_strlcpy(env->data, data + i, (j - i) + 1);
-	if (!ft_strncmp(env->name, "SHLVL", 5))
-		i = shell_level(env);
-	return (1 - (i));
+	return (i);
 }
 
-void	prep_minishell_env(t_minishell *minishell, char **ev)
+void	prep_minishell_env(t_minishell *mini, char **ev)
 {
 	t_env	*env;
 	t_list	*lst;
@@ -69,21 +74,22 @@ void	prep_minishell_env(t_minishell *minishell, char **ev)
 	{
 		env = ft_calloc(1, sizeof(t_env));
 		if (!env)
-			exit_handler(minishell, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
 		if (!parse_env_data(*ev, env))
 		{
 			free_env(env);
-			exit_handler(minishell, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
 		}
 		lst = ft_lstnew(env);
 		if (!lst)
 		{
 			free_env(env);
-			exit_handler(minishell, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
 		}
-		ft_lstadd_back(&minishell->env_lst, lst);
+		ft_lstadd_back(&mini->env_lst, lst);
 		ev++;
 	}
+	shell_level(mini, mini->env_lst);
 }
 
 char	*ft_getenv(t_list *env_lst, char *env_name)

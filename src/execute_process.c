@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 19:46:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 22:28:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,18 +271,36 @@ int	prep_pipeline(t_operation *operation, t_operation *next_op)
 	return (EXIT_SUCCESS);
 }
 
+int	execute_process_circuit(int mode, t_operation *operation, t_op_ref *op_ref)
+{
+	if (mode)
+	{
+		if (op_ref->circuit_trigger)
+		{
+			if ((operation->operation_type == OPERATION_AND && !op_ref->lec)
+				|| (operation->operation_type == OPERATION_OR && op_ref->lec))
+				op_ref->circuit_trigger = 0;
+			else
+				return (1);
+		}
+		return (0);
+	}
+	if ((operation->operation_type == OPERATION_AND && op_ref->lec)
+			|| (operation->operation_type == OPERATION_OR && !op_ref->lec))
+	{
+		op_ref->circuit_trigger = 1;
+		execute_cmd_close_fds(operation);
+		return (1);
+	}
+	return (0);
+}
+
 int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 {
 	int	status;
 
-	if (op_ref->circuit_trigger)
-	{
-		if ((operations[i]->operation_type == OPERATION_AND && !op_ref->lec)
-			|| (operations[i]->operation_type == OPERATION_OR && op_ref->lec))
-			op_ref->circuit_trigger = 0;
-		else
-			return (EXIT_SUCCESS);
-	}
+	if (execute_process_circuit(1, operations[i], op_ref))
+		return (EXIT_SUCCESS);
 	status = execute_expander(op_ref, operations[i]);
 	if (status > 0)
 	{
@@ -290,13 +308,8 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 			return (EXIT_FAILURE);
 		create_trunc_out_files(operations[i]);
 		process_in_redirects(operations[i]);
-		if ((operations[i]->operation_type == OPERATION_AND && op_ref->lec)
-				|| (operations[i]->operation_type == OPERATION_OR && !op_ref->lec))
-		{
-			op_ref->circuit_trigger = 1;
-			execute_cmd_close_fds(operations[i]);
+		if (execute_process_circuit(0, operations[i], op_ref))
 			return (EXIT_SUCCESS);
-		}
 		if (operations[i]->cmd)
 		{
 			if (check_if_builtin(operations[i]->cmd))
@@ -317,8 +330,9 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 		}
 		else
 			execute_cmd_close_fds(operations[i]);
+		return (EXIT_SUCCESS);
 	}
-	return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 void	wait_childs(t_op_ref *op_ref)

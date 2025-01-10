@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/10 20:34:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 22:44:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	env_cmd_helper(char **res, t_env *env)
 	if (!temp)
 		return (0);
 	*res = temp;
-	temp = ft_strjoin(*res, env->name);
+	temp = ft_strjoin(*res, env->data);
 	free(*res);
 	if (!temp)
 		return (0);
