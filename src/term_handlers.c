@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/10 19:13:48 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 19:27:20 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,13 @@ static void	signal_newprompt(int signum)
 	rl_redisplay();
 }
 
-void	signal_exec(int signum)
-{
-	(void)signum;
-}
-
-void	signal_handler(int newprompt, int ign_sigint)
+void	signal_handler(int mode)
 {
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	if (newprompt)
+	if (mode)
 		sa.sa_handler = signal_newprompt;
-	else if (!ign_sigint)
-		sa.sa_handler = signal_exec;
 	else
 		sa.sa_handler = SIG_IGN;
 	sa.sa_flags = 0;

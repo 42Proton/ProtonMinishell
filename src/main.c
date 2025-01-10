@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 17:42:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 19:45:57 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	start_execution(t_minishell *mini)
 	op_ref->wait_childs = 0;
 	op_ref->is_exit = 0;
 	op_ref->circuit_trigger = 0;
+	op_ref->signal_term = 0;
 	op_ref->last_pid = -1;
 	status = execute_process(operations, op_ref);
 	free_operations(operations);

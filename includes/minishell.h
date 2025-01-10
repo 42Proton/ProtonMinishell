@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 19:14:00 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 19:45:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@
 # include <termcap.h>
 # include <termios.h>
 # include <unistd.h>
-
-extern int	g_signum;
 
 typedef struct s_env
 {
@@ -59,6 +57,7 @@ typedef	struct s_op_ref
 	int			is_exit;
 	int			last_pid;
 	int			circuit_trigger;
+	int			signal_term;
 	u_int32_t	curr_line;
 	t_list		*env_lst;
 }	t_op_ref;
@@ -308,7 +307,7 @@ void			unset_cmd(t_op_ref *op_ref, char **args);
 void			free_env(t_env *env);
 void			free_lst(t_list *lst);
 t_env			*alloc_env(char *name, char *data);
-void			signal_handler(int newprompt, int ign_sigint);
+void			signal_handler(int newprompt);
 int				terminals_config(void);
 void			add_sep_tokens(t_minishell *mini,
 					t_tokens_split *tokens_split, char *line);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:58:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 20:46:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 19:41:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	check_type_main_conditions(char *token, int previous_type)
 		type = OPEN_PARENTHESIS;
 	else if (*token == ')' && !token[1])
 		type = CLOSE_PARENTHESIS;
-	else if (!ft_strcmp(token, "&&") && ft_strlen(token) == 2)
+	else if (!ft_strcmp(token, "&&"))
 		type = AND_OPERATOR;
-	else if (!ft_strcmp(token, "||") && ft_strlen(token) == 2)
+	else if (!ft_strcmp(token, "||"))
 		type = OR_OPERATOR;
 	else if (*token == '|' && !token[1])
 		type = PIPE;

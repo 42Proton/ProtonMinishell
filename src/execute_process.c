@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 19:14:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 19:46:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,8 +277,8 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 
 	if (op_ref->circuit_trigger)
 	{
-		if ((operations[i]->operation_type == AND_OPERATOR && !op_ref->lec)
-			|| (operations[i]->operation_type == OR_OPERATOR && op_ref->lec))
+		if ((operations[i]->operation_type == OPERATION_AND && !op_ref->lec)
+			|| (operations[i]->operation_type == OPERATION_OR && op_ref->lec))
 			op_ref->circuit_trigger = 0;
 		else
 			return (EXIT_SUCCESS);
@@ -290,8 +290,8 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 			return (EXIT_FAILURE);
 		create_trunc_out_files(operations[i]);
 		process_in_redirects(operations[i]);
-		if ((operations[i]->operation_type == AND_OPERATOR && op_ref->lec)
-				|| (operations[i]->operation_type == OR_OPERATOR && !op_ref->lec))
+		if ((operations[i]->operation_type == OPERATION_AND && op_ref->lec)
+				|| (operations[i]->operation_type == OPERATION_OR && !op_ref->lec))
 		{
 			op_ref->circuit_trigger = 1;
 			execute_cmd_close_fds(operations[i]);
@@ -325,26 +325,27 @@ void	wait_childs(t_op_ref *op_ref)
 {
 	int	wstatus;
 
-	signal_handler(0, 1);
 	if (op_ref->last_pid != -1)
 	{
 		waitpid(op_ref->last_pid, &wstatus, 0);
 		if (WIFSIGNALED(wstatus))
+		{
 			*op_ref->lec = 128 + WTERMSIG(wstatus);
+			op_ref->signal_term = 1;
+		}
 		else
 			*op_ref->lec = WEXITSTATUS(wstatus);
 		op_ref->last_pid = -1;
 	}
 	while (wait(0) != -1)
 		;
-	signal_handler(0, 0);
 }
 
 int	execute_process(t_operation **operations, t_op_ref *op_ref)
 {
 	size_t	i;
 	
-	signal_handler(0, 0);
+	signal_handler(0);
 	if (!prep_redirections(op_ref, operations))
 		return (EXIT_FAILURE);
 	i = 0;
@@ -356,6 +357,8 @@ int	execute_process(t_operation **operations, t_op_ref *op_ref)
 			return (EXIT_SUCCESS);
 		if (op_ref->wait_childs)
 			wait_childs(op_ref);
+		if (op_ref->signal_term)
+			return (EXIT_SUCCESS);
 		i++;
 	}
 	wait_childs(op_ref);
