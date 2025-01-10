@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 00:55:05 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 17:42:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static void	start_execution(t_minishell *mini)
 	op_ref->curr_line = mini->curr_line;
 	op_ref->wait_childs = 0;
 	op_ref->is_exit = 0;
+	op_ref->circuit_trigger = 0;
+	op_ref->last_pid = -1;
 	status = execute_process(operations, op_ref);
 	free_operations(operations);
 	is_exit = op_ref->is_exit;
@@ -84,7 +86,7 @@ static void	start_shell(t_minishell *mini)
 	display_header();
 	while (1)
 	{
-		signal_handler();
+		signal_handler(1);
 		mini->curr_line++;
 		mini->line_read = readline("\001\033[35m\002ProtonShell>\001\033[33m\002");
 		if (!mini->line_read)
@@ -100,7 +102,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	signal_handler();
+	signal_handler(1);
 	minishell = minishell_prep(env);
 	if (terminals_config())
 		exit_handler(NULL, ERR_TERM);

@@ -3,44 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/05 15:12:23 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/10 19:13:48 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	signal_test(int signum)
+static void	signal_newprompt(int signum)
 {
-	if (signum == SIGQUIT)
-		return ;
+	(void)signum;
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	ft_printf("\n");
-	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
-void	signal_handler(void)
+void	signal_exec(int signum)
 {
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = signal_test;
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	(void)signum;
 }
 
-void	signal_execution(void)
+void	signal_handler(int newprompt, int ign_sigint)
 {
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = SIG_IGN;
+	if (newprompt)
+		sa.sa_handler = signal_newprompt;
+	else if (!ign_sigint)
+		sa.sa_handler = signal_exec;
+	else
+		sa.sa_handler = SIG_IGN;
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGTSTP, &sa, NULL);
 }
 
 int	terminals_config(void)

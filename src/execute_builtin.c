@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 01:34:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 15:14:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
 	if (is_child)
 	{
 		pid = fork();
+		if (pid == -1)
+			return (EXIT_FAILURE);
 		if (!pid)
 		{
 			op_ref->is_exit = 1;
@@ -98,9 +100,14 @@ int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
 			execute_cmd_close_fds(operations[i]);
 			return (status);
 		}
+		else
+			op_ref->last_pid = pid;
 	}
 	else
+	{
+		op_ref->last_pid = -1;
 		status = builtin_cmd_process(operations, i, op_ref);
+	}
 	execute_cmd_close_fds(operations[i]);
 	return (status);
 }

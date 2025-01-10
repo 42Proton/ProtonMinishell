@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 01:09:18 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 19:14:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,10 +210,19 @@ void	execute_cmd_close_fds(t_operation *operation)
 		close(operation->redirect_out_fd);
 }
 
+void	restore_sigint()
+{
+	struct sigaction sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, 0);
+}
+
 int	execute_cmd(t_op_ref *op_ref, t_operation *operation, t_operation *next_op)
 {
 	int		pid;
-	int 	wstatus;
 	char	**env;
 
 	env = env_lst_to_2d_arr(op_ref);
@@ -224,6 +233,7 @@ int	execute_cmd(t_op_ref *op_ref, t_operation *operation, t_operation *next_op)
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
+		restore_sigint();
 		execute_cmd_redirections(operation);
 		operation->args[0] = operation->cmd;
 		execve(operation->cmd_path, operation->args, env);
@@ -231,12 +241,10 @@ int	execute_cmd(t_op_ref *op_ref, t_operation *operation, t_operation *next_op)
 		execute_cmd_close_fds(operation);
 		return (-1);
 	}
+	op_ref->last_pid = pid;
 	free_array((void **)env);
 	if (next_op && next_op->operation_type != OPERATION_PIPE)
-	{
-		wait(&wstatus);
-		*op_ref->lec = WEXITSTATUS(wstatus);
-	}
+		op_ref->wait_childs = 1;
 	execute_cmd_close_fds(operation);
 	return (EXIT_SUCCESS);
 }
@@ -267,6 +275,14 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 {
 	int	status;
 
+	if (op_ref->circuit_trigger)
+	{
+		if ((operations[i]->operation_type == AND_OPERATOR && !op_ref->lec)
+			|| (operations[i]->operation_type == OR_OPERATOR && op_ref->lec))
+			op_ref->circuit_trigger = 0;
+		else
+			return (EXIT_SUCCESS);
+	}
 	status = execute_expander(op_ref, operations[i]);
 	if (status > 0)
 	{
@@ -274,6 +290,13 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 			return (EXIT_FAILURE);
 		create_trunc_out_files(operations[i]);
 		process_in_redirects(operations[i]);
+		if ((operations[i]->operation_type == AND_OPERATOR && op_ref->lec)
+				|| (operations[i]->operation_type == OR_OPERATOR && !op_ref->lec))
+		{
+			op_ref->circuit_trigger = 1;
+			execute_cmd_close_fds(operations[i]);
+			return (EXIT_SUCCESS);
+		}
 		if (operations[i]->cmd)
 		{
 			if (check_if_builtin(operations[i]->cmd))
@@ -298,24 +321,43 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 	return (EXIT_SUCCESS);
 }
 
+void	wait_childs(t_op_ref *op_ref)
+{
+	int	wstatus;
+
+	signal_handler(0, 1);
+	if (op_ref->last_pid != -1)
+	{
+		waitpid(op_ref->last_pid, &wstatus, 0);
+		if (WIFSIGNALED(wstatus))
+			*op_ref->lec = 128 + WTERMSIG(wstatus);
+		else
+			*op_ref->lec = WEXITSTATUS(wstatus);
+		op_ref->last_pid = -1;
+	}
+	while (wait(0) != -1)
+		;
+	signal_handler(0, 0);
+}
+
 int	execute_process(t_operation **operations, t_op_ref *op_ref)
 {
 	size_t	i;
-	int		wstatus;
 	
+	signal_handler(0, 0);
 	if (!prep_redirections(op_ref, operations))
 		return (EXIT_FAILURE);
 	i = 0;
-	signal_execution();
 	while (operations[i])
 	{
 		if (execute_process_helper(operations, i, op_ref) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		if (op_ref->is_exit)
 			return (EXIT_SUCCESS);
+		if (op_ref->wait_childs)
+			wait_childs(op_ref);
 		i++;
 	}
-	while (wait(&wstatus) != -1)
-		*op_ref->lec = WEXITSTATUS(wstatus);
+	wait_childs(op_ref);
 	return (EXIT_SUCCESS);
 }
