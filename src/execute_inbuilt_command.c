@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_inbuilt_command.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/09 12:22:09 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/10 22:02:38 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,26 @@
 
 int	execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args)
 {
+	int	status;
+
+	status = EXIT_SUCCESS;
+	op_ref->lec = 0;
 	if (!ft_strcmp(cmd, "cd"))
 		cd_cmd(op_ref, args);
 	if (!ft_strcmp(cmd, "pwd"))
-		pwd_cmd();
+		pwd_cmd(op_ref);
 	if (!ft_strcmp(cmd, "echo"))
-		echo_cmd(args);
+		status = echo_cmd(args);
 	if (!ft_strcmp(cmd, "env"))
-		env_cmd(op_ref);
+		status = env_cmd(op_ref);
 	if (!ft_strcmp(cmd, "unset"))
 		unset_cmd(op_ref, args);
-	// if (!ft_strcmp(cmd, "export"))
-	// 	export_cmd(minishell, args[1]);
-	return (1);
+	if (!ft_strcmp(cmd, "export"))
+		export_cmd(op_ref, args);
+	if (status == EXIT_FAILURE)
+	{
+		*op_ref->lec = -1;
+		return (status);
+	}
+	return (EXIT_SUCCESS);
 }

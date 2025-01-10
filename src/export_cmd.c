@@ -6,44 +6,70 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:10:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 16:21:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 22:09:30 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	export_print_error(t_env *env)
+static void	export_print_error(char *arg)
 {
-	ft_dprintf(STDERR_FILENO, "export: not valid in this context: %s\n",
-		env->name);
-	free_env(env);
+	ft_dprintf(STDERR_FILENO, "export: '%s': not a valid identifier\n",
+		arg);
 }
 
-int	export_cmd(t_minishell *minishell, char *arg2)
+int	export_cmd_helper(t_op_ref *op_ref, char *arg)
 {
 	t_env	*env;
 
-	if (!arg2)
-	{
-		sort_print_env(minishell);
-		return (1);
-	}
-	if (!check_export_arg(arg2))
-		return (1);
 	env = ft_calloc(1, sizeof(t_env));
 	if (!env)
-		return (0);
-	if (!parse_env_data(arg2, env))
+		return (-1);
+	if (!parse_env_data(arg, env))
 	{
 		free_env(env);
-		return (0);
+		return (-1);
 	}
 	if (!check_env_name(env->name))
 	{
-		export_print_error(env);
-		return (1);
+		export_print_error(arg);
+		free_env(env);
+		return (0);
 	}
-	ft_setenv(&minishell->env_lst, env->name, env->data);
+	if (ft_setenv(&op_ref->env_lst, env->name, env->data) == -1)
+	{
+		free_env(env);
+		return (-1);
+	}
 	free_env(env);
 	return (1);
+}
+
+int	export_cmd(t_op_ref *op_ref, char **args)
+{
+	int	status;
+
+	args++;
+	if (!*args)
+	{
+		if (!sort_print_env(op_ref->env_lst))
+			return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
+	}
+	while (*args)
+	{
+		status = export_cmd_helper(op_ref, *args);
+		if (status == -1)
+		{
+			perror("export");
+			return (EXIT_FAILURE);
+		}
+		if (status == 0)
+		{
+			*op_ref->lec = 1;
+			return (EXIT_SUCCESS);
+		}
+		args++;
+	}
+	return (EXIT_SUCCESS);
 }

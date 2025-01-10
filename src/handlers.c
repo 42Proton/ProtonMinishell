@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/09 12:14:41 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/10 20:45:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,5 @@ void	exit_handler(t_minishell *mini, int error)
 		lec = mini->last_exit_code;
 		free(mini);
 	}
-	if (error != NONE)
-		exit(EXIT_FAILURE);
 	exit(lec);
 }

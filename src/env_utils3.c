@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 02:19:37 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 21:05:52 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 21:06:36 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,75 @@ int	ft_setenv(t_list **env_lst, char *name, char *data)
 	return (0);
 }
 
-int	sort_print_env(t_minishell *minishell)
+int	sort_print_env_helper2(char **res, t_env *env)
 {
-	t_list	*lst;
-	t_list	*temp;
+	char	*temp;
+	
+	temp = ft_strjoin(*res, env->name);
+	free(*res);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin(*res, "=");
+	free(*res);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin(*res, env->data);
+	free(*res);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin(*res, "\n");
+	free(*res);
+	if (!temp)
+		return (0);
+	*res = temp;
+	return (1);
+}
+
+int	sort_print_env_helper(t_list *new_lst, char **res)
+{
 	t_env	*env;
 
-	lst = ft_lstnew(minishell->env_lst->content);
-	if (!lst)
-		return (0);
-	if (!sort_env(minishell, &lst))
+	while (new_lst)
 	{
-		free_lst(lst);
-		return (0);
+		env = (t_env *)new_lst->content;
+		if (!sort_print_env_helper2(res, env))
+		{
+			free_lst(new_lst);
+			return (0);
+		}
+		new_lst = new_lst->next;
 	}
-	temp = lst;
-	while (temp)
-	{
-		env = (t_env *)temp->content;
-		ft_printf("%s=%s\n", env->name, env->data);
-		temp = temp->next;
-	}
-	free_lst(lst);
+	free_lst(new_lst);
 	return (1);
+}
+
+int	sort_print_env(t_list *lst)
+{
+	t_list	*new_lst;
+	char	*res;
+
+	if (!lst)
+		return (EXIT_SUCCESS);
+	new_lst = ft_lstnew(lst->content);
+	if (!new_lst)
+		return (EXIT_FAILURE);
+	if (!sort_env(lst, &new_lst))
+	{
+		free_lst(new_lst);
+		return (EXIT_FAILURE);
+	}
+	res = ft_strdup("");
+	if (!res)
+	{
+		free_lst(new_lst);
+		return (EXIT_FAILURE);
+	}
+	if (!sort_print_env_helper(new_lst, &res))
+		return (EXIT_FAILURE);
+	ft_printf("%s", res);
+	free(res);
+	return (EXIT_SUCCESS);
 }

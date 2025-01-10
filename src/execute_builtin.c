@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 15:14:33 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 20:44:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,9 @@ int	builtin_cmd_process(t_operation **operations, size_t i, t_op_ref *op_ref)
 		return (EXIT_FAILURE);
 	}
 	status = execute_inbuilt_command(op_ref, operations[i]->cmd, operations[i]->args);
-	*op_ref->lec = status;
 	if (builtin_cmd_process_recover(fds, operations[i]) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (status == -1)
+	if (status == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

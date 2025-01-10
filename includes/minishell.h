@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 19:45:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 22:02:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,6 @@ int				expander_remove_quotes_iter(char *s, t_tok_expander *tok_exp);
 int				exp_pre_wildcards_quotes_condition(char *s, t_tok_expander *tok_exp);
 void			exp_clean(t_tok_expander *tok_exp);
 int				tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst);
-int				check_export_arg(char *arg);
 int				prep_op_main_conditions(t_list *lst, size_t *p_count,
 					t_operation **operations, size_t *i);
 t_operation		**operations_alloc(ssize_t sep_count);
@@ -288,10 +287,9 @@ int				ft_unsetenv(t_list **env_lst, char *name);
 int				ft_setenv(t_list **env_lst, char *name, char *data);
 int				check_env_name(char *name);
 int				parse_env_data(char *data, t_env *env);
-int				export_cmd(t_minishell *minishell, char *arg2);
-int				sort_env(t_minishell *minishell,
-					t_list **sorted_env);
-int				sort_print_env(t_minishell *minishell);
+int				export_cmd(t_op_ref *op_ref, char **args);
+int				sort_env(t_list *lst, t_list **sorted_env);
+int				sort_print_env(t_list *lst);
 char			*ft_getenv(t_list *env_lst, char *env_name);
 char			*get_exec_path(t_op_ref *op_ref, char *cmd);
 void			prep_minishell_env(t_minishell *minishell,
@@ -300,7 +298,7 @@ int				execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args);
 void			exit_handler(t_minishell *minishell, int error);
 void			print_error(int error);
 void			cd_cmd(t_op_ref *op_ref, char **args);
-void			pwd_cmd();
+void			pwd_cmd(t_op_ref *op_ref);
 int				echo_cmd(char **args);
 int				env_cmd(t_op_ref *op_ref);
 void			unset_cmd(t_op_ref *op_ref, char **args);

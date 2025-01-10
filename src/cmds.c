@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/10 00:56:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 20:34:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,37 @@ void	cd_cmd(t_op_ref *op_ref, char **args)
 	if (!args[i])
 	{
 		if (chdir(ft_getenv(op_ref->env_lst, "HOME")) == -1)
+		{
 			perror("minishell: cd");
+			*op_ref->lec = 1;
+		}
+		return ;
 	}
+	if (args[i + 1])
+		ft_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
+	if (args[i + 1])
+		*op_ref->lec = 1;
 	else
 	{
-		if (args[i + 1])
-			ft_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
-		else
-			if (chdir(args[i]) == -1)
-				perror("minishell: cd");
+		if (chdir(args[i]) == -1)
+		{
+			perror("minishell: cd");
+			*op_ref->lec = 1;
+		}
 	}
+	return ;
 }
 
-void	pwd_cmd()
+void	pwd_cmd(t_op_ref *op_ref)
 {
 	char	cwd[PATH_MAX + 1];
 	if (getcwd(cwd, PATH_MAX))
 		ft_printf("%s\n", cwd);
 	else
+	{
 		perror("minishell: pwd");
+		*op_ref->lec = 1;
+	}
 }
 
 int	echo_cmd_helper(char **res, char **args)

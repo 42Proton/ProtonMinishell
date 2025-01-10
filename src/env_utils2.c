@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:49:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/02 21:03:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/10 20:57:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ static void	sort_env_helper(t_list **sorted_env, t_list *new_node)
 	new_node->next = tmp;
 }
 
-int	sort_env(t_minishell *minishell, t_list **sorted_env)
+int	sort_env(t_list *lst, t_list **sorted_env)
 {
 	t_list	*node;
 	t_list	*new_node;
 
-	node = minishell->env_lst->next;
+	node = lst->next;
 	while (node)
 	{
 		new_node = ft_lstnew(node->content);
