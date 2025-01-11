@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 17:35:48 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/11 20:54:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,6 @@ int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
-		restore_sigint();
 		if (execute_process(ops[i]->operations, op_ref, 1) == EXIT_FAILURE)
 		{
 			*op_ref->lec = -1;
