@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 22:42:45 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/11 16:38:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ void			print_heredoc_warning(t_op_ref *op_ref,
 					t_operation *operation, size_t j);
 char			**env_lst_to_2d_arr(t_op_ref *op_ref);
 int				check_if_cmd_exist(char *cmd);
-int				execute_process(t_operation **operations, t_op_ref *op_ref);
+int				execute_process(t_operation **operations, t_op_ref *op_ref, int is_subshell);
 int				op_prep_args(t_operation *operation, t_list *lst);
 int				op_get_args(t_operation *operation, t_list *lst);
 int				check_tok_prev_cmd(t_list *lst);

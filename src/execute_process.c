@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 22:28:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/11 17:17:04 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,68 +271,100 @@ int	prep_pipeline(t_operation *operation, t_operation *next_op)
 	return (EXIT_SUCCESS);
 }
 
-int	execute_process_circuit(int mode, t_operation *operation, t_op_ref *op_ref)
+int	execute_process_circuit(t_operation *operation, t_op_ref *op_ref)
 {
-	if (mode)
+	if (op_ref->circuit_trigger)
 	{
-		if (op_ref->circuit_trigger)
+		if ((operation->operation_type == OPERATION_AND && !*op_ref->lec)
+			|| (operation->operation_type == OPERATION_OR && *op_ref->lec))
+			op_ref->circuit_trigger = 0;
+		else
 		{
-			if ((operation->operation_type == OPERATION_AND && !op_ref->lec)
-				|| (operation->operation_type == OPERATION_OR && op_ref->lec))
-				op_ref->circuit_trigger = 0;
-			else
-				return (1);
+			execute_cmd_close_fds(operation);
+			return (1);
 		}
-		return (0);
 	}
-	if ((operation->operation_type == OPERATION_AND && op_ref->lec)
-			|| (operation->operation_type == OPERATION_OR && !op_ref->lec))
+	else
 	{
-		op_ref->circuit_trigger = 1;
-		execute_cmd_close_fds(operation);
-		return (1);
+		if ((operation->operation_type == OPERATION_AND && *op_ref->lec)
+			|| (operation->operation_type == OPERATION_OR && !*op_ref->lec))
+		{
+			op_ref->circuit_trigger = 1;
+			execute_cmd_close_fds(operation);
+			return (1);
+		}
 	}
 	return (0);
+}
+
+int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (EXIT_FAILURE);
+	if (!pid)
+	{
+		if (execute_process(ops[i]->operations, op_ref, 1) == EXIT_FAILURE)
+		{
+			*op_ref->lec = -1;
+			execute_cmd_close_fds(ops[i]);
+			return (EXIT_FAILURE);
+		}
+		op_ref->is_exit = 1;
+	}
+	else
+	{
+		op_ref->last_pid = pid;
+		if (ops[i + 1] && ops[i + 1]->operation_type != OPERATION_PIPE)
+			op_ref->wait_childs = 1;
+	}
+	execute_cmd_close_fds(ops[i]);
+	return (EXIT_SUCCESS);
 }
 
 int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 {
 	int	status;
 
-	if (execute_process_circuit(1, operations[i], op_ref))
-		return (EXIT_SUCCESS);
 	status = execute_expander(op_ref, operations[i]);
-	if (status > 0)
+	if (!status)
+		return (EXIT_SUCCESS);
+	if (status == -1)
+		return (EXIT_FAILURE);
+	if (prep_pipeline(operations[i], operations[i + 1]))
+		return (EXIT_FAILURE);
+	create_trunc_out_files(operations[i]);
+	process_in_redirects(operations[i]);
+	if (execute_process_circuit(operations[i], op_ref))
+		return (EXIT_SUCCESS);
+	if (operations[i]->operations)
 	{
-		if (prep_pipeline(operations[i], operations[i + 1]))
-			return (EXIT_FAILURE);
-		create_trunc_out_files(operations[i]);
-		process_in_redirects(operations[i]);
-		if (execute_process_circuit(0, operations[i], op_ref))
-			return (EXIT_SUCCESS);
-		if (operations[i]->cmd)
+		status = execute_subshell(operations, i, op_ref);
+		return (status);
+	}
+	else if (operations[i]->cmd)
+	{
+		if (check_if_builtin(operations[i]->cmd))
 		{
-			if (check_if_builtin(operations[i]->cmd))
-			{
-				status = builtin_cmd(operations, i, op_ref);
-				return (status);
-			}
-			else
-			{
-				status = pre_execute_external_cmd(op_ref, operations[i]);
-				if (status == -1)
-					return (EXIT_FAILURE);
-				if (status)
-					status = execute_cmd(op_ref, operations[i], operations[i + 1]);
-				if (status == -1)
-					return (EXIT_FAILURE);
-			}
+			status = builtin_cmd(operations, i, op_ref);
+			return (status);
 		}
 		else
-			execute_cmd_close_fds(operations[i]);
-		return (EXIT_SUCCESS);
+		{
+			status = pre_execute_external_cmd(op_ref, operations[i]);
+			if (status == -1)
+				return (EXIT_FAILURE);
+			if (status)
+				status = execute_cmd(op_ref, operations[i], operations[i + 1]);
+			if (status == -1)
+				return (EXIT_FAILURE);
+		}
 	}
-	return (EXIT_FAILURE);
+	else
+		execute_cmd_close_fds(operations[i]);
+	return (EXIT_SUCCESS);
 }
 
 void	wait_childs(t_op_ref *op_ref)
@@ -355,13 +387,16 @@ void	wait_childs(t_op_ref *op_ref)
 		;
 }
 
-int	execute_process(t_operation **operations, t_op_ref *op_ref)
+int	execute_process(t_operation **operations, t_op_ref *op_ref, int is_subshell)
 {
 	size_t	i;
 	
-	signal_handler(0);
-	if (!prep_redirections(op_ref, operations))
-		return (EXIT_FAILURE);
+	if (!is_subshell)
+	{
+		signal_handler(0);
+		if (!prep_redirections(op_ref, operations))
+			return (EXIT_FAILURE);
+	}
 	i = 0;
 	while (operations[i])
 	{
