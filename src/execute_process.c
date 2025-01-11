@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 20:54:28 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/11 23:33:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,13 +170,18 @@ int	pre_execute_external_cmd(t_op_ref *op_ref, t_operation *operation)
 	return (1);
 }
 
-int	execute_cmd_redirections(t_operation *operation)
+int	execute_cmd_redirections(t_operation *operation, int is_ext)
 {
 	int	in_fd;
 	int	out_fd;
 
 	in_fd = -1;
 	out_fd = -1;
+
+	if (operation->parent_in_fd != -1)
+		in_fd = operation->parent_in_fd;
+	if (operation->parent_out_fd != -1)
+		out_fd = operation->parent_out_fd;
 	if (operation->pipe_fds_in)
 		in_fd = operation->pipe_fds_in[0];
 	if (operation->pipe_fds_out)
@@ -187,13 +192,15 @@ int	execute_cmd_redirections(t_operation *operation)
 		out_fd = operation->redirect_out_fd;
 	if (operation->pipe_fds_out)
 		close(operation->pipe_fds_out[0]);
-	if (in_fd != -1 && dup2(in_fd, STDIN_FILENO) == -1)
-		return (0);
 	if (in_fd != -1)
+		if (dup2(in_fd, STDIN_FILENO) == -1)
+			return (0);
+	if (in_fd != -1 && (in_fd != operation->parent_in_fd || is_ext))
 		close(in_fd);
-	if (out_fd != -1 && dup2(out_fd, STDOUT_FILENO) == -1)
-		return (0);
 	if (out_fd != -1)
+		if (dup2(out_fd, STDOUT_FILENO) == -1)
+			return (0);
+	if (out_fd != -1 && (out_fd != operation->parent_out_fd || is_ext))
 		close(out_fd);
 	return (1);
 }
@@ -234,7 +241,7 @@ int	execute_cmd(t_op_ref *op_ref, t_operation *operation, t_operation *next_op)
 	if (!pid)
 	{
 		restore_sigint();
-		execute_cmd_redirections(operation);
+		execute_cmd_redirections(operation, 1);
 		operation->args[0] = operation->cmd;
 		execve(operation->cmd_path, operation->args, env);
 		free_array((void **)env);
@@ -297,6 +304,16 @@ int	execute_process_circuit(t_operation *operation, t_op_ref *op_ref)
 	return (0);
 }
 
+void	subshell_apply_fds(t_operation *op, t_operation **subops)
+{
+	while (*subops)
+	{
+		(*subops)->parent_in_fd = op->redirect_in_fd;
+		(*subops)->parent_out_fd = op->redirect_out_fd;
+		subops++;
+	}
+}
+
 int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 {
 	int	pid;
@@ -306,6 +323,7 @@ int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
+		subshell_apply_fds(ops[i], ops[i]->operations);
 		if (execute_process(ops[i]->operations, op_ref, 1) == EXIT_FAILURE)
 		{
 			*op_ref->lec = -1;
