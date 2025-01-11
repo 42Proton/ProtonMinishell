@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 02:19:37 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 21:06:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/11 20:58:36 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,6 @@ int	sort_print_env(t_list *lst)
 		return (EXIT_FAILURE);
 	ft_printf("%s", res);
 	free(res);
+	free_lst(new_lst);
 	return (EXIT_SUCCESS);
 }
