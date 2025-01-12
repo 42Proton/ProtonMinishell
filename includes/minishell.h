@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 23:33:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/12 23:48:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
-void			execute_cmd_close_fds(t_operation *operation);
+void			execute_cmd_close_fds(t_operation *operation, int is_ext);
 int				execute_cmd_redirections(t_operation *operation, int is_ext);
 int				builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref);
 int				check_if_builtin(char *token);

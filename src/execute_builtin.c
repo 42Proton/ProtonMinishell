@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 23:33:52 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 00:22:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
 		{
 			op_ref->is_exit = 1;
 			status = builtin_cmd_process(operations, i, op_ref);
-			execute_cmd_close_fds(operations[i]);
+			execute_cmd_close_fds(operations[i], 1);
 			return (status);
 		}
 		else
@@ -101,6 +101,6 @@ int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
 		op_ref->last_pid = -1;
 		status = builtin_cmd_process(operations, i, op_ref);
 	}
-	execute_cmd_close_fds(operations[i]);
+	execute_cmd_close_fds(operations[i], 0);
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 16:38:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 00:51:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,10 @@ static void	start_shell_helper(t_minishell *mini)
 		if (status)
 			start_execution(mini);
 		else
+		{
+			ft_lstclear(&mini->line_tokens, free_tokens);
 			mini->last_exit_code = 2;
+		}
 	}
 	else
 	{
