@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 12:25:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 22:19:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 18:20:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*get_exec_path(t_op_ref *op_ref, char *cmd)
 	char	*tmp;
 
 	tmp = ft_strdup("");
-	path = ft_getenv(op_ref->env_lst, "PATH");
+	path = ft_getenv(*op_ref->env_lst, "PATH");
 	if (!path)
 		return (tmp);
 	path_split = ft_split(path, ':');

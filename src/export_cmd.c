@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:10:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 20:58:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 18:19:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	export_cmd_helper(t_op_ref *op_ref, char *arg)
 		free_env(env);
 		return (0);
 	}
-	if (ft_setenv(&op_ref->env_lst, env->name, env->data) == -1)
+	if (ft_setenv(op_ref->env_lst, env->name, env->data) == -1)
 	{
 		free_env(env);
 		return (-1);
@@ -52,7 +52,7 @@ int	export_cmd(t_op_ref *op_ref, char **args)
 	args++;
 	if (!*args)
 	{
-		if (!sort_print_env(op_ref->env_lst))
+		if (!sort_print_env(*op_ref->env_lst))
 			return (EXIT_FAILURE);
 		return (EXIT_SUCCESS);
 	}

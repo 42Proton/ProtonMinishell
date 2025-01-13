@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 17:39:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 17:55:53 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,7 +362,11 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 		return (EXIT_FAILURE);
 	if (prep_pipeline(operations[i], operations[i + 1]))
 		return (EXIT_FAILURE);
-	create_trunc_out_files(operations[i]);
+	if (create_trunc_out_files(operations[i]) == 0)
+	{
+		*op_ref->lec = 1;
+		return (EXIT_SUCCESS);
+	}
 	process_in_redirects(operations[i]);
 	if (execute_process_circuit(operations[i], op_ref))
 		return (EXIT_SUCCESS);

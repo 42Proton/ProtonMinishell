@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 14:18:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 18:18:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef	struct s_op_ref
 	int			circuit_trigger;
 	int			signal_term;
 	u_int32_t	curr_line;
-	t_list		*env_lst;
+	t_list		**env_lst;
 }	t_op_ref;
 
 typedef struct s_pre_process

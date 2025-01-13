@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/10 22:44:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 18:19:20 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	cd_cmd(t_op_ref *op_ref, char **args)
 	i = 1;
 	if (!args[i])
 	{
-		if (chdir(ft_getenv(op_ref->env_lst, "HOME")) == -1)
+		if (chdir(ft_getenv(*op_ref->env_lst, "HOME")) == -1)
 		{
 			perror("minishell: cd");
 			*op_ref->lec = 1;
@@ -139,7 +139,7 @@ int	env_cmd(t_op_ref *op_ref)
 	t_list	*lst;
 	char	*res;
 
-	lst = op_ref->env_lst;
+	lst = *op_ref->env_lst;
 	res = ft_strdup("");
 	if (!res)
 		return (EXIT_FAILURE);
@@ -159,7 +159,7 @@ void	unset_cmd(t_op_ref *op_ref, char **args)
 	args++;
 	while (*args)
 	{
-		ft_unsetenv(&op_ref->env_lst, *args);
+		ft_unsetenv(op_ref->env_lst, *args);
 		args++;
 	}
 }
