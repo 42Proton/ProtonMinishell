@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 20:24:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 23:54:53 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ static void	start_execution(t_minishell *mini)
 	is_exit = op_ref->is_exit;
 	free(op_ref);
 	if (status == EXIT_FAILURE)
+	{
+		mini->last_exit_code = -1;
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+	}
 	if (is_exit)
 		exit_handler(mini, NONE);
 }

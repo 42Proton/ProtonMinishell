@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 17:55:53 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/14 00:15:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,10 +334,7 @@ int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 		subshell_apply_fds(ops[i]);
 		execute_cmd_close_fds(ops[i], 1);
 		if (execute_process(ops[i]->operations, op_ref, 1) == EXIT_FAILURE)
-		{
-			*op_ref->lec = -1;
 			return (EXIT_FAILURE);
-		}
 		op_ref->is_exit = 1;
 		return (EXIT_SUCCESS);
 	}
@@ -379,6 +376,8 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 	{
 		if (check_if_builtin(operations[i]->cmd))
 		{
+			if (ft_setenv(op_ref->env_lst, "_", operations[i]->cmd) == -1)
+				return (EXIT_FAILURE);
 			status = builtin_cmd(operations, i, op_ref);
 			return (status);
 		}
@@ -388,7 +387,11 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 			if (status == -1)
 				return (EXIT_FAILURE);
 			if (status)
+			{
+				if (ft_setenv(op_ref->env_lst, "_", operations[i]->cmd_path) == -1)
+					return (EXIT_FAILURE);
 				status = execute_cmd(op_ref, operations[i], operations[i + 1]);
+			}
 			if (status == -1)
 				return (EXIT_FAILURE);
 		}
@@ -421,25 +424,54 @@ void	wait_childs(t_op_ref *op_ref)
 	}
 }
 
-int	execute_process(t_operation **operations, t_op_ref *op_ref, int is_subshell)
+int	update_underscore_env(t_operation **ops, size_t i, t_op_ref *op_ref)
+{
+	char	*data;
+	size_t	j;
+
+	j = 1;
+	if ((ops[i + 1] && ops[i + 1]->operation_type == OPERATION_PIPE)
+		|| ops[i]->operation_type == OPERATION_PIPE)
+		return (EXIT_SUCCESS);
+	if (ops[i]->args[j])
+	{
+		while (ops[i]->args[j])
+			j++;
+		data = ops[i]->args[j - 1];
+	}
+	else
+	{
+		if (ops[i]->cmd_path)
+			data = ops[i]->cmd_path;
+		else
+			data = ops[i]->cmd;
+	}
+	if (ft_setenv(op_ref->env_lst, "_", data) == -1)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+int	execute_process(t_operation **ops, t_op_ref *op_ref, int is_subshell)
 {
 	size_t	i;
 	
 	if (!is_subshell)
 	{
 		signal_handler(0);
-		if (!prep_redirections(op_ref, operations))
+		if (!prep_redirections(op_ref, ops))
 			return (EXIT_FAILURE);
 	}
 	i = 0;
-	while (operations[i])
+	while (ops[i])
 	{
-		if (execute_process_helper(operations, i, op_ref) == EXIT_FAILURE)
+		if (execute_process_helper(ops, i, op_ref) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		if (op_ref->wait_childs)
 			wait_childs(op_ref);
 		if (op_ref->signal_term || op_ref->is_exit)
 			return (EXIT_SUCCESS);
+		if (update_underscore_env(ops, i, op_ref) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 		i++;
 	}
 	wait_childs(op_ref);
