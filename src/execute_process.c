@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 15:21:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 17:39:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -432,11 +432,9 @@ int	execute_process(t_operation **operations, t_op_ref *op_ref, int is_subshell)
 	{
 		if (execute_process_helper(operations, i, op_ref) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		if (op_ref->is_exit)
-			return (EXIT_SUCCESS);
 		if (op_ref->wait_childs)
 			wait_childs(op_ref);
-		if (op_ref->signal_term)
+		if (op_ref->signal_term || op_ref->is_exit)
 			return (EXIT_SUCCESS);
 		i++;
 	}
