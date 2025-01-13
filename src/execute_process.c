@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 01:12:53 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 14:26:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,6 @@ int	pre_execute_external_cmd(t_op_ref *op_ref, t_operation *operation)
 
 void	execute_cmd_close_fds(t_operation *operation, int is_ext)
 {
-	if (operation->parent_in_fd != -1 && is_ext)
-		close(operation->parent_in_fd);
-	if (operation->parent_out_fd != -1 && is_ext)
-		close(operation->parent_out_fd);
 	if (operation->pipe_fds_in)
 		close(operation->pipe_fds_in[0]);
 	if (operation->pipe_fds_out)
@@ -197,10 +193,6 @@ int	execute_cmd_redirections(t_operation *operation, int is_ext)
 
 	in_fd = -1;
 	out_fd = -1;
-	if (operation->parent_in_fd != -1)
-		in_fd = operation->parent_in_fd;
-	if (operation->parent_out_fd != -1)
-		out_fd = operation->parent_out_fd;
 	if (operation->pipe_fds_in)
 		in_fd = operation->pipe_fds_in[0];
 	if (operation->pipe_fds_out)
@@ -215,7 +207,6 @@ int	execute_cmd_redirections(t_operation *operation, int is_ext)
 	if (out_fd != -1)
 		if (dup2(out_fd, STDOUT_FILENO) == -1)
 			return (0);
-	//echo test | (cat && ls | (wc -) | cat) | cat
 	execute_cmd_close_fds(operation, is_ext);
 	return (1);
 }
@@ -306,23 +297,44 @@ int	execute_process_circuit(t_operation *operation, t_op_ref *op_ref)
 	return (0);
 }
 
-void	subshell_apply_fds(t_operation *op, t_operation **subops)
+int	subshell_apply_fds(t_operation *op)
 {
-	while (*subops)
+	int	fds[2];
+
+	ft_memset(fds, -1, sizeof(int) * 2);
+	if (op->pipe_fds_in)
+		fds[0] = op->pipe_fds_in[0];
+	if (op->redirect_in_fd != -1)
+		fds[0] = op->redirect_in_fd;
+	if (op->pipe_fds_out)
 	{
-		if (op->pipe_fds_in)
-			(*subops)->parent_in_fd = op->pipe_fds_in[0];
-		if (op->redirect_in_fd != -1)
-			(*subops)->parent_in_fd = op->redirect_in_fd;
-		if (op->pipe_fds_out)
-		{
-			(*subops)->parent_out_fd = op->pipe_fds_out[1];
-			close(op->pipe_fds_out[0]);
-		}
-		if (op->redirect_out_fd != -1)
-			(*subops)->parent_out_fd = op->redirect_out_fd;
-		subops++;
+		fds[1] = op->pipe_fds_out[1];
+		close(op->pipe_fds_out[0]);
 	}
+	if (op->redirect_out_fd != -1)
+		fds[1] = op->redirect_out_fd;
+	if (fds[0] != -1)
+		if (dup2(fds[0], STDIN_FILENO) == -1)
+			return (0);
+	if (fds[1] != -1)
+		if (dup2(fds[1], STDOUT_FILENO) == -1)
+			return (0);
+	return (1);
+}
+
+void	subshell_close_fds(t_operation *op)
+{
+	if (op->pipe_fds_in)
+		close(op->pipe_fds_in[0]);
+	if (op->redirect_in_fd != -1)
+		close(op->redirect_in_fd);
+	if (op->pipe_fds_out)
+	{
+		close(op->pipe_fds_out[1]);
+		close(op->pipe_fds_out[0]);
+	}
+	if (op->redirect_out_fd != -1)
+		close(op->redirect_out_fd);
 }
 
 int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
@@ -334,11 +346,8 @@ int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
-		if (ops[i]->parent_in_fd != -1)
-			close(ops[i]->parent_in_fd);
-		if (ops[i]->parent_out_fd != -1)
-			close(ops[i]->parent_out_fd);
-		subshell_apply_fds(ops[i], ops[i]->operations);
+		subshell_apply_fds(ops[i]);
+		subshell_close_fds(ops[i]);
 		if (execute_process(ops[i]->operations, op_ref, 1) == EXIT_FAILURE)
 		{
 			*op_ref->lec = -1;

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/12 23:48:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 14:18:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ typedef struct s_operation
 	size_t				n_out;
 	size_t				n_in;
 	size_t				n_args;
-	int					parent_in_fd;
-	int					parent_out_fd;
 	int					redirect_in_fd;
 	int					redirect_out_fd;
 	int					*pipe_fds_in;
