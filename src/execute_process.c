@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/14 00:15:31 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/14 00:33:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,7 +397,10 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 		}
 	}
 	else
+	{
+		ft_unsetenv(op_ref->env_lst, "_");
 		execute_cmd_close_fds(operations[i], 0);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -443,8 +446,10 @@ int	update_underscore_env(t_operation **ops, size_t i, t_op_ref *op_ref)
 	{
 		if (ops[i]->cmd_path)
 			data = ops[i]->cmd_path;
-		else
+		else if (ops[i]->cmd)
 			data = ops[i]->cmd;
+		else
+			return (EXIT_SUCCESS);
 	}
 	if (ft_setenv(op_ref->env_lst, "_", data) == -1)
 		return (EXIT_FAILURE);

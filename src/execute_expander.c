@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 16:24:52 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/14 00:43:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,42 @@ size_t	get_arr_len(void **arr)
 	return (res);
 }
 
+size_t	get_lsttok_size(t_list *tok)
+{
+	size_t	i;
+
+	i = 0;
+	while (tok)
+	{
+		if (*((char *)tok->content))
+			i++;
+		tok = tok->next;
+	}
+	return (i);
+}
+
 int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
 {
 	char	**args;
 	size_t	lst_size;
+	size_t	arr_size;
 	size_t	i;
 
 	free(operation->cmd);
 	operation->cmd = tokens->content;
 	tokens = tokens->next;
 	lst_size = ft_lstsize(tokens);
-	args = ft_calloc(lst_size + 2, sizeof(char *));
+	arr_size = get_lsttok_size(tokens);
+	args = ft_calloc(arr_size + 2, sizeof(char *));
 	if (!args)
 		return (-1);
 	i = 0;
 	while (i++ < lst_size)
 	{
-		args[i] = (char *)tokens->content;
+		if (*((char *)tokens->content))
+			args[i] = (char *)tokens->content;
+		else
+			free(tokens->content);
 		tokens = tokens->next;
 	}
 	i = 0;
