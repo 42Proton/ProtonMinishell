@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 14:26:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 15:21:07 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,21 +322,6 @@ int	subshell_apply_fds(t_operation *op)
 	return (1);
 }
 
-void	subshell_close_fds(t_operation *op)
-{
-	if (op->pipe_fds_in)
-		close(op->pipe_fds_in[0]);
-	if (op->redirect_in_fd != -1)
-		close(op->redirect_in_fd);
-	if (op->pipe_fds_out)
-	{
-		close(op->pipe_fds_out[1]);
-		close(op->pipe_fds_out[0]);
-	}
-	if (op->redirect_out_fd != -1)
-		close(op->redirect_out_fd);
-}
-
 int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 {
 	int	pid;
@@ -347,15 +332,13 @@ int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 	if (!pid)
 	{
 		subshell_apply_fds(ops[i]);
-		subshell_close_fds(ops[i]);
+		execute_cmd_close_fds(ops[i], 1);
 		if (execute_process(ops[i]->operations, op_ref, 1) == EXIT_FAILURE)
 		{
 			*op_ref->lec = -1;
-			execute_cmd_close_fds(ops[i], 1);
 			return (EXIT_FAILURE);
 		}
 		op_ref->is_exit = 1;
-		execute_cmd_close_fds(ops[i], 1);
 		return (EXIT_SUCCESS);
 	}
 	else
