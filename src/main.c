@@ -6,58 +6,11 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 18:18:01 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/13 20:24:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-// void	print_redirections(t_redirect *redirections, size_t limit)
-// {
-// 	size_t	i = 0;
-
-// 	while (i < limit)
-// 	{
-// 		printf("REDIRECT TYPE: %d, IDENTIFIER:%s\n", redirections[i].type, redirections[i].name);
-// 		i++;
-// 	}
-// }
-
-// void	print_args(char **args)
-// {
-// 	printf("ARGS: ");
-// 	if (!args)
-// 	{
-// 		printf("NONE\n");
-// 		return ;
-// 	}
-// 	while (*args)
-// 	{
-// 		printf("%s", *args);
-// 		if (args[1])
-// 			printf(",");
-// 		args++;
-// 	}
-// 	printf("\n");
-// }
-
-// void	print_test(t_operation **operations, size_t lvl)
-// {
-// 	size_t	i = 0;
-// 	lvl++;
-// 	while (operations[i])
-// 	{
-// 		printf("LVL:%ld, PTR:%p, TYPE:%d, CMD:%s\n", lvl, operations[i], operations[i]->operation_type, operations[i]->cmd);
-// 		printf("IN REDIRECTIONS:\n");
-// 		print_redirections(operations[i]->in_redirects, operations[i]->n_in);
-// 		printf("OUT REDIRECTIONS:\n");
-// 		print_redirections(operations[i]->out_redirects, operations[i]->n_out);
-// 		print_args(operations[i]->args);
-// 		if (operations[i]->operations)
-// 			print_test(operations[i]->operations, lvl);
-// 		i++;
-// 	}
-// }
 
 static void	start_execution(t_minishell *mini)
 {
@@ -102,8 +55,8 @@ static t_minishell	*minishell_prep(char **environ)
 		exit_handler(mini, ERR_MALLOC_MINI);
 	if (*environ)
 		prep_minishell_env(mini, environ);
-	//if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) <= 0)
-		//exit_handler(mini, ERR_TERM);
+	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) <= 0)
+		exit_handler(mini, ERR_TERM);
 	return (mini);
 }
 
@@ -134,7 +87,7 @@ static void	start_shell_helper(t_minishell *mini)
 
 static void	start_shell(t_minishell *mini)
 {
-	//display_header();
+	display_header();
 	while (1)
 	{
 		signal_handler(1);
