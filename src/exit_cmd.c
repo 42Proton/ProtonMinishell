@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:28:24 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/14 13:38:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/15 01:44:52 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@ static int	check_if_str_real(char *str)
 	i = 0;
 	while (*str == 32 || (*str >= '\t' && *str <= '\r'))
 		str++;
-	while(str[i])
+	if (*str == '+' || *str == '-')
+		str++;
+	while (*str == 48)
+		str++;
+	while (str[i])
 	{
-		if (i == 0)
-		{
-			if (str[i] != '+' && str[i] != '-'
-				&& !ft_isdigit(str[i]))
-				return (EXIT_FAILURE);
-		}
-		else if (!ft_isdigit(str[i]))
+		if (!ft_isdigit(str[i]) || i > 18)
 			return (EXIT_FAILURE);
 		i++;
 	}
@@ -79,7 +77,7 @@ static int	validate_args(char **args)
 	int	i;
 	int	sign;
 
-	i = 0;
+	i = 1;
 	while (args[i])
 		i++;
 	if (i > 2)
@@ -94,7 +92,7 @@ static int	validate_args(char **args)
 			|| (sign == 1 && ft_atoull(args[1]) > LLONG_MAX)
 			|| (sign == -1 && ft_atoull(args[1]) > LLONG_MAX + 1ULL))
 		{
-			ft_dprintf(STDOUT_FILENO, "minishell: exit: %s: numeric argument required\n",args[1]);
+			ft_dprintf(STDERR_FILENO, "minishell: exit: %s: numeric argument required\n",args[1]);
 			return (2);
 		}
 	}
@@ -105,9 +103,9 @@ void	exit_cmd(t_op_ref *op_ref, char **args)
 	int	vald;
 
 	vald = validate_args(args);
-	if(vald)
+	if (vald)
 		*op_ref->lec = vald;
-	else if(args[1])
+	else if (args[1])
 		*op_ref->lec = ft_atoll(args[1]);
 	else
 		*op_ref->lec = 0;

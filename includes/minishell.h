@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/14 01:21:21 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/15 01:18:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,7 +276,7 @@ void			print_tokens(t_minishell *mini);
 int				check_redirect(char *token);
 int				get_redirection_type(char *token);
 void			line_add_newline(t_minishell *mini);
-void			display_header(void);
+void			display_header(t_minishell *mini);
 void			line_tokenizer(t_minishell *mini);
 void			add_token(t_minishell *mini,
 					t_tokens_split *tokens_split);

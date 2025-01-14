@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/14 13:52:12 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/15 01:18:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static t_minishell	*minishell_prep(char **environ)
 		exit_handler(mini, ERR_MALLOC_MINI);
 	if (*environ)
 		prep_minishell_env(mini, environ);
-	//if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) <= 0)
-		//exit_handler(mini, ERR_TERM);
 	return (mini);
 }
 
@@ -90,7 +88,7 @@ static void	start_shell_helper(t_minishell *mini)
 
 static void	start_shell(t_minishell *mini)
 {
-	//display_header();
+	display_header(mini);
 	while (1)
 	{
 		signal_handler(1);

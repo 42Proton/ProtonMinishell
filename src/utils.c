@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 16:19:45 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/15 01:18:08 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ t_token	*get_token_num(t_list *tokens, size_t index)
 	return (0);
 }
 
-void	display_header(void)
+void	display_header(t_minishell *mini)
 {
 	char	*clear_cmd;
 	char	*line;
 	int		fd;
 
+	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) <= 0)
+		return ;
 	clear_cmd = tgetstr("cl", NULL);
 	if (clear_cmd)
 		ft_printf(clear_cmd);
