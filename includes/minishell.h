@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 23:55:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/14 01:21:21 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+void			exit_cmd(t_op_ref *op_ref, char **args);
 void			execute_cmd_close_fds(t_operation *operation, int is_ext);
 int				execute_cmd_redirections(t_operation *operation, int is_ext);
 int				builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref);
