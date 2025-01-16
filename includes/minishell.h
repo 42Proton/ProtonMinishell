@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/15 01:18:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/16 00:58:12 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ typedef struct s_minishell
 	t_list					*env_lst;
 	int						last_exit_code;
 	u_int32_t				curr_line;
-	t_list					*quotes_range_lst;
 }							t_minishell;
 
 typedef struct s_tokens_split
@@ -119,10 +118,12 @@ typedef struct s_new_tok_len
 
 typedef struct s_tok_expander
 {
+	char					*s_ref;
 	int						mode;
 	size_t					quotes_iter_count;
 	t_split					split_se;
 	t_list					*lst;
+	t_list					**split_tok;
 	int						lec;
 }							t_tok_expander;
 
@@ -183,6 +184,9 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+int				token_exp_res_split(char *s, char *exp_str,
+					t_list **split_tok, t_op_ref *op_ref);
+size_t			get_env_len(char *s, t_op_ref *op_ref);
 void			exit_cmd(t_op_ref *op_ref, char **args);
 void			execute_cmd_close_fds(t_operation *operation, int is_ext);
 int				execute_cmd_redirections(t_operation *operation, int is_ext);

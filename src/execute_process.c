@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/14 00:33:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/15 04:27:01 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,11 @@ int	create_trunc_out_files(t_operation *operation)
 		fd = open(operation->out_redirects[i].name, flags,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		if (fd == -1)
+		{
+			ft_dprintf(STDERR_FILENO, "Proton: %s: %s\n",
+				operation->out_redirects[i].name, strerror(errno));
 			return (0);
+		}
 		if (i != operation->n_out - 1)
 			close(fd);
 		else
@@ -132,7 +136,11 @@ int	process_in_redirects(t_operation *operation)
 		else
 			fd = process_in_redirects_heredoc(operation);
 		if (fd == -1)
+		{
+			ft_dprintf(STDERR_FILENO, "Proton: %s: %s\n",
+				operation->in_redirects[i].name, strerror(errno));
 			return (0);
+		}
 		if (i != operation->n_in - 1)
 			close(fd);
 		else
@@ -154,7 +162,8 @@ int	pre_execute_external_cmd(t_op_ref *op_ref, t_operation *operation)
 		return (-1);
 	if (!*cmd_path)
 	{
-		perror(operation->cmd);
+		ft_dprintf(STDERR_FILENO,
+			"%s: command not found.\n", operation->cmd);
 		free(cmd_path);
 		*op_ref->lec = 127;
 		return (0);
@@ -359,12 +368,16 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 		return (EXIT_FAILURE);
 	if (prep_pipeline(operations[i], operations[i + 1]))
 		return (EXIT_FAILURE);
-	if (create_trunc_out_files(operations[i]) == 0)
+	if (!create_trunc_out_files(operations[i]))
 	{
 		*op_ref->lec = 1;
 		return (EXIT_SUCCESS);
 	}
-	process_in_redirects(operations[i]);
+	if (!process_in_redirects(operations[i]))
+	{
+		*op_ref->lec = 1;
+		return (EXIT_SUCCESS);
+	}
 	if (execute_process_circuit(operations[i], op_ref))
 		return (EXIT_SUCCESS);
 	if (operations[i]->operations)

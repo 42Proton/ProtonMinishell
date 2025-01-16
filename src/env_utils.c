@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 22:42:33 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/15 04:34:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ int	parse_env_data(char *data, t_env *env)
 	int	j;
 
 	i = 0;
-	while (data[i] != '=')
+	while (data[i] && data[i] != '=')
 		i++;
+	if (!data[i])
+		return (i);
 	i++;
 	env->name = malloc(i * sizeof(char));
 	if (!env->name)

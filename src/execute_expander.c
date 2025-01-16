@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/14 00:48:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/15 04:20:21 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,19 @@ int	execute_expander_stage2_helper(t_op_ref *op_ref, t_operation *operation, t_l
 	{
 		if (!token_expander(operation->in_redirects[i].name, tokens, op_ref))
 			return (-1);
-		if (ft_lstsize(*tokens) > 1 || (!*(char *)(*tokens)->content))
+		if (ft_lstsize(*tokens) > 1)
 		{
 			ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
 				operation->in_redirects[i].name);
 			return (0);
 		}
-		free(operation->in_redirects[i].name);
-		operation->in_redirects[i].name = (char *)(*tokens)->content;
+		if (*(char *)(*tokens)->content)
+		{
+			free(operation->in_redirects[i].name);
+			operation->in_redirects[i].name = (char *)(*tokens)->content;
+		}
+		else
+			free((*tokens)->content);
 		free_lst(*tokens);
 		*tokens = 0;
 		i++;
@@ -131,14 +136,19 @@ int execute_expander_stage2(t_op_ref *op_ref, t_operation *operation, t_list **t
 	{
 		if (!token_expander(operation->out_redirects[i].name, tokens, op_ref))
 			return (-1);
-		if (ft_lstsize(*tokens) > 1 || (!*(char *)(*tokens)->content))
+		if (ft_lstsize(*tokens) > 1)
 		{
 			ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
 				operation->in_redirects[i].name);
 			return (0);
 		}
-		free(operation->out_redirects[i].name);
-		operation->out_redirects[i].name = (char *)(*tokens)->content;
+		if (*(char *)(*tokens)->content)
+		{
+			free(operation->out_redirects[i].name);
+			operation->out_redirects[i].name = (char *)(*tokens)->content;
+		}
+		else
+			free((*tokens)->content);
 		free_lst(*tokens);
 		*tokens = 0;
 		i++;

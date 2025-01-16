@@ -8,6 +8,7 @@ SRCS= \
 	env_utils.c \
 	env_utils2.c \
 	env_utils3.c \
+	env_utils4.c \
 	term_handlers.c \
 	search_exec.c \
 	line_tokenizer.c \
@@ -29,8 +30,8 @@ SRCS= \
 	expander_utils4.c \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
+	expander_split.c \
 	execute_expander.c \
-	handlers2.c \
 	operations_prep.c \
 	operations_prep_utils.c \
 	operations_prep_utils2.c \

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 18:20:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/16 01:20:20 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,20 @@ int	token_expander_helper(char *exp_str, t_list **tokens, t_list *quotes_range)
 int	token_expander(char *s, t_list **tokens, t_op_ref *op_ref)
 {
 	t_list	*quotes_range;
+	t_list	*split_tok;
 	char	*exp_str;
 	char	*exp_str2;
 
 	quotes_range = 0;
+	split_tok = 0;
 	exp_str = token_expander_env(s, *op_ref->env_lst, *op_ref->lec);
 	if (!exp_str)
 		return (0);
+	if (!token_exp_res_split(s, exp_str, &split_tok, op_ref))
+	{
+		ft_lstclear(&split_tok, free);
+		free(exp_str);
+	}
 	if (!expander_pre_wildcards(exp_str, &quotes_range))
 	{
 		free(exp_str);
