@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/16 09:32:30 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/16 18:53:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,18 @@ static char	*token_expander_env(char *s, t_list *env_lst, int lec)
 	return (res);
 }
 
-static int	expander_pre_wildcards(char *s, t_list **quotes_range)
+static int	expander_prep_qtr(char *exp_str, t_list *s_split_toks, t_list **split_toks)
 {
 	t_tok_expander	*tok_exp;
-	int				old_mode;
 
 	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
-	if (!tok_exp)
-		return (0);
-	old_mode = DEFAULT_MODE;
-	while (s[tok_exp->split_se.end])
+	ft_bzero(&tok_exp, sizeof(t_tok_expander));
+	while (s_split_toks)
 	{
 		if (!expander_pre_wildcards_iter(s, tok_exp, &old_mode, quotes_range))
 		{
-			ft_lstclear(quotes_range, free);
-			free(tok_exp);
-			return (0);
 		}
 	}
-	free(tok_exp);
 	return (1);
 }
 
@@ -118,23 +111,24 @@ int	token_expander_helper(char *exp_str, t_list **tokens, t_list *quotes_range)
 int	token_expander(char *s, t_list **tokens, t_op_ref *op_ref)
 {
 	t_list	*quotes_range;
-	t_list	*split_tok;
+	t_list	*s_split_toks;
+	t_list	*split_toks;
 	char	*exp_str;
 	char	*exp_str2;
 
 	quotes_range = 0;
-	split_tok = 0;
+	s_split_toks = 0;
 	exp_str = token_expander_env(s, *op_ref->env_lst, *op_ref->lec);
 	if (!exp_str)
 		return (0);
-	if (!token_exp_res_split(s, exp_str, &split_tok, op_ref))
+	if (!token_exp_res_split(s, exp_str, &s_split_toks, op_ref))
 	{
-		ft_lstclear(&split_tok, free);
+		ft_lstclear(&s_split_toks, free);
 		free(exp_str);
 	}
-	if (!expander_pre_wildcards(exp_str, &quotes_range))
+	if (!expander_pre_wildcards(exp_str, s_split_toks, &split_toks))
 	{
-		free(exp_str);
+		ft_lstclear(&s_split_toks, free);
 		return (0);
 	}
 	exp_str2 = expander_remove_quotes(exp_str);

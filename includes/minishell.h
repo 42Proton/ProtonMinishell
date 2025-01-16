@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/16 00:58:12 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/16 18:19:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ typedef struct s_qr
 	size_t	arr[2];
 	int		is_sq;
 }	t_qr;
+
+typedef struct s_split_toks
+{
+	t_list	*quotes_ranges;
+	char	*str;
+}	t_split_toks;
 
 typedef	struct s_op_ref
 {
