@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:56:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/18 23:03:02 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 02:00:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int	token_exp_res_split_helper3(char *s, t_tok_expander *tok_exp, size_t *env_le
 		return (0);
 	}
 	ft_lstadd_back(&tok_exp->lst, lst);
-	while (s[tok_exp->split_se.end] == ' ' && *env_len)
+	while (tok_exp->split_se.end <= ft_strlen(s)
+		&& s[tok_exp->split_se.end] == ' ' && *env_len)
 	{
 		(*env_len)--;
 		tok_exp->split_se.end++;
@@ -109,7 +110,8 @@ int	token_exp_res_split_helper2(char *s, size_t env_len,
 	}
 	while (env_len)
 	{
-		if (s[tok_exp->split_se.end] == ' ' && tok_exp->mode == DEFAULT_MODE)
+		if (tok_exp->split_se.end <= ft_strlen(s)
+			&& s[tok_exp->split_se.end] == ' ' && tok_exp->mode == DEFAULT_MODE)
 		{
 			if (!token_exp_res_split_helper3(s, tok_exp, &env_len))
 				return (0);
@@ -169,8 +171,7 @@ int	token_exp_res_split(char *s, char *exp_str,
 		else if (s[tok_exp.split_se.end])
 			tok_exp.split_se.end++;
 	}
-	tok_exp2.split_se.end += tok_exp.split_se.end
-		- tok_exp.split_se.start;
+	tok_exp2.split_se.end = ft_strlen(exp_str);
 	if (!token_exp_res_split_helper3(exp_str, &tok_exp2, &temp))
 		return (0);
 	tok_exp_res_split_push(&tok_exp2);
