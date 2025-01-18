@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/15 04:20:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 00:31:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t	get_lsttok_size(t_list *tok)
 	i = 0;
 	while (tok)
 	{
-		if (*((char *)tok->content))
+		if (tok->content && *((char *)tok->content))
 			i++;
 		tok = tok->next;
 	}
@@ -54,7 +54,7 @@ int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
 	i = 0;
 	while (i++ < lst_size)
 	{
-		if (*((char *)tokens->content))
+		if (tokens->content && *((char *)tokens->content))
 			args[i] = (char *)tokens->content;
 		else
 			free(tokens->content);

@@ -24,10 +24,10 @@ SRCS= \
 	checks6.c \
 	validate.c \
 	expander.c \
+	expander_qtr.c \
+	expander_remove_quotes.c \
 	expander_utils.c \
 	expander_utils2.c \
-	expander_utils3.c \
-	expander_utils4.c \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
 	expander_split.c \

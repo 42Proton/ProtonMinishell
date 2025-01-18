@@ -6,13 +6,33 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:57:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/16 00:57:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 00:22:30 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static size_t	get_env_len_helper(char *s, t_op_ref *op_ref)
+static size_t	ft_strlen_trunc_spaces(char *s)
+{
+	size_t	i;
+	size_t	res;
+	
+	i = 0;
+	res = 0;
+	while (s[i])
+	{
+		while (s[i] == ' ')
+			i++;
+		if (s[i])
+		{
+			i++;
+			res++;
+		}
+	}
+	return (res);
+}
+
+static size_t	get_env_len_helper(char *s, t_op_ref *op_ref, int trunc_spaces)
 {
 	size_t	i;
 	size_t	res;
@@ -34,11 +54,14 @@ static size_t	get_env_len_helper(char *s, t_op_ref *op_ref)
 	s[i] = temp;
 	if (!env_str)
 		return (0);
-	res = ft_strlen(env_str);
+	if (!trunc_spaces)
+		res = ft_strlen(env_str);
+	else
+		res = ft_strlen_trunc_spaces(env_str);
 	return (res);
 }
 
-size_t	get_env_len(char *s, t_op_ref *op_ref)
+size_t	get_env_len(char *s, t_op_ref *op_ref, int trunc_spaces)
 {
 	char	*env_str;
 	size_t	res;
@@ -56,6 +79,6 @@ size_t	get_env_len(char *s, t_op_ref *op_ref)
 		}
 		return (res);
 	}
-	res = get_env_len_helper(s, op_ref);
+	res = get_env_len_helper(s, op_ref, trunc_spaces);
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/16 18:53:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 00:38:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,47 +40,7 @@ static char	*token_expander_env(char *s, t_list *env_lst, int lec)
 	return (res);
 }
 
-static int	expander_prep_qtr(char *exp_str, t_list *s_split_toks, t_list **split_toks)
-{
-	t_tok_expander	*tok_exp;
-
-	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
-	ft_bzero(&tok_exp, sizeof(t_tok_expander));
-	while (s_split_toks)
-	{
-		if (!expander_pre_wildcards_iter(s, tok_exp, &old_mode, quotes_range))
-		{
-		}
-	}
-	return (1);
-}
-
-static char	*expander_remove_quotes(char *s)
-{
-	t_tok_expander	*tok_exp;
-	char			*res;
-
-	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
-	if (!tok_exp)
-		return (0);
-	if (!expander_remove_quotes_iter(s, tok_exp))
-	{
-		exp_clean(tok_exp);
-		free(s);
-		return (0);
-	}
-	if (!exp_rm_quotes_add_tok(s, tok_exp))
-	{
-		exp_clean(tok_exp);
-		free(s);
-		return (0);
-	}
-	res = expander_join_subtok(tok_exp);
-	free(s);
-	return (res);
-}
-
-int	token_expander_helper(char *exp_str, t_list **tokens, t_list *quotes_range)
+int	token_exp_helper_wildcards(char *exp_str, t_list **tokens, t_list *quotes_range)
 {
 	t_list	*lst;
 
@@ -108,42 +68,90 @@ int	token_expander_helper(char *exp_str, t_list **tokens, t_list *quotes_range)
 	return (1);
 }
 
-int	token_expander(char *s, t_list **tokens, t_op_ref *op_ref)
+static int	prep_tok_exp(char *s, char *exp_str,
+	t_list **split_toks, t_op_ref *op_ref)
 {
-	t_list	*quotes_range;
 	t_list	*s_split_toks;
-	t_list	*split_toks;
-	char	*exp_str;
-	char	*exp_str2;
 
-	quotes_range = 0;
 	s_split_toks = 0;
-	exp_str = token_expander_env(s, *op_ref->env_lst, *op_ref->lec);
-	if (!exp_str)
-		return (0);
+	*split_toks = 0;
 	if (!token_exp_res_split(s, exp_str, &s_split_toks, op_ref))
 	{
 		ft_lstclear(&s_split_toks, free);
 		free(exp_str);
+		return (0);
 	}
-	if (!expander_pre_wildcards(exp_str, s_split_toks, &split_toks))
+	free(exp_str);
+	if (!s_split_toks)
+		return (2);
+	if (!expander_prep_qtr(s_split_toks, split_toks))
 	{
 		ft_lstclear(&s_split_toks, free);
+		ft_lstclear(split_toks, free);
 		return (0);
 	}
-	exp_str2 = expander_remove_quotes(exp_str);
-	if (!exp_str2)
+	free_lst(s_split_toks);
+	if (!expander_qtr(s, *split_toks, op_ref))
 	{
-		ft_lstclear(&quotes_range, free);
+		ft_lstclear(split_toks, clear_split_tok);
 		return (0);
 	}
-	if (!token_expander_helper(exp_str2, tokens, quotes_range))
+	return (1);
+}
+
+static int	token_exp_helper(char *s, t_list **tokens,
+	t_list **split_toks, t_op_ref *op_ref)
+{
+	char	*exp_str;
+	int		status;
+	t_list	*lst;
+
+	exp_str = token_expander_env(s, *op_ref->env_lst, *op_ref->lec);
+	if (!exp_str)
+		return (0);
+	status = prep_tok_exp(s, exp_str, split_toks, op_ref);
+	if (!status)
+		return (0);
+	if (status == 2)
 	{
-		ft_lstclear(&quotes_range, free);
-		free(exp_str2);
-		ft_lstclear(tokens, free);
-		return (0);
+		lst = ft_lstnew(0);
+		if (!lst)
+			return (0);
+		ft_lstadd_back(tokens, lst);
+		return (2);
 	}
-	ft_lstclear(&quotes_range, free);
+	if (!exp_rm_qt(*split_toks))
+		return (0);
+	return (1);
+}
+
+int	token_expander(char *s, t_list **tokens, t_op_ref *op_ref)
+{
+	t_list			*split_toks;
+	t_list			*temp;
+	t_list			*res_toks;
+	t_split_toks	*split_tok;
+	int				status;
+
+	res_toks = 0;
+	status = token_exp_helper(s, tokens, &split_toks, op_ref);
+	if (status != 1)
+		return (status);
+	temp = split_toks;
+	while (temp)
+	{
+		split_tok = (t_split_toks *)temp->content;
+		if (!token_exp_helper_wildcards(split_tok->str,
+			&res_toks, split_tok->quotes_ranges))
+		{
+			ft_lstclear(&split_toks, clear_split_tok);
+			ft_lstclear(&res_toks, free);
+			free_lst(*tokens);
+			return (0);
+		}
+		temp = temp->next;
+	}
+	ft_lstclear(&split_toks, clear_split_tok2);
+	ft_lstadd_back(tokens, res_toks);
 	return (1);
 }

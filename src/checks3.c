@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/15 18:42:55 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/18 16:27:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	check_env_sep(char c)
 
 int	check_str_wildcard(char *s, t_list *quotes_range)
 {
-	t_list	*lst;
-	size_t	*range;
 	size_t	i;
 
 	i = 0;
@@ -31,16 +29,8 @@ int	check_str_wildcard(char *s, t_list *quotes_range)
 	{
 		if (s[i] == '*')
 		{
-			if (!quotes_range)
+			if (check_if_wildcard(s[i], i, quotes_range))
 				return (1);
-			lst = quotes_range;
-			while (lst)
-			{
-				range = ((t_qr *)lst->content)->arr;
-				if (!(i >= range[0] && i <= range[1]))
-					return (1);
-				lst = lst->next;
-			}
 		}
 		i++;
 	}

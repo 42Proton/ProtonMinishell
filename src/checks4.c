@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 01:33:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 19:38:22 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/18 16:13:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,19 @@ int	check_expander_default_mode_basic(char c, int mode)
 int	check_if_wildcard(char c, size_t i, t_list *quotes_range)
 {
 	size_t	*range;
+	t_qr	*qr;
 
 	if (c == '*')
 	{
 		while (quotes_range)
 		{
-			range = ((t_qr *)quotes_range->content)->arr;
-			if (i >= range[0] && i <= range[1])
-				return (0);
+			qr = (t_qr *)quotes_range->content;
+			if (!qr->is_empty)
+			{
+				range = qr->arr;
+				if (i >= range[0] && i <= range[1])
+					return (0);
+			}
 			quotes_range = quotes_range->next;
 		}
 		return (1);

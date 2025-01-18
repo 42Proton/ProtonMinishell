@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/16 18:19:28 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 00:18:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_qr
 {
 	size_t	arr[2];
 	int		is_sq;
+	int		is_empty;
 }	t_qr;
 
 typedef struct s_split_toks
@@ -190,19 +191,22 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+
+void			clear_split_tok2(void *content);
+char			*expander_join_subtok2(t_tok_expander *tok_exp);
+int				exp_rm_qt(t_list *split_toks);
+void			clear_split_tok(void *content);
+int				expander_qtr(char *s, t_list *split_toks, t_op_ref *op_ref);
+int				expander_prep_qtr(t_list *s_split_toks, t_list **split_toks);
 int				token_exp_res_split(char *s, char *exp_str,
 					t_list **split_tok, t_op_ref *op_ref);
-size_t			get_env_len(char *s, t_op_ref *op_ref);
+size_t			get_env_len(char *s, t_op_ref *op_ref, int trunc_spaces);
 void			exit_cmd(t_op_ref *op_ref, char **args);
 void			execute_cmd_close_fds(t_operation *operation, int is_ext);
 int				execute_cmd_redirections(t_operation *operation, int is_ext);
 int				builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref);
 int				check_if_builtin(char *token);
 int				pre_process_check(char *s);
-int				expander_pre_wildcards_iter(char *s, t_tok_expander *tok_exp,
-					int *old_mode, t_list **quotes_range);
-int				expander_remove_quotes_iter(char *s, t_tok_expander *tok_exp);
-int				exp_pre_wildcards_quotes_condition(char *s, t_tok_expander *tok_exp);
 void			exp_clean(t_tok_expander *tok_exp);
 int				tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst);
 int				prep_op_main_conditions(t_list *lst, size_t *p_count,
@@ -245,10 +249,7 @@ t_operation		**operations_alloc(ssize_t sep_count);
 t_operation		**operations_prep(t_list *lst, int is_subop);
 int				exp_env_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst);
 int				check_env_mode(t_tok_expander *tok_exp);
-int				exp_rm_quotes_add_tok(char *word, t_tok_expander *tok_exp);
 char			*expander_add_tok_helper(char *word, t_tok_expander *tok_exp);
-int				expander_pre_wildcards_update(t_tok_expander *tok_exp,
-					int *old_mode, t_list **quotes_range);
 int				check_quotes_ex_literal(char c,
 					t_tok_expander *tok_exp);
 int				check_if_wildcard(char c, size_t i,

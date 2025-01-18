@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/15 04:05:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 00:18:47 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,25 @@ void	free_tokens(void *tokens)
 	if (((t_token *)tokens)->token_word)
 		free(((t_token *)tokens)->token_word);
 	free(tokens);
+}
+
+void	clear_split_tok(void *content)
+{
+	t_split_toks	*split_toks;
+
+	split_toks = (t_split_toks *)content;
+	ft_lstclear(&split_toks->quotes_ranges, free);
+	free(split_toks->str);
+	free(content);
+}
+
+void	clear_split_tok2(void *content)
+{
+	t_split_toks	*split_toks;
+
+	split_toks = (t_split_toks *)content;
+	ft_lstclear(&split_toks->quotes_ranges, free);
+	free(content);
 }
 
 void	exit_handler(t_minishell *mini, int error)
