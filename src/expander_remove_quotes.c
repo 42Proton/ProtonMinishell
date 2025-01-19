@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:30:24 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/18 23:10:55 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 13:22:57 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	exp_add_tok_rm_qt(char *s, t_tok_expander *tok_exp)
 	t_list	*lst;
 
 	split_se = tok_exp->split_se;
-	if (split_se.start == split_se.end)
+	if (split_se.start == split_se.end + 1)
 		return (1);
 	sub_s = ft_substr(s, split_se.start, (split_se.end - split_se.start) + 1);
 	if (!sub_s)
@@ -64,7 +64,7 @@ static int	exp_rm_qt_process_helper(char *s, t_list *quotes_ranges, t_tok_expand
 			return (0);
 		return (1);
 	}
-	tok_exp->split_se.end = qr->arr[0] + tok_exp->quotes_iter_count * 2;
+	tok_exp->split_se.end = (qr->arr[0] - 1) + tok_exp->quotes_iter_count * 2;
 	if (!exp_add_tok_rm_qt(s, tok_exp))
 	{
 		ft_lstclear(&tok_exp->lst, free);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/15 01:18:08 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/19 12:22:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ void	display_header(t_minishell *mini)
 	char	*line;
 	int		fd;
 
-	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) <= 0)
-		return ;
-	clear_cmd = tgetstr("cl", NULL);
-	if (clear_cmd)
-		ft_printf(clear_cmd);
+	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) > 0)
+	{
+		clear_cmd = tgetstr("cl", NULL);
+		if (clear_cmd)
+			ft_printf(clear_cmd);
+	}
 	fd = open("header.txt", O_RDONLY);
 	if (!fd)
 		return ;
