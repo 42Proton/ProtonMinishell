@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 01:17:02 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:54:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,25 @@
 
 static char	*token_expander_env(char *s, t_list *env_lst, int lec)
 {
-	t_tok_expander	*tok_exp;
+	t_tok_expander	tok_exp;
 	char			*res;
 
-	tok_exp = ft_calloc(1, sizeof(t_tok_expander));
-	if (!tok_exp)
-		return (0);
-	tok_exp->lec = lec;
-	while (s[tok_exp->split_se.end])
+	ft_bzero(&tok_exp, sizeof(t_tok_expander));
+	tok_exp.lec = lec;
+	while (s[tok_exp.split_se.end])
 	{
-		if (!tokens_expander_env_iter(s, tok_exp, env_lst))
+		if (!tokens_expander_env_iter(s, &tok_exp, env_lst))
 		{
-			exp_clean(tok_exp);
+			ft_lstclear(&tok_exp.lst, free);
 			return (0);
 		}
 	}
-	if (!expander_add_tok(s, tok_exp, env_lst))
+	if (!expander_add_tok(s, &tok_exp, env_lst))
 	{
-		exp_clean(tok_exp);
+		ft_lstclear(&tok_exp.lst, free);
 		return (0);
 	}
-	res = expander_join_subtok(tok_exp);
+	res = expander_join_subtok(&tok_exp);
 	return (res);
 }
 

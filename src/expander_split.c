@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:56:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 02:00:28 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:57:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	tok_exp_res_split_push(t_tok_expander *tok_exp)
 
 	if (!tok_exp->lst)
 		return (1);
-	res = expander_join_subtok2(tok_exp);
+	res = expander_join_subtok(tok_exp);
 	if (!res)
 	{
 		ft_lstclear(&tok_exp->lst, free);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:30:24 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 13:22:57 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:57:21 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,35 +81,6 @@ static int	exp_rm_qt_process_helper(char *s, t_list *quotes_ranges, t_tok_expand
 	return (1);
 }
 
-char	*expander_join_subtok2(t_tok_expander *tok_exp)
-{
-	char	*res;
-	char	*temp;
-	t_list	*lst;
-
-	res = ft_strdup("");
-	if (!res)
-	{
-		ft_lstclear(&tok_exp->lst, free);
-		return (0);
-	}
-	lst = tok_exp->lst;
-	while (lst)
-	{
-		temp = ft_strjoin(res, (char *)lst->content);
-		if (!temp)
-		{
-			ft_lstclear(&tok_exp->lst, free);
-			return (0);
-		}
-		free(res);
-		res = temp;
-		lst = lst->next;
-	}
-	ft_lstclear(&tok_exp->lst, free);
-	return (res);
-}
-
 static int	exp_rm_qt_process_lt(char *s, t_tok_expander *tok_exp)
 {
 	if (!s[tok_exp->split_se.start])
@@ -144,7 +115,7 @@ static int	exp_rm_qt_process(t_split_toks *split_toks)
 	}
 	if (!exp_rm_qt_process_lt(s, &tok_exp))
 		return (0);
-	res = expander_join_subtok2(&tok_exp);
+	res = expander_join_subtok(&tok_exp);
 	if (!res)
 		return (0);
 	free(split_toks->str);

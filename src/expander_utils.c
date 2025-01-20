@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:06:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 13:42:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:56:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ void	inc_split_index(t_split *split_se)
 {
 	split_se->start++;
 	split_se->end++;
-}
-
-void	exp_clean(t_tok_expander *tok_exp)
-{
-	ft_lstclear(&tok_exp->lst, free);
-	free(tok_exp);
 }
 
 char	*get_env_safe(t_list *env_lst, char *new_str, t_tok_expander *tok_exp)
@@ -53,7 +47,7 @@ char	*expander_join_subtok(t_tok_expander *tok_exp)
 	res = ft_strdup("");
 	if (!res)
 	{
-		exp_clean(tok_exp);
+		ft_lstclear(&tok_exp->lst, free);
 		return (0);
 	}
 	lst = tok_exp->lst;
@@ -62,14 +56,14 @@ char	*expander_join_subtok(t_tok_expander *tok_exp)
 		temp = ft_strjoin(res, (char *)lst->content);
 		if (!temp)
 		{
-			exp_clean(tok_exp);
+			ft_lstclear(&tok_exp->lst, free);
 			return (0);
 		}
 		free(res);
 		res = temp;
 		lst = lst->next;
 	}
-	exp_clean(tok_exp);
+	ft_lstclear(&tok_exp->lst, free);
 	return (res);
 }
 

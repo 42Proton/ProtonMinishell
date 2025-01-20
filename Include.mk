@@ -4,6 +4,7 @@ SRCS= \
 	print_error.c \
 	execute_inbuilt_command.c \
 	cmds.c \
+	cmds2.c \
 	export_cmd.c \
 	env_utils.c \
 	env_utils2.c \

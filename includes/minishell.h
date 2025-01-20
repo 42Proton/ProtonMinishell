@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 00:18:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:02:21 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_split_toks
 	char	*str;
 }	t_split_toks;
 
-typedef	struct s_op_ref
+typedef struct s_op_ref
 {
 	int			*lec;
 	int			wait_childs;
@@ -191,9 +191,16 @@ enum						e_expander_modes
 	ENV_MODE
 };
 
+enum						e_strjoin
+{
+	STRJOIN_DEF,
+	STRJOIN_FS1,
+	STRJOIN_FS2,
+	STRJOIN_FA
+};
 
+char			*ft_strjoin2(char *s1, char *s2, int mode);
 void			clear_split_tok2(void *content);
-char			*expander_join_subtok2(t_tok_expander *tok_exp);
 int				exp_rm_qt(t_list *split_toks);
 void			clear_split_tok(void *content);
 int				expander_qtr(char *s, t_list *split_toks, t_op_ref *op_ref);
@@ -204,15 +211,17 @@ size_t			get_env_len(char *s, t_op_ref *op_ref, int trunc_spaces);
 void			exit_cmd(t_op_ref *op_ref, char **args);
 void			execute_cmd_close_fds(t_operation *operation, int is_ext);
 int				execute_cmd_redirections(t_operation *operation, int is_ext);
-int				builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref);
+int				builtin_cmd(t_operation **operations,
+					size_t i, t_op_ref *op_ref);
 int				check_if_builtin(char *token);
 int				pre_process_check(char *s);
-void			exp_clean(t_tok_expander *tok_exp);
-int				tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst);
+int				tokens_expander_env_iter(char *s,
+					t_tok_expander *tok_exp, t_list *env_lst);
 int				prep_op_main_conditions(t_list *lst, size_t *p_count,
 					t_operation **operations, size_t *i);
 t_operation		**operations_alloc(ssize_t sep_count);
-int				expander_quotes_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst);
+int				expander_quotes_condition(char *s,
+					t_tok_expander *tok_exp, t_list *env_lst);
 int				check_if_index_sqr(size_t i, t_list *qr);
 int				execute_expander(t_op_ref *op_ref, t_operation *operation);
 void			tokens_exp_clean_exit(t_minishell *mini,
@@ -222,7 +231,8 @@ void			print_heredoc_warning(t_op_ref *op_ref,
 					t_operation *operation, size_t j);
 char			**env_lst_to_2d_arr(t_op_ref *op_ref);
 int				check_if_cmd_exist(char *cmd);
-int				execute_process(t_operation **ops, t_op_ref *op_ref, int is_subshell);
+int				execute_process(t_operation **ops,
+					t_op_ref *op_ref, int is_subshell);
 int				op_prep_args(t_operation *operation, t_list *lst);
 int				op_get_args(t_operation *operation, t_list *lst);
 int				check_tok_prev_cmd(t_list *lst);
@@ -247,7 +257,8 @@ int				add_subop(t_operation **operations, size_t i, t_list *lst);
 int				add_operation_alloc(t_operation **operations, ssize_t i);
 t_operation		**operations_alloc(ssize_t sep_count);
 t_operation		**operations_prep(t_list *lst, int is_subop);
-int				exp_env_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst);
+int				exp_env_condition(char *s,
+					t_tok_expander *tok_exp, t_list *env_lst);
 int				check_env_mode(t_tok_expander *tok_exp);
 char			*expander_add_tok_helper(char *word, t_tok_expander *tok_exp);
 int				check_quotes_ex_literal(char c,
@@ -266,8 +277,10 @@ int				check_str_wildcard(char *s, t_list *quotes_range);
 void			inc_split_index(t_split *split_se);
 void			expander_clean_exit(t_minishell *mini,
 					t_tok_expander *tok_exp, t_list **quotes_range);
-char			*get_env_safe(t_list *env_lst, char *new_str, t_tok_expander *tok_exp);
-int				expander_add_tok(char *word, t_tok_expander *tok_exp, t_list *env_lst);
+char			*get_env_safe(t_list *env_lst,
+					char *new_str, t_tok_expander *tok_exp);
+int				expander_add_tok(char *word,
+					t_tok_expander *tok_exp, t_list *env_lst);
 char			*expander_join_subtok(t_tok_expander *tok_exp);
 int				check_env_sep(char c);
 int				check_quotes(char c);
@@ -303,7 +316,8 @@ int				sort_print_env(t_list *lst);
 char			*ft_getenv(t_list *env_lst, char *env_name);
 char			*get_exec_path(t_op_ref *op_ref, char *cmd);
 void			prep_minishell_env(t_minishell *mini, char **ev);
-int				execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args);
+int				execute_inbuilt_command(t_op_ref *op_ref,
+					char *cmd, char **args);
 void			exit_handler(t_minishell *minishell, int error);
 void			print_error(int error);
 void			cd_cmd(t_op_ref *op_ref, char **args);
