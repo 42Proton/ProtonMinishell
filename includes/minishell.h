@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 12:27:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:45:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,16 @@ enum						e_strjoin
 	STRJOIN_FA
 };
 
+int					tok_exp_res_split_util(char *exp_str,
+						t_tok_expander *tok_exp2, size_t *temp);
+int					token_exp_res_split_helper3(char *s,
+						t_tok_expander *tok_exp, size_t *env_len);
+int					tok_exp_res_split_push(t_tok_expander *tok_exp);
+void				tok_exp_res_split_skip_env(char *s,
+						t_tok_expander *tok_exp, size_t *env_len);
+int					tok_exp_rep_split_helper2_util(char *s,
+						t_tok_expander *tok_exp, size_t env_len);
+void				token_exp_res_split_qt(char *s, t_tok_expander *tok_exp);
 unsigned long long	ft_atoull(char *nptr);
 long long			ft_atoll(char *nptr);
 int					exp_add_tok_rm_qt(char *s, t_tok_expander *tok_exp);

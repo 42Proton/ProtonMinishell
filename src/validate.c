@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:23:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/05 20:05:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:29:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ static ssize_t	pre_validate_tokens_helper(t_token *token, t_token *prev_token,
 			if (token->type == OPEN_PARENTHESIS)
 				return (prev_token->index);
 	}
-	if ((check_sep_operators(token) || check_redirect_num(token->type)) && !next_lst)
-			return (-2);
+	if ((check_sep_operators(token)
+		|| check_redirect_num(token->type)) && !next_lst)
+		return (-2);
 	return (-1);
 }
 

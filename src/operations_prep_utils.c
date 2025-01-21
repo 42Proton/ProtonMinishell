@@ -6,29 +6,11 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 14:23:51 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:48:40 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-int	add_operation_alloc(t_operation **operations, ssize_t i)
-{
-	t_operation	*temp;
-
-	temp = ft_calloc(1, sizeof(t_operation));
-	if (!temp)
-	{
-		while (--i > -1)
-			free(operations[i]);
-		free(operations);
-		return (0);
-	}
-	temp->redirect_in_fd = -1;
-	temp->redirect_out_fd = -1;
-	operations[i] = temp;
-	return (1);
-}
 
 void	free_operations_args(char **args)
 {

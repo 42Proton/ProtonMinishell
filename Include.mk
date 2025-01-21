@@ -1,6 +1,7 @@
 SRCS= \
 	main.c \
 	handlers.c \
+	handlers2.c \
 	print_error.c \
 	execute_inbuilt_command.c \
 	cmds.c \
@@ -15,7 +16,8 @@ SRCS= \
 	line_tokenizer.c \
 	utils.c \
 	utils2.c \
-	line_tokenizer_utils.c\
+	utils3.c \
+	line_tokenizer_utils.c \
 	lexical_analysis.c \
 	checks.c \
 	checks2.c \
@@ -29,6 +31,7 @@ SRCS= \
 	expander_remove_quotes.c \
 	expander_utils.c \
 	expander_utils2.c \
+	expander_utils3.c \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
 	expander_split.c \

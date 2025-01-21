@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/08 11:38:16 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:48:47 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,43 @@ int	op_get_args(t_operation *operation, t_list *lst)
 {
 	ssize_t	parenthesis_count;
 	size_t	i;
+	t_token	*tok;
 
 	parenthesis_count = 0;
 	i = 1;
 	while (check_op_prep_condition(lst, parenthesis_count))
 	{
-		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
+		tok = (t_token *)lst->content;
+		if (tok->type == OPEN_PARENTHESIS)
 			parenthesis_count++;
-		else if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
+		else if (tok->type == CLOSE_PARENTHESIS)
 			parenthesis_count--;
-		if (((t_token *)lst->content)->type == ARGUMENT && !parenthesis_count)
+		if (tok->type == ARGUMENT && !parenthesis_count)
 		{
-			operation->args[i] = ft_strdup(((t_token *)lst->content)->token_word);
+			operation->args[i] = ft_strdup(tok->token_word);
 			if (!operation->args[i])
 				return (0);
 			i++;
 		}
 		lst = lst->next;
 	}
+	return (1);
+}
+
+int	add_operation_alloc(t_operation **operations, ssize_t i)
+{
+	t_operation	*temp;
+
+	temp = ft_calloc(1, sizeof(t_operation));
+	if (!temp)
+	{
+		while (--i > -1)
+			free(operations[i]);
+		free(operations);
+		return (0);
+	}
+	temp->redirect_in_fd = -1;
+	temp->redirect_out_fd = -1;
+	operations[i] = temp;
 	return (1);
 }

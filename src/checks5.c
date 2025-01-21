@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:49:21 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 15:23:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:29:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_tok_prev_cmd(t_list *lst)
 int	check_if_dir(char *path)
 {
 	struct stat	stat_buf;
-	
+
 	if (stat(path, &stat_buf))
 		return (-1);
 	if (S_ISDIR(stat_buf.st_mode))

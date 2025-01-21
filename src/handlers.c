@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/19 00:18:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:30:53 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,6 @@ static void	clear_env(void *content)
 	free(env->data);
 	free(env->name);
 	free(env);
-}
-
-void	free_lst(t_list *lst)
-{
-	t_list	*temp;
-
-	while (lst)
-	{
-		temp = lst->next;
-		free(lst);
-		lst = temp;
-	}
 }
 
 void	free_tokens(void *tokens)
