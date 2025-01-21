@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/15 04:27:01 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 22:42:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,24 @@ int	prep_redirections_helper(t_op_ref *op_ref, t_operation *operation, size_t j)
 		{
 			operation->heredoc_buffer = ft_strdup("");
 			if (!operation->heredoc_buffer)
+			{
+				free(line);
 				return (0);
+			}
 		}
 		if (line && !ft_strcmp(line, operation->in_redirects[j].name))
+		{
+			free(line);
 			break;
+		}
 		if (line && j == operation->n_in - 1)
+		{
 			if (!prep_redirections_helper2(operation, line))
+			{
+				free(line);
 				return (0);
+			}
+		}
 		if (!line)
 		{
 			print_heredoc_warning(op_ref, operation, j);

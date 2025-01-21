@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 22:30:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 22:38:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_minishell
 	t_list					*env_lst;
 	int						last_exit_code;
 	u_int32_t				curr_line;
+	int						is_empty;
 }							t_minishell;
 
 typedef struct s_tokens_split

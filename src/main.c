@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 22:03:11 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/21 22:40:07 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ static void	start_shell_helper(t_minishell *mini)
 	if (pre_process_check(mini->line_read))
 	{
 		line_tokenizer(mini);
+		if (!mini->line_tokens)
+		{
+			mini->is_empty = 1;
+			return ;
+		}
 		status = lexical_analysis(mini);
 		if (status)
 			start_execution(mini);
@@ -71,8 +76,6 @@ static void	start_shell_helper(t_minishell *mini)
 			"Proton: syntax error, unclosed quotes/parenthesis\n");
 		mini->last_exit_code = 2;
 	}
-	add_history(mini->line_read);
-	free(mini->line_read);
 }
 
 static void	start_shell(t_minishell *mini)
@@ -87,6 +90,10 @@ static void	start_shell(t_minishell *mini)
 			exit_handler(mini, NONE);
 		if (*mini->line_read)
 			start_shell_helper(mini);
+		if (!mini->is_empty)
+		add_history(mini->line_read);
+		free(mini->line_read);
+		mini->is_empty = 0;
 	}
 }
 
