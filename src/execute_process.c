@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 22:42:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:01:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ int	prep_redirections_helper(t_op_ref *op_ref, t_operation *operation, size_t j)
 	while (1)
 	{
 		line = readline("> ");
+		if (g_signum == SIGINT)
+		{
+			free(line);
+			op_ref->signal_term = 1;
+			return (1);
+		}
 		if (j == operation->n_in - 1 && !operation->heredoc_buffer)
 		{
 			operation->heredoc_buffer = ft_strdup("");
@@ -81,11 +87,15 @@ int	prep_redirections(t_op_ref *op_ref, t_operation **operations)
 		if (operations[i]->operations)
 			if (!prep_redirections(op_ref, operations[i]->operations))
 				return (0);
+		if (op_ref->signal_term)
+				return (1);
 		while (j < operations[i]->n_in)
 		{
 			if (operations[i]->in_redirects[j].type == REDIRECT_LIMITER)
 				if (!prep_redirections_helper(op_ref, operations[i], j))
 					return (0);
+			if (op_ref->signal_term)
+				return (1);
 			j++;
 		}
 		i++;
@@ -484,12 +494,16 @@ int	execute_process(t_operation **ops, t_op_ref *op_ref, int is_subshell)
 {
 	size_t	i;
 	
+	signal_handler(0);
 	if (!is_subshell)
 	{
-		signal_handler(0);
+		signal_handler(2);
 		if (!prep_redirections(op_ref, ops))
 			return (EXIT_FAILURE);
+		if (op_ref->signal_term)
+			return (EXIT_SUCCESS);
 	}
+	signal_handler(0);
 	i = 0;
 	while (ops[i])
 	{

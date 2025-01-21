@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 22:38:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 23:56:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include <termcap.h>
 # include <termios.h>
 # include <unistd.h>
+
+extern int	g_signum;
 
 typedef struct s_env
 {
@@ -200,6 +202,7 @@ enum						e_strjoin
 	STRJOIN_FA
 };
 
+int 				rl_dummy_event(void);
 t_op_ref			*op_ref_init(t_operation **operations, t_minishell *mini);
 ssize_t				separators_counter(t_list *lst);
 ssize_t				separators_counter_subop(t_list *lst);

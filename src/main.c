@@ -6,11 +6,13 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 22:40:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:01:21 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+int	g_signum;
 
 static void	start_execution(t_minishell *mini)
 {
@@ -24,7 +26,8 @@ static void	start_execution(t_minishell *mini)
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	op_ref = op_ref_init(operations, mini);
-	status = execute_process(operations, op_ref, 0);
+	if (!g_signum)
+		status = execute_process(operations, op_ref, 0);
 	free_operations(operations);
 	is_exit = op_ref->is_exit;
 	free(op_ref);
@@ -83,15 +86,16 @@ static void	start_shell(t_minishell *mini)
 	display_header(mini);
 	while (1)
 	{
-		signal_handler(1);
+		g_signum = 0;
 		mini->curr_line++;
 		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
-		if (*mini->line_read)
+		if (*mini->line_read && !g_signum)
 			start_shell_helper(mini);
+		signal_handler(1);
 		if (!mini->is_empty)
-		add_history(mini->line_read);
+			add_history(mini->line_read);
 		free(mini->line_read);
 		mini->is_empty = 0;
 	}
@@ -103,6 +107,8 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	rl_event_hook = rl_dummy_event;
+	g_signum = 0;
 	signal_handler(1);
 	minishell = minishell_prep(env);
 	if (terminals_config())

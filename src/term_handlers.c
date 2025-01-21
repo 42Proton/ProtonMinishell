@@ -6,18 +6,31 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/10 19:27:20 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:01:27 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+int rl_dummy_event(void)
+{ 
+	return (0);
+}
+
+static void	signal_heredoc(int signum)
+{
+	g_signum = signum;
+	rl_done = 1;
+	rl_on_new_line();
+	write(STDOUT_FILENO, "\n", 1);
+}
+
 static void	signal_newprompt(int signum)
 {
-	(void)signum;
+	g_signum = signum;
 	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
-	ft_printf("\n");
 	rl_redisplay();
 }
 
@@ -26,8 +39,10 @@ void	signal_handler(int mode)
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	if (mode)
+	if (mode == 1)
 		sa.sa_handler = signal_newprompt;
+	else if (mode == 2)
+		sa.sa_handler = signal_heredoc;
 	else
 		sa.sa_handler = SIG_IGN;
 	sa.sa_flags = 0;
