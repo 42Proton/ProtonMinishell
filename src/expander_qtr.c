@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_qtr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:49:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 00:55:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:25:52 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static int	insert_quotes_range(t_list **quotes_range,
 	if (tok_exp->split_se.start == tok_exp->split_se.end - 1)
 	{
 		qr->arr[0] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
-			+ 1) * 2;
+				+ 1) * 2;
 		qr->arr[1] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
-			+ 1) * 2;
+				+ 1) * 2;
 		qr->is_empty = 1;
 	}
 	else
@@ -34,7 +34,7 @@ static int	insert_quotes_range(t_list **quotes_range,
 		qr->arr[0] = tok_exp->split_se.start - tok_exp->quotes_iter_count
 			* 2;
 		qr->arr[1] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
-			+ 1) * 2;
+				+ 1) * 2;
 	}
 	if (old_mode == SINGLE_QUOTE_MODE)
 		qr->is_sq = 1;
@@ -76,7 +76,8 @@ static size_t	exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,
 	return (res);
 }
 
-static int	exp_prep_qtr_modes(char *s, size_t i, t_list *split_toks, t_tok_expander *tok_exp)
+static int	exp_prep_qtr_modes(char *s, size_t i,
+			t_list *split_toks, t_tok_expander *tok_exp)
 {
 	int				mode;
 	t_split_toks	*content;

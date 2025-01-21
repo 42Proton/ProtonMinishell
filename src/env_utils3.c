@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 02:19:37 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/11 20:58:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:50:41 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_setenv(t_list **env_lst, char *name, char *data)
 int	sort_print_env_helper2(char **res, t_env *env)
 {
 	char	*temp;
-	
+
 	temp = ft_strjoin(*res, env->name);
 	free(*res);
 	if (!temp)

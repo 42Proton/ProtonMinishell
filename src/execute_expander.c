@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_expander.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 00:31:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:53:15 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
 	return (1);
 }
 
-int	execute_expander_stage1(t_op_ref *op_ref, t_operation *operation, t_list **tokens)
+int	execute_expander_stage1(t_op_ref *op_ref,
+		t_operation *operation, t_list **tokens)
 {
 	char	**args;
 
@@ -94,7 +95,8 @@ int	execute_expander_stage1(t_op_ref *op_ref, t_operation *operation, t_list **t
 	return (1);
 }
 
-int	execute_expander_stage2_helper(t_op_ref *op_ref, t_operation *operation, t_list **tokens)
+int	execute_expander_stage2_helper(t_op_ref *op_ref,
+		t_operation *operation, t_list **tokens)
 {
 	size_t	i;
 
@@ -123,7 +125,8 @@ int	execute_expander_stage2_helper(t_op_ref *op_ref, t_operation *operation, t_l
 	return (1);
 }
 
-int execute_expander_stage2(t_op_ref *op_ref, t_operation *operation, t_list **tokens)
+int	execute_expander_stage2(t_op_ref *op_ref,
+		t_operation *operation, t_list **tokens)
 {
 	size_t	i;
 	int		status;

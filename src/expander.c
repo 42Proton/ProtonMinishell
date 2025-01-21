@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/20 16:54:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:24:06 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static char	*token_expander_env(char *s, t_list *env_lst, int lec)
 	return (res);
 }
 
-int	token_exp_helper_wildcards(char *exp_str, t_list **tokens, t_list *quotes_range)
+int	token_exp_helper_wildcards(char *exp_str,
+		t_list **tokens, t_list *quotes_range)
 {
 	t_list	*lst;
 
@@ -140,7 +141,7 @@ int	token_expander(char *s, t_list **tokens, t_op_ref *op_ref)
 	{
 		split_tok = (t_split_toks *)temp->content;
 		if (!token_exp_helper_wildcards(split_tok->str,
-			&res_toks, split_tok->quotes_ranges))
+				&res_toks, split_tok->quotes_ranges))
 		{
 			ft_lstclear(&split_toks, clear_split_tok);
 			ft_lstclear(&res_toks, free);

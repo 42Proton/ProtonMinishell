@@ -3,77 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:01:23 by bismail           #+#    #+#             */
-/*   Updated: 2025/01/11 22:50:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:28:42 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static ssize_t	separators_counter(t_list *lst)
-{
-	ssize_t	counter;
-	size_t	parenthesis_count;
-
-	parenthesis_count = 0;
-	counter = 0;
-	while (lst)
-	{
-		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
-			parenthesis_count++;
-		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
-			parenthesis_count--;
-		if (((t_token *)lst->content)->type >= AND_OPERATOR
-			&& ((t_token *)lst->content)->type <= PIPE
-			&& !parenthesis_count)
-			counter++;
-		lst = lst->next;
-	}
-	return (counter);
-}
-
-static ssize_t	separators_counter_subop(t_list *lst)
-{
-	ssize_t	counter;
-	size_t	parenthesis_count;
-
-	parenthesis_count = 1;
-	counter = 0;
-	lst = lst->next;
-	while (parenthesis_count)
-	{
-		if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
-			parenthesis_count++;
-		if (((t_token *)lst->content)->type == CLOSE_PARENTHESIS)
-			parenthesis_count--;
-		if (((t_token *)lst->content)->type >= AND_OPERATOR
-			&& ((t_token *)lst->content)->type <= PIPE
-			&& parenthesis_count == 1)
-			counter++;
-		lst = lst->next;
-	}
-	return (counter);
-}
-
-int	prep_op_main_conditions(t_list *lst, size_t *p_count,
-	t_operation **operations, size_t *i)
-{
-	if (((t_token *)lst->content)->type == OPEN_PARENTHESIS)
-	{
-		if (!*p_count)
-			if (!add_subop(operations, *i, lst))
-				return (0);
-		(*p_count)++;
-	}
-	if (check_op_type(lst) && !*p_count)
-	{
-		(*i)++;
-		operations[*i]->operation_type = check_op_type(lst);
-	}
-	return (1);
-}
 
 int	prep_ops_data(t_operation **operations, t_list *lst)
 {

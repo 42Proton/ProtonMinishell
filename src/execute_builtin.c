@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 00:22:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:51:41 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	builtin_cmd_process(t_operation **operations, size_t i, t_op_ref *op_ref)
 		builtin_cmd_close_fds(fds);
 		return (EXIT_FAILURE);
 	}
-	status = execute_inbuilt_command(op_ref, operations[i]->cmd, operations[i]->args);
+	status = execute_inbuilt_command(op_ref, operations[i]->cmd,
+			operations[i]->args);
 	if (builtin_cmd_process_recover(fds) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (status == EXIT_FAILURE)
@@ -75,11 +76,12 @@ int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
 	int	pid;
 	int	status;
 	int	is_child;
-	
+
 	status = EXIT_SUCCESS;
 	is_child = 0;
 	if (operations[i]->operation_type == OPERATION_PIPE
-		|| (operations[i + 1] && operations[i + 1]->operation_type == OPERATION_PIPE))
+		|| (operations[i + 1]
+			&& operations[i + 1]->operation_type == OPERATION_PIPE))
 		is_child = 1;
 	if (is_child)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 20:23:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 15:29:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:21:12 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static ssize_t	pre_validate_tokens_helper(t_token *token, t_token *prev_token,
 				return (prev_token->index);
 	}
 	if ((check_sep_operators(token)
-		|| check_redirect_num(token->type)) && !next_lst)
+			|| check_redirect_num(token->type)) && !next_lst)
 		return (-2);
 	return (-1);
 }

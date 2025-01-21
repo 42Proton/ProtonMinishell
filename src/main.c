@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 12:57:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 22:03:11 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,13 @@ static void	start_execution(t_minishell *mini)
 	int			status;
 	int			is_exit;
 	t_op_ref	*op_ref;
-	
-	t_operation **operations = operations_prep(mini->line_tokens, 0);
+	t_operation	**operations;
+
+	operations = operations_prep(mini->line_tokens, 0);
 	ft_lstclear(&mini->line_tokens, free_tokens);
 	if (!operations)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	op_ref = malloc(sizeof(t_op_ref));
-	if (!op_ref)
-	{
-		free_operations(operations);
-		exit_handler(mini, ERR_MALLOC_POSTLEXER);
-	}
-	op_ref->lec = &mini->last_exit_code;
-	op_ref->env_lst = &mini->env_lst;
-	op_ref->curr_line = mini->curr_line;
-	op_ref->wait_childs = 0;
-	op_ref->is_exit = 0;
-	op_ref->circuit_trigger = 0;
-	op_ref->signal_term = 0;
-	op_ref->last_pid = -1;
+	op_ref = op_ref_init(operations, mini);
 	status = execute_process(operations, op_ref, 0);
 	free_operations(operations);
 	is_exit = op_ref->is_exit;
@@ -63,7 +51,7 @@ static t_minishell	*minishell_prep(char **environ)
 
 static void	start_shell_helper(t_minishell *mini)
 {
-	int status;
+	int	status;
 
 	if (pre_process_check(mini->line_read))
 	{
@@ -79,7 +67,8 @@ static void	start_shell_helper(t_minishell *mini)
 	}
 	else
 	{
-		ft_dprintf(STDERR_FILENO, "Proton: syntax error, unclosed quotes/parenthesis\n");
+		ft_dprintf(STDERR_FILENO,
+			"Proton: syntax error, unclosed quotes/parenthesis\n");
 		mini->last_exit_code = 2;
 	}
 	add_history(mini->line_read);
@@ -93,7 +82,7 @@ static void	start_shell(t_minishell *mini)
 	{
 		signal_handler(1);
 		mini->curr_line++;
-		mini->line_read = readline("\001\033[35m\002ProtonShell>\001\033[33m\002");
+		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002");
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read)

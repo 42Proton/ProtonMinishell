@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 15:45:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 22:02:55 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,9 @@ enum						e_strjoin
 	STRJOIN_FA
 };
 
+t_op_ref	*op_ref_init(t_operation **operations, t_minishell *mini);
+ssize_t				separators_counter(t_list *lst);
+ssize_t				separators_counter_subop(t_list *lst);
 int					tok_exp_res_split_util(char *exp_str,
 						t_tok_expander *tok_exp2, size_t *temp);
 int					token_exp_res_split_helper3(char *s,

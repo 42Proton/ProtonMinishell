@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/08 11:39:02 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 21:50:29 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ int	op_collect_cmd(t_operation **operations, size_t i, t_list *lst)
 			parenthesis_count--;
 		if (((t_token *)lst->content)->type == COMMAND && !parenthesis_count)
 		{
-			operations[i]->cmd = ft_strdup(((t_token *)lst->content)->token_word);
+			operations[i]->cmd = ft_strdup(((
+							t_token *)lst->content)->token_word);
 			if (!operations[i]->cmd)
 				return (0);
 			break ;
@@ -118,22 +119,14 @@ int	op_data_collector(t_operation **operations, size_t i, t_list *lst)
 {
 	if (check_op_type(lst))
 		lst = lst->next;
-	if (!op_collect_cmd(operations, i, lst))
+	if (!op_collect_cmd(operations, i, lst) || !op_prep_redirections(
+			operations[i], lst))
 	{
 		free_operations(operations);
 		return (0);
 	}
-	if (!op_prep_redirections(operations[i], lst))
-	{
-		free_operations(operations);
-		return (0);
-	}
-	if (!op_get_redirections(operations[i], lst))
-	{
-		free_operations(operations);
-		return (0);
-	}
-	if (!op_prep_args(operations[i], lst))
+	if (!op_get_redirections(operations[i], lst) || !op_prep_args(
+			operations[i], lst))
 	{
 		free_operations(operations);
 		return (0);

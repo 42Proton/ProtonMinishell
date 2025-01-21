@@ -42,4 +42,5 @@ SRCS= \
 	operations_prep_utils3.c \
 	execute_process.c \
 	execute_builtin.c\
-	exit_cmd.c
+	exit_cmd.c\
+	opers_helpers.c
