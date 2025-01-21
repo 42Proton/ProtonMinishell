@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_inbuilt_command.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/14 01:18:30 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/21 15:22:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args)
 	if (!ft_strcmp(cmd, "export"))
 		export_cmd(op_ref, args);
 	if (!ft_strcmp(cmd, "exit"))
-		exit_cmd(op_ref,args);
+		exit_cmd(op_ref, args);
 	if (status == EXIT_FAILURE)
 		return (status);
 	return (EXIT_SUCCESS);

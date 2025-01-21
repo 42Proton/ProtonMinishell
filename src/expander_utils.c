@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:06:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/20 16:56:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 12:18:36 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,27 @@ int	expander_add_tok(char *word, t_tok_expander *tok_exp, t_list *env_lst)
 	}
 	ft_lstadd_back(&tok_exp->lst, lst);
 	tok_exp->split_se.start = tok_exp->split_se.end;
+	return (1);
+}
+
+int	exp_add_tok_rm_qt(char *s, t_tok_expander *tok_exp)
+{
+	char	*sub_s;
+	t_split	split_se;
+	t_list	*lst;
+
+	split_se = tok_exp->split_se;
+	if (split_se.start == split_se.end + 1)
+		return (1);
+	sub_s = ft_substr(s, split_se.start, (split_se.end - split_se.start) + 1);
+	if (!sub_s)
+		return (0);
+	lst = ft_lstnew(sub_s);
+	if (!lst)
+	{
+		free(sub_s);
+		return (0);
+	}
+	ft_lstadd_back(&tok_exp->lst, lst);
 	return (1);
 }

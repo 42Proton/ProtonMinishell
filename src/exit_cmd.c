@@ -6,42 +6,11 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:28:24 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/15 01:44:52 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 15:22:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static unsigned long long	ft_atoull(char *nptr)
-{
-	unsigned long long	res;
-
-	res = 0;
-	while (*nptr == 32 || (*nptr >= '\t' && *nptr <= '\r'))
-		nptr++;
-	if (*nptr == '-' || *nptr == '+')
-		nptr++;
-	while (*nptr && *nptr >= '0' && *nptr <= '9')
-		res = res * 10 + *(nptr++) - '0';
-	return (res);
-}
-
-static long long	ft_atoll(char *nptr)
-{
-	long long	res;
-	int			sign;
-
-	res = 0;
-	sign = 1;
-	while (*nptr == 32 || (*nptr >= '\t' && *nptr <= '\r'))
-		nptr++;
-	if (*nptr == '-' || *nptr == '+')
-		if (*(nptr++) == '-')
-			sign = -1;
-	while (*nptr && *nptr >= '0' && *nptr <= '9')
-		res = res * 10 + *(nptr++) - '0';
-	return (res * sign);
-}
 
 static int	check_if_str_real(char *str)
 {
@@ -82,7 +51,7 @@ static int	validate_args(char **args)
 		i++;
 	if (i > 2)
 	{
-		ft_dprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
+		ft_dprintf(STDERR_FILENO, "Proton: exit: too many arguments\n");
 		return (1);
 	}
 	if (i == 2)
@@ -92,12 +61,14 @@ static int	validate_args(char **args)
 			|| (sign == 1 && ft_atoull(args[1]) > LLONG_MAX)
 			|| (sign == -1 && ft_atoull(args[1]) > LLONG_MAX + 1ULL))
 		{
-			ft_dprintf(STDERR_FILENO, "minishell: exit: %s: numeric argument required\n",args[1]);
+			ft_dprintf(STDERR_FILENO, "Proton: exit: %s \
+: numeric argument required\n", args[1]);
 			return (2);
 		}
 	}
 	return (0);
 }
+
 void	exit_cmd(t_op_ref *op_ref, char **args)
 {
 	int	vald;

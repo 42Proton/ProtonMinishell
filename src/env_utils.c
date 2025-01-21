@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/15 04:34:40 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 12:16:57 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	shell_level(t_minishell *mini, t_list *env_lst)
 	{
 		env = (t_env *)env_lst->content;
 		if (!ft_strcmp(env->name, "SHLVL"))
-			break;
+			break ;
 		env_lst = env_lst->next;
 	}
 	new_level = ft_itoa(ft_atoi(env->data) + 1);

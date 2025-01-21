@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:57:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/19 00:22:30 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 12:19:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static size_t	ft_strlen_trunc_spaces(char *s)
 {
 	size_t	i;
 	size_t	res;
-	
+
 	i = 0;
 	res = 0;
 	while (s[i])

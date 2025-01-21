@@ -6,35 +6,14 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:30:24 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/20 16:57:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 12:18:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	exp_add_tok_rm_qt(char *s, t_tok_expander *tok_exp)
-{
-	char	*sub_s;
-	t_split	split_se;
-	t_list	*lst;
-
-	split_se = tok_exp->split_se;
-	if (split_se.start == split_se.end + 1)
-		return (1);
-	sub_s = ft_substr(s, split_se.start, (split_se.end - split_se.start) + 1);
-	if (!sub_s)
-		return (0);
-	lst = ft_lstnew(sub_s);
-	if (!lst)
-	{
-		free(sub_s);
-		return (0);
-	}
-	ft_lstadd_back(&tok_exp->lst, lst);
-	return (1);
-}
-
-static int	exp_rm_qt_process_qt_empty(char *s, t_list *quotes_ranges, t_tok_expander *tok_exp)
+static int	exp_rm_qt_process_qt_empty(char *s,
+	t_list *quotes_ranges, t_tok_expander *tok_exp)
 {
 	t_qr	*qr;
 
@@ -53,7 +32,8 @@ static int	exp_rm_qt_process_qt_empty(char *s, t_list *quotes_ranges, t_tok_expa
 	return (1);
 }
 
-static int	exp_rm_qt_process_helper(char *s, t_list *quotes_ranges, t_tok_expander *tok_exp)
+static int	exp_rm_qt_process_helper(char *s,
+	t_list *quotes_ranges, t_tok_expander *tok_exp)
 {
 	t_qr	*qr;
 

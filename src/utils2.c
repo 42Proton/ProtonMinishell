@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:51:13 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/20 17:02:12 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 12:21:27 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	**env_lst_to_2d_arr(t_op_ref *op_ref)
 char	*ft_strjoin2(char *s1, char *s2, int mode)
 {
 	char	*res;
+
 	res = ft_strjoin(s1, s2);
 	if (mode == STRJOIN_DEF)
 		return (res);
@@ -82,5 +83,19 @@ char	*ft_strjoin2(char *s1, char *s2, int mode)
 		free(s1);
 		free(s2);
 	}
+	return (res);
+}
+
+unsigned long long	ft_atoull(char *nptr)
+{
+	unsigned long long	res;
+
+	res = 0;
+	while (*nptr == 32 || (*nptr >= '\t' && *nptr <= '\r'))
+		nptr++;
+	if (*nptr == '-' || *nptr == '+')
+		nptr++;
+	while (*nptr && *nptr >= '0' && *nptr <= '9')
+		res = res * 10 + *(nptr++) - '0';
 	return (res);
 }

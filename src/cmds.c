@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/20 17:06:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/21 12:16:06 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ void	cd_cmd(t_op_ref *op_ref, char **args)
 	{
 		if (chdir(ft_getenv(*op_ref->env_lst, "HOME")) == -1)
 		{
-			perror("minishell: cd");
+			perror("Proton: cd");
 			*op_ref->lec = 1;
 		}
 		return ;
 	}
 	if (args[i + 1])
-		ft_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
+		ft_dprintf(STDERR_FILENO, "Proton: cd: too many arguments\n");
 	if (args[i + 1])
 		*op_ref->lec = 1;
 	else
 	{
 		if (chdir(args[i]) == -1)
 		{
-			perror("minishell: cd");
+			perror("Proton: cd");
 			*op_ref->lec = 1;
 		}
 	}
@@ -49,7 +49,7 @@ void	pwd_cmd(t_op_ref *op_ref)
 		ft_printf("%s\n", cwd);
 	else
 	{
-		perror("minishell: pwd");
+		perror("Proton: pwd");
 		*op_ref->lec = 1;
 	}
 }
