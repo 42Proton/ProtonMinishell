@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 00:01:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:17:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -494,16 +494,16 @@ int	execute_process(t_operation **ops, t_op_ref *op_ref, int is_subshell)
 {
 	size_t	i;
 	
-	signal_handler(0);
+	signal_handler(SIG_IGNORE);
 	if (!is_subshell)
 	{
-		signal_handler(2);
+		signal_handler(SIG_HEREDOC);
 		if (!prep_redirections(op_ref, ops))
 			return (EXIT_FAILURE);
 		if (op_ref->signal_term)
 			return (EXIT_SUCCESS);
 	}
-	signal_handler(0);
+	signal_handler(SIG_IGNORE);
 	i = 0;
 	while (ops[i])
 	{

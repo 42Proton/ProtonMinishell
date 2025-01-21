@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 23:56:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:15:19 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,14 @@ enum						e_strjoin
 	STRJOIN_FS1,
 	STRJOIN_FS2,
 	STRJOIN_FA
+};
+
+enum						e_signal_modes
+{
+	SIG_IGNORE,
+	SIG_NEWPROMPT,
+	SIG_HEREDOC,
+	SIG_UPDATE_SIGNUM
 };
 
 int 				rl_dummy_event(void);

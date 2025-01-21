@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 00:01:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:17:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,13 @@ static void	start_shell(t_minishell *mini)
 	{
 		g_signum = 0;
 		mini->curr_line++;
+		signal_handler(SIG_NEWPROMPT);
 		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002");
+		signal_handler(SIG_UPDATE_SIGNUM);
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
 		if (*mini->line_read && !g_signum)
 			start_shell_helper(mini);
-		signal_handler(1);
 		if (!mini->is_empty)
 			add_history(mini->line_read);
 		free(mini->line_read);
@@ -109,7 +110,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	rl_event_hook = rl_dummy_event;
 	g_signum = 0;
-	signal_handler(1);
+	signal_handler(SIG_IGNORE);
 	minishell = minishell_prep(env);
 	if (terminals_config())
 		exit_handler(NULL, ERR_TERM);

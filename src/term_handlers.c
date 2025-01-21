@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/22 00:10:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 00:18:48 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ static void	signal_heredoc(int signum)
 	rl_on_new_line();
 }
 
-static void	signal_newprompt(int signum)
+static void	signal_update_signum(int signum)
 {
 	g_signum = signum;
+}
+
+static void	signal_newprompt(int signum)
+{
+	(void)signum;
 	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
@@ -39,10 +44,12 @@ void	signal_handler(int mode)
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	if (mode == 1)
+	if (mode == SIG_NEWPROMPT)
 		sa.sa_handler = signal_newprompt;
-	else if (mode == 2)
+	else if (mode == SIG_HEREDOC)
 		sa.sa_handler = signal_heredoc;
+	else if (mode == SIG_UPDATE_SIGNUM)
+		sa.sa_handler = signal_update_signum;
 	else
 		sa.sa_handler = SIG_IGN;
 	sa.sa_flags = 0;
