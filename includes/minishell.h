@@ -6,7 +6,7 @@
 /*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 15:11:07 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:50:50 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,9 @@ enum						e_signal_modes
 	SIG_HEREDOC,
 	SIG_UPDATE_SIGNUM
 };
+int	token_expander_helper2(t_list **split_toks, t_op_ref *op_ref , char *s);
+int     token_expander_helper(t_list *split_toks,t_list *res_toks,
+                t_list **tokens);
 void	expander_loop_helper(t_tok_expander *tok_exp,
 		size_t *env_len,size_t *i);
 size_t	exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,

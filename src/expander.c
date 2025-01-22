@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 21:24:06 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/22 15:51:23 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,8 @@ static int	prep_tok_exp(char *s, char *exp_str,
 		return (0);
 	}
 	free_lst(s_split_toks);
-	if (!expander_qtr(s, *split_toks, op_ref))
-	{
-		ft_lstclear(split_toks, clear_split_tok);
+	if (!token_expander_helper2(split_toks, op_ref, s))
 		return (0);
-	}
 	return (1);
 }
 
@@ -142,12 +139,7 @@ int	token_expander(char *s, t_list **tokens, t_op_ref *op_ref)
 		split_tok = (t_split_toks *)temp->content;
 		if (!token_exp_helper_wildcards(split_tok->str,
 				&res_toks, split_tok->quotes_ranges))
-		{
-			ft_lstclear(&split_toks, clear_split_tok);
-			ft_lstclear(&res_toks, free);
-			free_lst(*tokens);
-			return (0);
-		}
+			token_expander_helper(split_toks, res_toks, tokens);
 		ft_lstadd_back(tokens, res_toks);
 		res_toks = 0;
 		temp = temp->next;
