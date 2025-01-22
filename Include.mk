@@ -43,4 +43,5 @@ SRCS= \
 	execute_process.c \
 	execute_builtin.c\
 	exit_cmd.c\
-	opers_helpers.c
+	opers_helpers.c\
+	expander_extra.c

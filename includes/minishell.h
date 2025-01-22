@@ -6,7 +6,7 @@
 /*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 14:13:39 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:11:07 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,12 @@ enum						e_signal_modes
 	SIG_HEREDOC,
 	SIG_UPDATE_SIGNUM
 };
-
+void	expander_loop_helper(t_tok_expander *tok_exp,
+		size_t *env_len,size_t *i);
+size_t	exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,
+	t_op_ref *op_ref, size_t *i);
+int	insert_quotes_range(t_list **quotes_range,
+	t_tok_expander *tok_exp, int old_mode);
 int 				rl_dummy_event(void);
 t_op_ref			*op_ref_init(t_operation **operations, t_minishell *mini);
 ssize_t				separators_counter(t_list *lst);

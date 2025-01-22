@@ -6,16 +6,11 @@
 /*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/22 13:58:44 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:48:16 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-int	rl_dummy_event(void)
-{
-	return (0);
-}
 
 static void	signal_heredoc(int signum)
 {
