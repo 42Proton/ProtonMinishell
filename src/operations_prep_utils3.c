@@ -3,21 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils3.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 15:48:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:16:15 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	set_redirection_data(t_redirect *redirect, t_list *lst)
+int	set_redirection_data(t_operation *operations,
+		t_list *lst, size_t *i, int whom)
 {
-	redirect->type = op_type_to_redirection(lst);
-	redirect->name = ft_strdup(((t_token *)lst->next->content)->token_word);
-	if (!redirect->name)
-		return (0);
+	if (whom == 1)
+	{
+		operations->in_redirects->type = op_type_to_redirection(lst);
+		operations->in_redirects->name = ft_strdup(((
+						t_token *)lst->next->content)->token_word);
+		if (!operations->in_redirects->name)
+			return (0);
+	}
+	else
+	{
+		operations->out_redirects->type = op_type_to_redirection(lst);
+		operations->out_redirects->name = ft_strdup(((
+						t_token *)lst->next->content)->token_word);
+		if (!operations->out_redirects->name)
+			return (0);
+	}
+	*(i) += 1;
 	return (1);
 }
 

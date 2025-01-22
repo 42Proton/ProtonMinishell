@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 00:15:19 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/22 14:13:39 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ int					execute_process(t_operation **ops,
 int					op_prep_args(t_operation *operation, t_list *lst);
 int					op_get_args(t_operation *operation, t_list *lst);
 int					check_tok_prev_cmd(t_list *lst);
-int					set_redirection_data(t_redirect *redirect, t_list *lst);
+int					set_redirection_data(t_operation *operations, t_list *lst, size_t *i, int whom);
 int					check_op_prep_condition(t_list *lst,
 						ssize_t parenthesis_count);
 int					check_out_redirection(t_list *lst);

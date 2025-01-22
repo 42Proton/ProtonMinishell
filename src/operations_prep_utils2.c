@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 21:50:29 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/22 14:17:48 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,12 @@ int	op_get_redirections(t_operation *operation, t_list *lst)
 			parenthesis_count--;
 		if (check_in_redirection(lst) && !parenthesis_count)
 		{
-			if (!set_redirection_data(&operation->in_redirects[i_in], lst))
+			if (!set_redirection_data(operation, lst, &i_in, 1))
 				return (0);
-			i_in++;
 		}
 		else if (check_out_redirection(lst) && !parenthesis_count)
-		{
-			if (!set_redirection_data(&operation->out_redirects[i_out], lst))
+			if (!set_redirection_data(operation, lst, &i_out, 0))
 				return (0);
-			i_out++;
-		}
 		lst = lst->next;
 	}
 	return (1);

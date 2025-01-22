@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opers_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:27:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/21 22:02:46 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/22 13:58:49 by bismail          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
