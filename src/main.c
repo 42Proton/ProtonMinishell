@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 14:59:08 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/23 21:33:32 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,29 @@ static void	start_shell_helper(t_minishell *mini)
 	}
 }
 
+static void	recover_stdin_bak(t_minishell *mini)
+{
+	if (!mini->stdin_bak)
+	{
+		mini->stdin_bak = dup(STDIN_FILENO);
+		if (mini->stdin_bak == -1)
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
+	}
+	else
+	{
+		if (dup2(mini->stdin_bak, STDIN_FILENO) == -1)
+		{
+			close(mini->stdin_bak);
+			mini->stdin_bak = -1;
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
+		}
+		close(mini->stdin_bak);
+		mini->stdin_bak = dup(STDIN_FILENO);
+		if (mini->stdin_bak == -1)
+			exit_handler(mini, ERR_MALLOC_POSTMINI);
+	}
+}
+
 static void	start_shell(t_minishell *mini)
 {
 	display_header(mini);
@@ -88,6 +111,7 @@ static void	start_shell(t_minishell *mini)
 	{
 		g_signum = 0;
 		mini->curr_line++;
+		recover_stdin_bak(mini);
 		signal_handler(SIG_NEWPROMPT);
 		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002");
 		signal_handler(SIG_UPDATE_SIGNUM);

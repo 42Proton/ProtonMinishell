@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/22 14:48:16 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/23 21:34:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static void	signal_heredoc(int signum)
 {
 	g_signum = signum;
-	rl_done = 1;
 	write(STDOUT_FILENO, "\n", 1);
+	close(STDIN_FILENO);
 	rl_on_new_line();
 }
 
