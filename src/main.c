@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/23 21:33:32 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 00:49:01 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,11 @@ static void	start_shell(t_minishell *mini)
 	display_header(mini);
 	while (1)
 	{
-		g_signum = 0;
 		mini->curr_line++;
 		recover_stdin_bak(mini);
 		signal_handler(SIG_NEWPROMPT);
 		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002");
+		g_signum = 0;
 		signal_handler(SIG_UPDATE_SIGNUM);
 		if (!mini->line_read)
 			exit_handler(mini, NONE);
