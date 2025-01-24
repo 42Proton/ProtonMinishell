@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:57:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 12:19:33 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 18:09:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ size_t	get_env_len(char *s, t_op_ref *op_ref, int trunc_spaces)
 			env_str = ft_getenv(*(op_ref->env_lst), "_");
 			if (env_str)
 				res = ft_strlen(env_str);
+			else
+				return (0);
 		}
 		return (res);
 	}

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 17:58:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 18:11:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ int	exec_proc_iter(t_operation **ops,
 		execute_cmd_close_fds(ops[i], 0);
 		return (EXIT_FAILURE);
 	}
-	if (!ops[i]->cmd)
-		ft_unsetenv(op_ref->env_lst, "_");
+	if ((ops[i + 1] && ops[i + 1]->operation_type != OPERATION_PIPE)
+		&& ops[i]->operation_type != OPERATION_PIPE)
+		if (!ops[i]->cmd)
+			ft_unsetenv(op_ref->env_lst, "_");
 	execute_cmd_close_fds(ops[i], 0);
 	if (op_ref->wait_childs)
 		wait_childs(op_ref);
