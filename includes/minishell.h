@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 20:41:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 20:46:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,6 @@ int					exp_add_tok_rm_qt(char *s, t_tok_expander *tok_exp);
 char				*ft_strjoin2(char *s1, char *s2, int mode);
 void				clear_split_tok2(void *content);
 int					exp_rm_qt(t_list *split_toks);
-void				clear_split_tok(void *content);
 int					expander_qtr(char *s, t_list *split_toks, t_op_ref *op_ref);
 int					expander_prep_qtr(t_list *s_split_toks,
 						t_list **split_toks);
@@ -269,9 +268,6 @@ int					token_exp_res_split(char *s, char *exp_str,
 						t_list **split_tok, t_op_ref *op_ref);
 size_t				get_env_len(char *s, t_op_ref *op_ref, int trunc_spaces);
 void				exit_cmd(t_op_ref *op_ref, char **args);
-void				execute_cmd_close_fds(t_operation *operation, int is_ext);
-int					execute_cmd_redirections(t_operation *operation,
-						int is_ext);
 int					builtin_cmd(t_operation **operations,
 						size_t i, t_op_ref *op_ref);
 int					check_if_builtin(char *token);
@@ -307,8 +303,6 @@ int					op_type_to_redirection(t_list *lst);
 int					op_data_collector(t_operation **operations,
 						size_t i, t_list *lst);
 int					prep_subop_main_conditions(t_list *lst, size_t *p_count,
-						t_operation **operations, size_t *i);
-int					prep_op_main_conditions(t_list *lst, size_t *p_count,
 						t_operation **operations, size_t *i);
 int					check_op_type(t_list *lst);
 void				free_operations(t_operation **operations);

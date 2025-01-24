@@ -6,13 +6,14 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 20:39:39 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 20:42:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args)
+int	execute_inbuilt_command(t_op_ref *op_ref,
+	char *cmd, char **args)
 {
 	int	status;
 
