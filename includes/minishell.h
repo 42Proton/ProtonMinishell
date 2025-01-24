@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 20:46:03 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 20:56:54 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ unsigned long long	ft_atoull(char *nptr);
 long long			ft_atoll(char *nptr);
 int					exp_add_tok_rm_qt(char *s, t_tok_expander *tok_exp);
 char				*ft_strjoin2(char *s1, char *s2, int mode);
+void				clear_split_tok(void *content);
 void				clear_split_tok2(void *content);
 int					exp_rm_qt(t_list *split_toks);
 int					expander_qtr(char *s, t_list *split_toks, t_op_ref *op_ref);
@@ -360,8 +361,6 @@ int					get_redirection_type(char *token);
 void				line_add_newline(t_minishell *mini);
 void				display_header(t_minishell *mini);
 void				line_tokenizer(t_minishell *mini);
-void				add_token(t_minishell *mini,
-						t_tokens_split *tokens_split);
 int					check_sep(char *line);
 size_t				skip_spaces_tabs(char *line);
 int					ft_unsetenv(t_list **env_lst, char *name);
@@ -388,9 +387,9 @@ void				free_lst(t_list *lst);
 t_env				*alloc_env(char *name, char *data);
 void				signal_handler(int newprompt);
 int					terminals_config(void);
-void				add_sep_tokens(t_minishell *mini,
+int					add_sep_tokens(t_minishell *mini,
 						t_tokens_split *tokens_split, char *line);
-void				add_token(t_minishell *mini,
+int					add_token(t_minishell *mini,
 						t_tokens_split *tokens_split);
 int					lexical_analysis(t_minishell *mini);
 int					expander_add_quote_tok(char *word, t_tok_expander *tok_exp);
