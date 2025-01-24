@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 11:36:57 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 15:40:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_op_ref
 {
 	int			*lec;
 	int			*heredoc_mode;
+	int			*stdin_bak;
 	int			wait_childs;
 	int			is_exit;
 	int			last_pid;

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 11:31:51 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 15:44:22 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	prep_redirections_helper(t_op_ref *op_ref, t_operation *operation, size_t j)
 		line = readline("> ");
 		if (g_signum == SIGINT)
 		{
-			free(line);
 			op_ref->signal_term = 1;
 			return (1);
 		}
@@ -275,7 +274,6 @@ int	execute_cmd(t_op_ref *op_ref, t_operation *operation, t_operation *next_op)
 	free_array((void **)env);
 	if (next_op && next_op->operation_type != OPERATION_PIPE)
 		op_ref->wait_childs = 1;
-	execute_cmd_close_fds(operation, 0);
 	return (EXIT_SUCCESS);
 }
 
@@ -374,7 +372,6 @@ int	execute_subshell(t_operation **ops, size_t i, t_op_ref *op_ref)
 		if (ops[i + 1] && ops[i + 1]->operation_type != OPERATION_PIPE)
 			op_ref->wait_childs = 1;
 	}
-	execute_cmd_close_fds(ops[i], 0);
 	return (EXIT_SUCCESS);
 }
 
@@ -431,10 +428,7 @@ int	execute_process_helper(t_operation **operations, size_t i, t_op_ref *op_ref)
 		}
 	}
 	else
-	{
 		ft_unsetenv(op_ref->env_lst, "_");
-		execute_cmd_close_fds(operations[i], 0);
-	}
 	return (EXIT_SUCCESS);
 }
 
@@ -494,7 +488,6 @@ int	execute_process(t_operation **ops, t_op_ref *op_ref, int is_subshell)
 {
 	size_t	i;
 	
-	signal_handler(SIG_IGNORE);
 	if (!is_subshell)
 	{
 		signal_handler(SIG_HEREDOC);
@@ -503,14 +496,22 @@ int	execute_process(t_operation **ops, t_op_ref *op_ref, int is_subshell)
 			return (EXIT_FAILURE);
 		if (op_ref->signal_term)
 			return (EXIT_SUCCESS);
+		close(*op_ref->stdin_bak);
+		*op_ref->stdin_bak = 0;
 		*op_ref->heredoc_mode = 0;
+		signal_handler(SIG_IGNORE);
 	}
-	signal_handler(SIG_IGNORE);
+	else
+		signal_handler(SIG_IGNORE);
 	i = 0;
 	while (ops[i])
 	{
 		if (execute_process_helper(ops, i, op_ref) == EXIT_FAILURE)
+		{
+			execute_cmd_close_fds(ops[i], 0);
 			return (EXIT_FAILURE);
+		}
+		execute_cmd_close_fds(ops[i], 0);
 		if (op_ref->wait_childs)
 			wait_childs(op_ref);
 		if (op_ref->signal_term || op_ref->is_exit)

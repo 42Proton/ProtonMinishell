@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 21:51:41 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/24 15:36:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,5 @@ int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
 		op_ref->last_pid = -1;
 		status = builtin_cmd_process(operations, i, op_ref);
 	}
-	execute_cmd_close_fds(operations[i], 0);
 	return (status);
 }
