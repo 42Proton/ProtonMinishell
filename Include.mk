@@ -3,7 +3,7 @@ SRCS= \
 	handlers.c \
 	handlers2.c \
 	print_error.c \
-	execute_inbuilt_command.c \
+	inbuilt_commands_utils.c \
 	cmds.c \
 	cmds2.c \
 	export_cmd.c \

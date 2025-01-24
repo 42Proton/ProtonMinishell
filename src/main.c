@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 11:33:07 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 18:14:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,29 +78,6 @@ static void	start_shell_helper(t_minishell *mini)
 		ft_dprintf(STDERR_FILENO,
 			"Proton: syntax error, unclosed quotes/parenthesis\n");
 		mini->last_exit_code = 2;
-	}
-}
-
-static void	recover_stdin_bak(t_minishell *mini)
-{
-	if (!mini->stdin_bak)
-	{
-		mini->stdin_bak = dup(STDIN_FILENO);
-		if (mini->stdin_bak == -1)
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
-	}
-	else
-	{
-		if (dup2(mini->stdin_bak, STDIN_FILENO) == -1)
-		{
-			close(mini->stdin_bak);
-			mini->stdin_bak = -1;
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
-		}
-		close(mini->stdin_bak);
-		mini->stdin_bak = dup(STDIN_FILENO);
-		if (mini->stdin_bak == -1)
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
 	}
 }
 

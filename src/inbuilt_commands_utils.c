@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_inbuilt_command.c                          :+:      :+:    :+:   */
+/*   inbuilt_commands_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 15:22:31 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 20:39:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,29 @@ int	execute_inbuilt_command(t_op_ref *op_ref, char *cmd, char **args)
 	if (!ft_strcmp(cmd, "unset"))
 		unset_cmd(op_ref, args);
 	if (!ft_strcmp(cmd, "export"))
-		export_cmd(op_ref, args);
+		status = export_cmd(op_ref, args);
 	if (!ft_strcmp(cmd, "exit"))
 		exit_cmd(op_ref, args);
-	if (status == EXIT_FAILURE)
+	return (status);
+}
+
+int	builtin_cmd_child(t_operation **operations,
+	size_t i, t_op_ref *op_ref)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+		return (EXIT_FAILURE);
+	if (!pid)
+	{
+		op_ref->is_exit = 1;
+		status = builtin_cmd_process(operations, i, op_ref);
+		execute_cmd_close_fds(operations[i], 1);
 		return (status);
+	}
+	else
+		op_ref->last_pid = pid;
 	return (EXIT_SUCCESS);
 }

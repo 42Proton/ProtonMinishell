@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 15:36:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 20:41:35 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,37 +71,24 @@ int	builtin_cmd_process(t_operation **operations, size_t i, t_op_ref *op_ref)
 	return (EXIT_SUCCESS);
 }
 
-int	builtin_cmd(t_operation **operations, size_t i, t_op_ref *op_ref)
+int	builtin_cmd(t_operation **ops,
+	size_t i, t_op_ref *op_ref)
 {
-	int	pid;
 	int	status;
 	int	is_child;
 
 	status = EXIT_SUCCESS;
 	is_child = 0;
-	if (operations[i]->operation_type == OPERATION_PIPE
-		|| (operations[i + 1]
-			&& operations[i + 1]->operation_type == OPERATION_PIPE))
+	if (ops[i]->operation_type == OPERATION_PIPE
+		|| (ops[i + 1]
+			&& ops[i + 1]->operation_type == OPERATION_PIPE))
 		is_child = 1;
 	if (is_child)
-	{
-		pid = fork();
-		if (pid == -1)
-			return (EXIT_FAILURE);
-		if (!pid)
-		{
-			op_ref->is_exit = 1;
-			status = builtin_cmd_process(operations, i, op_ref);
-			execute_cmd_close_fds(operations[i], 1);
-			return (status);
-		}
-		else
-			op_ref->last_pid = pid;
-	}
+		builtin_cmd_child(ops, i, op_ref);
 	else
 	{
 		op_ref->last_pid = -1;
-		status = builtin_cmd_process(operations, i, op_ref);
+		status = builtin_cmd_process(ops, i, op_ref);
 	}
 	return (status);
 }
