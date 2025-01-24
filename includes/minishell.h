@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 15:40:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:52:32 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,27 @@ enum						e_signal_modes
 	SIG_HEREDOC,
 	SIG_UPDATE_SIGNUM
 };
+
+int					execute_process_helper(t_operation **ops,
+						size_t i, t_op_ref *op_ref);
+void				wait_childs(t_op_ref *op_ref);
+int					execute_process_circuit(t_operation *operation,
+						t_op_ref *op_ref);
+int					prep_pipeline(t_operation *operation,
+						t_operation *next_op);
+int					execute_cmd(t_op_ref *op_ref,
+						t_operation *operation, t_operation *next_op);
+int					pre_execute_external_cmd(t_op_ref *op_ref,
+						t_operation *operation);
+void				restore_sigint(void);
+int					subshell_apply_fds(t_operation *op);
+void				execute_cmd_close_fds(t_operation *operation, int is_ext);
+int					execute_cmd_redirections(t_operation *operation,
+						int is_ext);
+int					create_trunc_out_files(t_operation *operation);
+int					process_in_redirects(t_operation *operation);
+int					process_in_redirects_heredoc(t_operation *operation);
+int					prep_heredoc(t_op_ref *op_ref, t_operation **operations);
 int					token_expander_helper2(t_list **split_toks,
 						t_op_ref *op_ref, char *s);
 int					token_expander_helper(t_list *split_toks, t_list *res_toks,

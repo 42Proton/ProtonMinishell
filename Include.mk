@@ -12,6 +12,7 @@ SRCS= \
 	env_utils3.c \
 	env_utils4.c \
 	term_handlers.c \
+	term_handlers2.c \
 	search_exec.c \
 	line_tokenizer.c \
 	utils.c \
@@ -41,6 +42,10 @@ SRCS= \
 	operations_prep_utils2.c \
 	operations_prep_utils3.c \
 	execute_process.c \
+	execute_process_heredoc.c \
+	execute_process_redirects_utils.c \
+	execute_process_utils1.c \
+	execute_process_utils2.c \
 	execute_builtin.c\
 	exit_cmd.c\
 	opers_helpers.c\
