@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 17:56:55 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:58:36 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@ int	update_underscore_env(t_operation **ops, size_t i, t_op_ref *op_ref)
 		else
 			return (EXIT_SUCCESS);
 	}
-	if (data)
-		if (ft_setenv(op_ref->env_lst, "_", data) == -1)
-			return (EXIT_FAILURE);
+	if (data && ft_setenv(op_ref->env_lst, "_", data) == -1)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
