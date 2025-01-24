@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 00:49:01 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:33:07 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ static void	start_shell(t_minishell *mini)
 	display_header(mini);
 	while (1)
 	{
+		if (!mini->heredoc_mode)
+			g_signum = 0;
+		mini->heredoc_mode = 0;
 		mini->curr_line++;
 		recover_stdin_bak(mini);
 		signal_handler(SIG_NEWPROMPT);

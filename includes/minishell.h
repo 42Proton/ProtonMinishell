@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/23 21:20:38 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:36:57 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_split_toks
 typedef struct s_op_ref
 {
 	int			*lec;
+	int			*heredoc_mode;
 	int			wait_childs;
 	int			is_exit;
 	int			last_pid;
@@ -105,6 +106,7 @@ typedef struct s_minishell
 	u_int32_t				curr_line;
 	int						is_empty;
 	int						stdin_bak;
+	int						heredoc_mode;
 }							t_minishell;
 
 typedef struct s_tokens_split
@@ -152,13 +154,6 @@ enum						e_token_type
 	OPEN_PARENTHESIS,
 	CLOSE_PARENTHESIS,
 	IDENTIFIER
-};
-
-enum						e_uncompleted
-{
-	PARANTHASES,
-	SINGLE_Q,
-	DOUBLE_Q
 };
 
 enum						e_errors
@@ -210,16 +205,16 @@ enum						e_signal_modes
 	SIG_HEREDOC,
 	SIG_UPDATE_SIGNUM
 };
-int	token_expander_helper2(t_list **split_toks, t_op_ref *op_ref , char *s);
-int     token_expander_helper(t_list *split_toks,t_list *res_toks,
-                t_list **tokens);
-void	expander_loop_helper(t_tok_expander *tok_exp,
-		size_t *env_len,size_t *i);
-size_t	exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,
-	t_op_ref *op_ref, size_t *i);
-int	insert_quotes_range(t_list **quotes_range,
-	t_tok_expander *tok_exp, int old_mode);
-int 				rl_dummy_event(void);
+int					token_expander_helper2(t_list **split_toks,
+						t_op_ref *op_ref, char *s);
+int					token_expander_helper(t_list *split_toks, t_list *res_toks,
+						t_list **tokens);
+void				expander_loop_helper(t_tok_expander *tok_exp,
+						size_t *env_len, size_t *i);
+size_t				exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,
+						t_op_ref *op_ref, size_t *i);
+int					insert_quotes_range(t_list **quotes_range,
+						t_tok_expander *tok_exp, int old_mode);
 t_op_ref			*op_ref_init(t_operation **operations, t_minishell *mini);
 ssize_t				separators_counter(t_list *lst);
 ssize_t				separators_counter_subop(t_list *lst);
@@ -275,7 +270,8 @@ int					execute_process(t_operation **ops,
 int					op_prep_args(t_operation *operation, t_list *lst);
 int					op_get_args(t_operation *operation, t_list *lst);
 int					check_tok_prev_cmd(t_list *lst);
-int					set_redirection_data(t_operation *operations, t_list *lst, size_t *i, int whom);
+int					set_redirection_data(t_operation *operations,
+						t_list *lst, size_t *i, int whom);
 int					check_op_prep_condition(t_list *lst,
 						ssize_t parenthesis_count);
 int					check_out_redirection(t_list *lst);
