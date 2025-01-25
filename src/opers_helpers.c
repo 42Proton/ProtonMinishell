@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:27:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/24 15:41:53 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:14:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ t_op_ref	*op_ref_init(t_operation **operations, t_minishell *mini)
 		exit_handler(mini, ERR_MALLOC_POSTLEXER);
 	}
 	op_ref->lec = &mini->last_exit_code;
-	op_ref->heredoc_mode = &mini->heredoc_mode;
 	op_ref->stdin_bak = &mini->stdin_bak;
 	op_ref->env_lst = &mini->env_lst;
 	op_ref->curr_line = mini->curr_line;

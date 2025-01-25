@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 20:56:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:17:47 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ typedef struct s_split_toks
 typedef struct s_op_ref
 {
 	int			*lec;
-	int			*heredoc_mode;
 	int			*stdin_bak;
 	int			wait_childs;
 	int			is_exit;
@@ -107,7 +106,8 @@ typedef struct s_minishell
 	u_int32_t				curr_line;
 	int						is_empty;
 	int						stdin_bak;
-	int						heredoc_mode;
+	int						unclean_mode;
+	int						is_terminfo_caps_loaded;
 }							t_minishell;
 
 typedef struct s_tokens_split
@@ -203,10 +203,10 @@ enum						e_signal_modes
 {
 	SIG_IGNORE,
 	SIG_NEWPROMPT,
-	SIG_HEREDOC,
 	SIG_UPDATE_SIGNUM
 };
 
+void				cursor_line_back(t_minishell *mini);
 int					builtin_cmd_process(t_operation **operations,
 						size_t i, t_op_ref *op_ref);
 int					builtin_cmd_child(t_operation **operations,

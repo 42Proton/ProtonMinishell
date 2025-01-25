@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 18:14:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:19:17 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static t_minishell	*minishell_prep(char **environ)
 		exit_handler(mini, ERR_MALLOC_MINI);
 	if (*environ)
 		prep_minishell_env(mini, environ);
+	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) > 0)
+		mini->is_terminfo_caps_loaded = 1;
 	return (mini);
 }
 
@@ -86,36 +88,46 @@ static void	start_shell(t_minishell *mini)
 	display_header(mini);
 	while (1)
 	{
-		if (!mini->heredoc_mode)
-			g_signum = 0;
-		mini->heredoc_mode = 0;
 		mini->curr_line++;
 		recover_stdin_bak(mini);
+		if (g_signum)
+		{
+			if (mini->unclean_mode)
+				cursor_line_back(mini);
+			mini->unclean_mode = 1;
+			g_signum = 0;
+		}
 		signal_handler(SIG_NEWPROMPT);
-		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002");
-		g_signum = 0;
+		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002 ");
+		if (!g_signum)
+			mini->unclean_mode = 0;
 		signal_handler(SIG_UPDATE_SIGNUM);
-		if (!mini->line_read)
-			exit_handler(mini, NONE);
-		if (*mini->line_read && !g_signum)
-			start_shell_helper(mini);
-		if (!mini->is_empty)
-			add_history(mini->line_read);
-		free(mini->line_read);
+		if (g_signum)
+			mini->last_exit_code = 130;
+		else
+		{
+			if (!mini->line_read)
+				exit_handler(mini, NONE);
+			if (*mini->line_read && !g_signum)
+				start_shell_helper(mini);
+			if (!mini->is_empty && *mini->line_read)
+				add_history(mini->line_read);
+			free(mini->line_read);
+		}
 		mini->is_empty = 0;
 	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_minishell	*minishell;
+	t_minishell	*mini;
 
 	(void)argc;
 	(void)argv;
 	g_signum = 0;
 	signal_handler(SIG_IGNORE);
-	minishell = minishell_prep(env);
+	mini = minishell_prep(env);
 	if (terminals_config())
 		exit_handler(NULL, ERR_TERM);
-	start_shell(minishell);
+	start_shell(mini);
 }

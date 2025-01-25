@@ -6,32 +6,23 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/24 00:48:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:12:53 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	signal_heredoc(int signum)
+static void	signal_newprompt(int signum)
 {
 	g_signum = signum;
 	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
 	close(STDIN_FILENO);
 }
 
 static void	signal_update_signum(int signum)
 {
 	g_signum = signum;
-}
-
-static void	signal_newprompt(int signum)
-{
-	(void)signum;
-	rl_replace_line("", 0);
-	if (!g_signum)
-		write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_redisplay();
 }
 
 void	signal_handler(int mode)
@@ -41,8 +32,6 @@ void	signal_handler(int mode)
 	sigemptyset(&sa.sa_mask);
 	if (mode == SIG_NEWPROMPT)
 		sa.sa_handler = signal_newprompt;
-	else if (mode == SIG_HEREDOC)
-		sa.sa_handler = signal_heredoc;
 	else if (mode == SIG_UPDATE_SIGNUM)
 		sa.sa_handler = signal_update_signum;
 	else

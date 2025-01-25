@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 18:11:59 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 17:14:26 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int	update_underscore_env(t_operation **ops, size_t i, t_op_ref *op_ref)
 
 int	execute_process_heredoc(t_operation **ops, t_op_ref *op_ref)
 {
-	signal_handler(SIG_HEREDOC);
-	*op_ref->heredoc_mode = 1;
+	signal_handler(SIG_NEWPROMPT);
 	if (!prep_heredoc(op_ref, ops))
 		return (EXIT_FAILURE);
 	signal_handler(SIG_IGNORE);
@@ -52,7 +51,6 @@ int	execute_process_heredoc(t_operation **ops, t_op_ref *op_ref)
 		return (EXIT_SUCCESS);
 	close(*op_ref->stdin_bak);
 	*op_ref->stdin_bak = 0;
-	*op_ref->heredoc_mode = 0;
 	return (EXIT_SUCCESS);
 }
 
