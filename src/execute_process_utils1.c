@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process_utils1.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:08:49 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 17:10:57 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 19:49:12 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,25 @@ int	execute_cmd(t_op_ref *op_ref,
 	pid_t	pid;
 	char	**env;
 
-	env = env_lst_to_2d_arr(op_ref);
-	if (!env)
-		return (EXIT_FAILURE);
 	pid = fork();
 	if (pid == -1)
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
 		restore_sigint();
+		if (ft_setenv(op_ref->env_lst, "_", operation->cmd_path) == -1)
+			return (EXIT_FAILURE);
 		if (!execute_cmd_redirections(operation, 1))
 			return (-1);
 		operation->args[0] = operation->cmd;
+		env = env_lst_to_2d_arr(op_ref);
+		if (!env)
+			return (EXIT_FAILURE);
 		execve(operation->cmd_path, operation->args, env);
 		free_array((void **)env);
 		return (-1);
 	}
 	op_ref->last_pid = pid;
-	free_array((void **)env);
 	if (next_op && next_op->operation_type != OPERATION_PIPE)
 		op_ref->wait_childs = 1;
 	return (EXIT_SUCCESS);

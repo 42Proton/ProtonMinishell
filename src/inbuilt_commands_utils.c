@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inbuilt_commands_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 20:42:39 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 19:48:22 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	builtin_cmd_child(t_operation **operations,
 	if (!pid)
 	{
 		op_ref->is_exit = 1;
+		if (ft_setenv(op_ref->env_lst, "_", operations[i]->cmd) == -1)
+			return (EXIT_FAILURE);
 		status = builtin_cmd_process(operations, i, op_ref);
 		execute_cmd_close_fds(operations[i], 1);
 		return (status);

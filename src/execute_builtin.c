@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 20:41:35 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 19:48:33 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int	builtin_cmd(t_operation **ops,
 		builtin_cmd_child(ops, i, op_ref);
 	else
 	{
+		if (ft_setenv(op_ref->env_lst, "_", ops[i]->cmd) == -1)
+			return (EXIT_FAILURE);
 		op_ref->last_pid = -1;
 		status = builtin_cmd_process(ops, i, op_ref);
 	}

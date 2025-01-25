@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/25 17:12:53 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 19:13:07 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process_utils2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:51:29 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 17:52:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/25 19:47:00 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,7 @@ static int	exec_proc_helper2(t_operation **ops,
 	if (status == -1)
 		return (EXIT_FAILURE);
 	if (status)
-	{
-		if (ft_setenv(op_ref->env_lst, "_", ops[i]->cmd_path) == -1)
-			return (EXIT_FAILURE);
 		status = execute_cmd(op_ref, ops[i], ops[i + 1]);
-	}
 	if (status == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -104,8 +100,6 @@ int	execute_process_helper(t_operation **ops,
 	{
 		if (check_if_builtin(ops[i]->cmd))
 		{
-			if (ft_setenv(op_ref->env_lst, "_", ops[i]->cmd) == -1)
-				return (EXIT_FAILURE);
 			status = builtin_cmd(ops, i, op_ref);
 			return (status);
 		}
