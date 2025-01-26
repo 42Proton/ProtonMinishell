@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 22:32:46 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/07 22:53:31 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:07:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,13 @@ int	pre_process_check(char *s)
 	if (data.mode != DEFAULT_MODE || data.parenthesis_count > 1)
 		return (0);
 	return (1);
+}
+
+int	check_if_special_exp(char *s, t_tok_expander *tok_exp)
+{
+	if ((s[tok_exp->split_se.end] == '?'
+			|| ft_isdigit(s[tok_exp->split_se.end]))
+		&& tok_exp->split_se.end - tok_exp->split_se.start == 1)
+		return (1);
+	return (0);
 }

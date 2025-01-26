@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:08:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:00:13 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:07:36 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int	tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst)
 {
 	if (check_env_end(s, tok_exp))
 	{
-		if ((s[tok_exp->split_se.end] == '?' || ft_isdigit(s[tok_exp->split_se.end])) && tok_exp->split_se.end
-			- tok_exp->split_se.start == 1)
+		if (check_if_special_exp(s, tok_exp))
 			tok_exp->split_se.end++;
 		if (!expander_add_tok(s, tok_exp, env_lst))
 			return (0);

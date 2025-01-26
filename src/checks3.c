@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:31:51 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 18:47:19 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:08:32 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int	check_env_end(char *s, t_tok_expander *tok_exp)
 {
 	if ((check_env_sep(s[tok_exp->split_se.end]) && check_env_mode(tok_exp))
 		|| (ft_isdigit(s[tok_exp->split_se.end])
-		&& tok_exp->split_se.end - tok_exp->split_se.start == 1))
+			&& tok_exp->split_se.end
+			- tok_exp->split_se.start == 1))
 		return (1);
 	return (0);
 }
