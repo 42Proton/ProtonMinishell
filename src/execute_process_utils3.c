@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process_utils3.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:59:35 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 14:08:19 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 14:49:40 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,6 @@ int	out_files_check(t_operation *op, size_t i, int *flags)
 	{
 		ft_dprintf(STDERR_FILENO, "Proton: %s: Is a directory\n",
 			op->out_redirects[i].name);
-		return (0);
-	}
-	if (access(op->out_redirects[i].name, F_OK))
-	{
-		ft_dprintf(STDERR_FILENO, "Proton: %s: %s\n",
-			op->out_redirects[i].name, strerror(errno));
 		return (0);
 	}
 	return (1);
