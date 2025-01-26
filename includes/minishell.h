@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 12:11:47 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 14:02:19 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+int					out_files_check(t_operation *op, size_t i, int *flags);
 int					execute_expander_stage2_helper2(t_list **tokens,
 						t_operation *op, size_t i);
 void				exp_s1_update_op_prep(t_operation *op, t_list **tokens,

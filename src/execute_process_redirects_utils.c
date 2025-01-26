@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:46:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 16:57:20 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 14:02:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,30 +53,29 @@ int	execute_cmd_redirections(t_operation *operation, int is_ext)
 	return (1);
 }
 
-int	create_trunc_out_files(t_operation *operation)
+int	create_trunc_out_files(t_operation *op)
 {
 	size_t	i;
 	int		fd;
 	int		flags;
 
 	i = 0;
-	while (i < operation->n_out)
+	while (i < op->n_out)
 	{
-		flags = O_CREAT | O_WRONLY | O_TRUNC;
-		if (operation->out_redirects[i].type == REDIRECT_APPEND)
-			flags = O_CREAT | O_WRONLY | O_APPEND;
-		fd = open(operation->out_redirects[i].name, flags,
-				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		if (!out_files_check(op, i, &flags))
+			return (0);
+		fd = open(op->out_redirects[i].name, flags,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		if (fd == -1)
 		{
 			ft_dprintf(STDERR_FILENO, "Proton: %s: %s\n",
-				operation->out_redirects[i].name, strerror(errno));
+				op->out_redirects[i].name, strerror(errno));
 			return (0);
 		}
-		if (i != operation->n_out - 1)
+		if (i != op->n_out - 1)
 			close(fd);
 		else
-			operation->redirect_out_fd = fd;
+			op->redirect_out_fd = fd;
 		i++;
 	}
 	return (1);
