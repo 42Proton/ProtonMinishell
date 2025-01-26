@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_qtr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:49:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 15:14:11 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/26 17:55:49 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ static void	exp_qtr_quit_env(t_tok_expander *tok_exp, size_t env_len)
 	}
 }
 
-int	expander_qtr(char *s, t_list *split_toks, t_op_ref *op_ref)
+int	expander_qtr(char *s, t_list *split_toks,
+	t_op_ref *op_ref, int env_mode)
 {
 	t_tok_expander	tok_exp;
 	char			*content;
@@ -95,7 +96,7 @@ int	expander_qtr(char *s, t_list *split_toks, t_op_ref *op_ref)
 		if (!content[tok_exp.split_se.end])
 			exp_prep_qtr_next(&content, &split_toks, &tok_exp);
 		exp_qtr_quit_env(&tok_exp, env_len);
-		if (!env_len)
+		if (!env_len && env_mode)
 			env_len = exp_prep_qtr_env(s, &tok_exp, op_ref, &i);
 		if (tok_exp.mode < DOUBLE_QUOTE_ENV_MODE)
 			if (!exp_prep_qtr_modes(s, i, split_toks, &tok_exp))

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 16:18:52 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 18:06:55 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+char				*exp_limiter(char *tok);
 int					quicksig_handle(t_minishell *mini);
 int					out_files_check(t_operation *op, size_t i, int *flags);
 int					execute_expander_stage2_helper2(t_list **tokens,
@@ -271,7 +272,8 @@ char				*ft_strjoin2(char *s1, char *s2, int mode);
 void				clear_split_tok(void *content);
 void				clear_split_tok2(void *content);
 int					exp_rm_qt(t_list *split_toks);
-int					expander_qtr(char *s, t_list *split_toks, t_op_ref *op_ref);
+int					expander_qtr(char *s, t_list *split_toks,
+						t_op_ref *op_ref, int env_mode);
 int					expander_prep_qtr(t_list *s_split_toks,
 						t_list **split_toks);
 int					token_exp_res_split(char *s, char *exp_str,

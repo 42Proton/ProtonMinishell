@@ -37,6 +37,7 @@ SRCS= \
 	expander_wildcard.c \
 	expander_wildcard_utils.c \
 	expander_split.c \
+	expander_limiter.c \
 	execute_expander.c \
 	execute_expander_utils.c \
 	operations_prep.c \

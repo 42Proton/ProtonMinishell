@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/25 19:41:09 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/26 18:12:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,33 @@ int	exec_proc_iter(t_operation **ops,
 	return (2);
 }
 
+int	expand_heredoc_limiters(t_operation **ops)
+{
+	size_t	i;
+	size_t	j;
+	char	*res;
+
+	i = 0;
+	while (ops[i])
+	{
+		j = 0;
+		while (j < ops[i]->n_in)
+		{
+			if (ops[i]->in_redirects->type == REDIRECT_LIMITER)
+			{
+				res = exp_limiter(ops[i]->in_redirects->name);
+				if (!res)
+					return (0);
+				free(ops[i]->in_redirects->name);
+				ops[i]->in_redirects->name = res;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	execute_process(t_operation **ops,
 	t_op_ref *op_ref, int is_subshell)
 {
@@ -90,6 +117,7 @@ int	execute_process(t_operation **ops,
 
 	if (!is_subshell)
 	{
+		expand_heredoc_limiters(ops);
 		execute_process_heredoc(ops, op_ref);
 		if (op_ref->signal_term)
 			return (EXIT_SUCCESS);
