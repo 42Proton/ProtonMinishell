@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process_utils2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:51:29 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/25 19:47:00 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/26 11:54:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,19 @@ static int	exec_proc_helper2(t_operation **ops,
 	return (EXIT_SUCCESS);
 }
 
+static int	exec_proc_cmd_dir_check(t_operation **ops,
+	size_t i, t_op_ref *op_ref)
+{
+	if (ft_strchr(ops[i]->cmd, '/') && check_if_dir(ops[i]->cmd) == 1)
+	{
+		*op_ref->lec = 126;
+		ft_dprintf(STDERR_FILENO,
+			"Proton: %s: Is a directory\n", ops[i]->cmd);
+		return (0);
+	}
+	return (1);
+}
+
 int	execute_process_helper(t_operation **ops,
 	size_t i, t_op_ref *op_ref)
 {
@@ -98,6 +111,8 @@ int	execute_process_helper(t_operation **ops,
 	}
 	else if (ops[i]->cmd)
 	{
+		if (!exec_proc_cmd_dir_check(ops, i, op_ref))
+			return (EXIT_SUCCESS);
 		if (check_if_builtin(ops[i]->cmd))
 		{
 			status = builtin_cmd(ops, i, op_ref);

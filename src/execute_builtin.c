@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 00:15:06 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/25 19:48:33 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/26 11:59:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ int	builtin_cmd_process(t_operation **operations, size_t i, t_op_ref *op_ref)
 			operations[i]->args);
 	if (builtin_cmd_process_recover(fds) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (status == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	return (status);
 }
 
 int	builtin_cmd(t_operation **ops,

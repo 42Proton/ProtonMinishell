@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:10:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/13 18:19:44 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 11:58:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	export_cmd(t_op_ref *op_ref, char **args)
 	if (!*args)
 	{
 		if (!sort_print_env(*op_ref->env_lst))
-			return (EXIT_FAILURE);
-		return (EXIT_SUCCESS);
+			return (EXIT_SUCCESS);
+		return (EXIT_FAILURE);
 	}
 	while (*args)
 	{

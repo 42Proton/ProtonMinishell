@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 10:53:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 12:11:47 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,15 +287,11 @@ int					prep_op_main_conditions(t_list *lst, size_t *p_count,
 t_operation			**operations_alloc(ssize_t sep_count);
 int					expander_quotes_condition(char *s,
 						t_tok_expander *tok_exp, t_list *env_lst);
-int					check_if_index_sqr(size_t i, t_list *qr);
 int					execute_expander(t_op_ref *op_ref, t_operation *operation);
-void				tokens_exp_clean_exit(t_minishell *mini,
-						t_list *quotes_range, char *s);
 int					check_if_dir(char *path);
 void				print_heredoc_warning(t_op_ref *op_ref,
 						t_operation *operation, size_t j);
 char				**env_lst_to_2d_arr(t_op_ref *op_ref);
-int					check_if_cmd_exist(char *cmd);
 int					execute_process(t_operation **ops,
 						t_op_ref *op_ref, int is_subshell);
 int					op_prep_args(t_operation *operation, t_list *lst);
@@ -341,8 +337,6 @@ void				del_non_matching_entries(t_list **lst_entries,
 						char *pattern, t_list *quotes_range);
 int					check_str_wildcard(char *s, t_list *quotes_range);
 void				inc_split_index(t_split *split_se);
-void				expander_clean_exit(t_minishell *mini,
-						t_tok_expander *tok_exp, t_list **quotes_range);
 char				*get_env_safe(t_list *env_lst,
 						char *new_str, t_tok_expander *tok_exp);
 int					expander_add_tok(char *word,
@@ -369,7 +363,6 @@ void				line_add_newline(t_minishell *mini);
 void				display_header(t_minishell *mini);
 void				line_tokenizer(t_minishell *mini);
 int					check_sep(char *line);
-size_t				skip_spaces_tabs(char *line);
 int					ft_unsetenv(t_list **env_lst, char *name);
 int					ft_setenv(t_list **env_lst, char *name, char *data);
 int					check_env_name(char *name);
