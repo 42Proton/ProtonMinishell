@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 15:26:00 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:19:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	start_execution(t_minishell *mini)
 	operations = operations_prep(mini->line_tokens, 0);
 	ft_lstclear(&mini->line_tokens, free_tokens);
 	if (!operations)
-		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+		exit_handler(mini, ERR_POSTLEXER);
 	op_ref = op_ref_init(operations, mini);
 	if (!g_signum)
 		status = execute_process(operations, op_ref, 0);
@@ -34,7 +34,7 @@ static void	start_execution(t_minishell *mini)
 	if (status == EXIT_FAILURE)
 	{
 		mini->last_exit_code = -1;
-		exit_handler(mini, ERR_MALLOC_POSTLEXER);
+		exit_handler(mini, ERR_POSTLEXER);
 	}
 	if (is_exit)
 		exit_handler(mini, NONE);
@@ -46,7 +46,7 @@ static t_minishell	*minishell_prep(char **environ)
 
 	mini = ft_calloc(1, sizeof(t_minishell));
 	if (!mini)
-		exit_handler(mini, ERR_MALLOC_MINI);
+		exit_handler(mini, ERR_MINI);
 	if (*environ)
 		prep_minishell_env(mini, environ);
 	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) > 0)

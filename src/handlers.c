@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/23 21:33:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:19:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ void	exit_handler(t_minishell *mini, int error)
 	int	lec;
 
 	print_error(error);
-	if (error > ERR_MALLOC_MINI)
+	if (error > ERR_MINI)
 	{
 		rl_clear_history();
 		free(mini->line_read);
 		ft_lstclear(&mini->env_lst, clear_env);
-		if (error >= ERR_MALLOC_POSTLEXER)
+		if (error >= ERR_POSTLEXER)
 			ft_lstclear(&mini->line_tokens, free_tokens);
 		else
 			ft_lstclear(&mini->line_tokens, free);

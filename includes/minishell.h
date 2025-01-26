@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 15:26:39 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:18:52 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,11 +159,11 @@ enum						e_token_type
 
 enum						e_errors
 {
-	ERR_MALLOC_MINI,
-	ERR_MALLOC_POSTMINI,
+	ERR_MINI,
+	ERR_POSTMINI,
 	ERR_TERM,
 	NONE,
-	ERR_MALLOC_POSTLEXER,
+	ERR_POSTLEXER,
 };
 
 enum						e_redirect

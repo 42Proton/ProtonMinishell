@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:45:59 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/10 19:44:00 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:19:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	lexical_analysis(t_minishell *mini)
 		if (!prev_token)
 		{
 			ft_lstclear(&new_tokens, free_tokens);
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 		}
 		tokens = tokens->next;
 	}

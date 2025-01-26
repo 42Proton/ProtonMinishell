@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/15 04:09:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:20:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	print_error(int error)
 {
-	if (error == ERR_MALLOC_MINI || error == ERR_MALLOC_POSTMINI
-		|| error == ERR_MALLOC_POSTLEXER)
-		perror("malloc failed");
+	if (error == ERR_MINI || error == ERR_POSTMINI
+		|| error == ERR_POSTLEXER)
+		perror("An error occurred");
 	if (error == ERR_TERM)
 		perror("term fail");
 }

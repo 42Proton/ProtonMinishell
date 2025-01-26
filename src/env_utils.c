@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 12:16:57 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:19:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	shell_level(t_minishell *mini, t_list *env_lst)
 	}
 	new_level = ft_itoa(ft_atoi(env->data) + 1);
 	if (!new_level)
-		exit_handler(mini, ERR_MALLOC_POSTMINI);
+		exit_handler(mini, ERR_POSTMINI);
 	free(env->data);
 	env->data = new_level;
 }
@@ -76,17 +76,17 @@ void	prep_minishell_env(t_minishell *mini, char **ev)
 	{
 		env = ft_calloc(1, sizeof(t_env));
 		if (!env)
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 		if (!parse_env_data(*ev, env))
 		{
 			free_env(env);
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 		}
 		lst = ft_lstnew(env);
 		if (!lst)
 		{
 			free_env(env);
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 		}
 		ft_lstadd_back(&mini->env_lst, lst);
 		ev++;

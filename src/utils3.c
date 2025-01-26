@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:21:45 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 10:52:01 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:20:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	recover_stdin_bak(t_minishell *mini)
 	{
 		mini->stdin_bak = dup(STDIN_FILENO);
 		if (mini->stdin_bak == -1)
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 	}
 	else
 	{
@@ -43,12 +43,12 @@ void	recover_stdin_bak(t_minishell *mini)
 		{
 			close(mini->stdin_bak);
 			mini->stdin_bak = -1;
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 		}
 		close(mini->stdin_bak);
 		mini->stdin_bak = dup(STDIN_FILENO);
 		if (mini->stdin_bak == -1)
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 	}
 }
 

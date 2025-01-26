@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:29:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 20:55:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 16:19:45 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	line_tokenizer_helper(t_minishell *mini,
 	tokens_split->end = tokens_split->start;
 	while (check_sep(line + tokens_split->end) && mode == DEFAULT_MODE)
 		if (!add_sep_tokens(mini, tokens_split, line))
-			exit_handler(mini, ERR_MALLOC_POSTMINI);
+			exit_handler(mini, ERR_POSTMINI);
 	tokens_split->start += skip_spaces(line + tokens_split->start);
 	tokens_split->end = tokens_split->start;
 }
@@ -54,6 +54,6 @@ void	line_tokenizer(t_minishell *mini)
 			mode = DOUBLE_QUOTE_MODE;
 		if (line[tokens_split.end])
 			if (!add_token(mini, &tokens_split))
-				exit_handler(mini, ERR_MALLOC_POSTMINI);
+				exit_handler(mini, ERR_POSTMINI);
 	}
 }
