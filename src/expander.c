@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bismail <bismail@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/22 15:51:23 by bismail          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:30:30 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 /*Written with devil in mind	DON'T READ IT OR TOUCH IT*/
 
-static char	*token_expander_env(char *s, t_list *env_lst, int lec)
+static char	*token_expander_env(char *s, t_op_ref *op_ref)
 {
 	t_tok_expander	tok_exp;
 	char			*res;
 
 	ft_bzero(&tok_exp, sizeof(t_tok_expander));
-	tok_exp.lec = lec;
+	tok_exp.lec = *op_ref->lec;
 	while (s[tok_exp.split_se.end])
 	{
-		if (!tokens_expander_env_iter(s, &tok_exp, env_lst))
+		if (!tokens_expander_env_iter(s, &tok_exp, op_ref))
 		{
 			ft_lstclear(&tok_exp.lst, free);
 			return (0);
 		}
 	}
-	if (!expander_add_tok(s, &tok_exp, env_lst))
+	if (!expander_add_tok(s, &tok_exp, op_ref))
 	{
 		ft_lstclear(&tok_exp.lst, free);
 		return (0);
@@ -102,7 +102,7 @@ static int	token_exp_helper(char *s, t_list **tokens,
 	int		status;
 	t_list	*lst;
 
-	exp_str = token_expander_env(s, *op_ref->env_lst, *op_ref->lec);
+	exp_str = token_expander_env(s, op_ref);
 	if (!exp_str)
 		return (0);
 	status = prep_tok_exp(s, exp_str, split_toks, op_ref);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 16:19:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:21:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	start_execution(t_minishell *mini)
 		exit_handler(mini, NONE);
 }
 
-static t_minishell	*minishell_prep(char **environ)
+static t_minishell	*minishell_prep(char **environ, char **argv)
 {
 	t_minishell	*mini;
 
@@ -51,6 +51,7 @@ static t_minishell	*minishell_prep(char **environ)
 		prep_minishell_env(mini, environ);
 	if (tgetent(NULL, ft_getenv(mini->env_lst, "TERM")) > 0)
 		mini->is_terminfo_caps_loaded = 1;
+	mini->shell_exec = argv[0];
 	return (mini);
 }
 
@@ -112,10 +113,9 @@ int	main(int argc, char **argv, char **env)
 	t_minishell	*mini;
 
 	(void)argc;
-	(void)argv;
 	g_signum = 0;
 	signal_handler(SIG_IGNORE);
-	mini = minishell_prep(env);
+	mini = minishell_prep(env, argv);
 	if (terminals_config())
 		exit_handler(NULL, ERR_TERM);
 	start_shell(mini);

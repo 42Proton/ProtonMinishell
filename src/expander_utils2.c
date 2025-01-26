@@ -6,19 +6,20 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:08:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:07:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:32:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst)
+int	tokens_expander_env_iter(char *s,
+	t_tok_expander *tok_exp, t_op_ref *op_ref)
 {
 	if (check_env_end(s, tok_exp))
 	{
 		if (check_if_special_exp(s, tok_exp))
 			tok_exp->split_se.end++;
-		if (!expander_add_tok(s, tok_exp, env_lst))
+		if (!expander_add_tok(s, tok_exp, op_ref))
 			return (0);
 		if (tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
 			tok_exp->mode = DOUBLE_QUOTE_MODE;
@@ -27,12 +28,12 @@ int	tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst)
 	}
 	else if (check_quotes(s[tok_exp->split_se.end]))
 	{
-		if (!expander_quotes_condition(s, tok_exp, env_lst))
+		if (!expander_quotes_condition(s, tok_exp, op_ref))
 			return (0);
 	}
 	else if (check_expander_env(s[tok_exp->split_se.end], tok_exp->mode))
 	{
-		if (!exp_env_condition(s, tok_exp, env_lst))
+		if (!exp_env_condition(s, tok_exp, op_ref))
 			return (0);
 	}
 	else
@@ -87,9 +88,9 @@ int	expander_add_quote_tok(char *word, t_tok_expander *tok_exp)
 	return (1);
 }
 
-int	expander_quotes_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst)
+int	expander_quotes_condition(char *s, t_tok_expander *tok_exp, t_op_ref *op_ref)
 {
-	if (!expander_add_tok(s, tok_exp, env_lst))
+	if (!expander_add_tok(s, tok_exp, op_ref))
 		return (0);
 	if (check_expander_default_mode(s[tok_exp->split_se.end], tok_exp))
 		tok_exp->mode = DEFAULT_MODE;
@@ -103,9 +104,9 @@ int	expander_quotes_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst)
 	return (1);
 }
 
-int	exp_env_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst)
+int	exp_env_condition(char *s, t_tok_expander *tok_exp, t_op_ref *op_ref)
 {
-	if (!expander_add_tok(s, tok_exp, env_lst))
+	if (!expander_add_tok(s, tok_exp, op_ref))
 		return (0);
 	if (tok_exp->mode == DOUBLE_QUOTE_MODE)
 		tok_exp->mode = DOUBLE_QUOTE_ENV_MODE;

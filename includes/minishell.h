@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:07:19 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:31:35 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_op_ref
 	int			signal_term;
 	u_int32_t	curr_line;
 	t_list		**env_lst;
+	char		*shell_exec;
 }	t_op_ref;
 
 typedef struct s_pre_process
@@ -108,6 +109,7 @@ typedef struct s_minishell
 	int						stdin_bak;
 	int						unclean_mode;
 	int						is_terminfo_caps_loaded;
+	char					*shell_exec;
 }							t_minishell;
 
 typedef struct s_tokens_split
@@ -286,12 +288,12 @@ int					builtin_cmd(t_operation **operations,
 int					check_if_builtin(char *token);
 int					pre_process_check(char *s);
 int					tokens_expander_env_iter(char *s,
-						t_tok_expander *tok_exp, t_list *env_lst);
+						t_tok_expander *tok_exp, t_op_ref *op_ref);
 int					prep_op_main_conditions(t_list *lst, size_t *p_count,
 						t_operation **operations, size_t *i);
 t_operation			**operations_alloc(ssize_t sep_count);
 int					expander_quotes_condition(char *s,
-						t_tok_expander *tok_exp, t_list *env_lst);
+						t_tok_expander *tok_exp, t_op_ref *op_ref);
 int					execute_expander(t_op_ref *op_ref, t_operation *operation);
 int					check_if_dir(char *path);
 void				print_heredoc_warning(t_op_ref *op_ref,
@@ -324,7 +326,7 @@ int					add_operation_alloc(t_operation **operations, ssize_t i);
 t_operation			**operations_alloc(ssize_t sep_count);
 t_operation			**operations_prep(t_list *lst, int is_subop);
 int					exp_env_condition(char *s,
-						t_tok_expander *tok_exp, t_list *env_lst);
+						t_tok_expander *tok_exp, t_op_ref *op_ref);
 int					check_env_mode(t_tok_expander *tok_exp);
 char				*expander_add_tok_helper(char *word,
 						t_tok_expander *tok_exp);
@@ -342,10 +344,10 @@ void				del_non_matching_entries(t_list **lst_entries,
 						char *pattern, t_list *quotes_range);
 int					check_str_wildcard(char *s, t_list *quotes_range);
 void				inc_split_index(t_split *split_se);
-char				*get_env_safe(t_list *env_lst,
+char				*get_env_safe(t_op_ref *op_ref,
 						char *new_str, t_tok_expander *tok_exp);
 int					expander_add_tok(char *word,
-						t_tok_expander *tok_exp, t_list *env_lst);
+						t_tok_expander *tok_exp, t_op_ref *op_ref);
 char				*expander_join_subtok(t_tok_expander *tok_exp);
 int					check_env_sep(char c);
 int					check_quotes(char c);

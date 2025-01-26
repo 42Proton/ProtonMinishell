@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:27:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/26 16:20:02 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:23:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_op_ref	*op_ref_init(t_operation **operations, t_minishell *mini)
 		free_operations(operations);
 		exit_handler(mini, ERR_POSTLEXER);
 	}
+	op_ref->shell_exec = mini->shell_exec;
 	op_ref->lec = &mini->last_exit_code;
 	op_ref->stdin_bak = &mini->stdin_bak;
 	op_ref->env_lst = &mini->env_lst;

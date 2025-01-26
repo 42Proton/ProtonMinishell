@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:06:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:01:45 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:26:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	inc_split_index(t_split *split_se)
 	split_se->end++;
 }
 
-char	*get_env_safe(t_list *env_lst, char *new_str, t_tok_expander *tok_exp)
+char	*get_env_safe(t_op_ref *op_ref, char *new_str, t_tok_expander *tok_exp)
 {
 	char	*res;
 
@@ -27,10 +27,10 @@ char	*get_env_safe(t_list *env_lst, char *new_str, t_tok_expander *tok_exp)
 	else if (*new_str == '?' && !new_str[1])
 		res = ft_itoa(tok_exp->lec);
 	else if (*new_str == '0' && !new_str[1])
-		res = ft_strdup(getenv("_"));
+		res = ft_strdup(op_ref->shell_exec);
 	else
 	{
-		res = ft_getenv(env_lst, new_str);
+		res = ft_getenv(*op_ref->env_lst, new_str);
 		if (!res)
 			res = ft_strdup("");
 		else
@@ -69,7 +69,8 @@ char	*expander_join_subtok(t_tok_expander *tok_exp)
 	return (res);
 }
 
-int	expander_add_tok(char *word, t_tok_expander *tok_exp, t_list *env_lst)
+int	expander_add_tok(char *word,
+	t_tok_expander *tok_exp, t_op_ref *op_ref)
 {
 	char	*new_str;
 	t_list	*lst;
@@ -81,7 +82,7 @@ int	expander_add_tok(char *word, t_tok_expander *tok_exp, t_list *env_lst)
 		return (0);
 	if (check_env_mode(tok_exp))
 	{
-		new_str = get_env_safe(env_lst, new_str, tok_exp);
+		new_str = get_env_safe(op_ref, new_str, tok_exp);
 		if (!new_str)
 			return (0);
 	}
