@@ -18,6 +18,7 @@ SRCS= \
 	utils.c \
 	utils2.c \
 	utils3.c \
+	utils4.c \
 	line_tokenizer_utils.c \
 	lexical_analysis.c \
 	checks.c \
