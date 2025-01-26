@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:21:45 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/25 17:17:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 10:52:01 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,40 @@ void	recover_stdin_bak(t_minishell *mini)
 		if (mini->stdin_bak == -1)
 			exit_handler(mini, ERR_MALLOC_POSTMINI);
 	}
+}
+
+void	start_shell_sighandle(t_minishell *mini)
+{
+	if (g_signum)
+	{
+		if (mini->unclean_mode)
+			cursor_line_back(mini);
+		mini->unclean_mode = 1;
+		mini->last_exit_code = 130;
+		g_signum = 0;
+	}
+}
+
+size_t	get_arr_len(void **arr)
+{
+	size_t	res;
+
+	res = 0;
+	while (arr[res])
+		res++;
+	return (res);
+}
+
+size_t	get_lsttok_size(t_list *tok)
+{
+	size_t	i;
+
+	i = 0;
+	while (tok)
+	{
+		if (tok->content && *((char *)tok->content))
+			i++;
+		tok = tok->next;
+	}
+	return (i);
 }

@@ -37,6 +37,7 @@ SRCS= \
 	expander_wildcard_utils.c \
 	expander_split.c \
 	execute_expander.c \
+	execute_expander_utils.c \
 	operations_prep.c \
 	operations_prep_utils.c \
 	operations_prep_utils2.c \
@@ -46,8 +47,8 @@ SRCS= \
 	execute_process_redirects_utils.c \
 	execute_process_utils1.c \
 	execute_process_utils2.c \
-	execute_builtin.c\
-	exit_cmd.c\
-	opers_helpers.c\
-	expander_extra.c\
+	execute_builtin.c \
+	exit_cmd.c \
+	opers_helpers.c \
+	expander_extra.c \
 	expander_extra2.c

@@ -3,51 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   execute_expander.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 21:53:15 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/26 10:50:56 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-size_t	get_arr_len(void **arr)
-{
-	size_t	res;
-
-	res = 0;
-	while (arr[res])
-		res++;
-	return (res);
-}
-
-size_t	get_lsttok_size(t_list *tok)
-{
-	size_t	i;
-
-	i = 0;
-	while (tok)
-	{
-		if (tok->content && *((char *)tok->content))
-			i++;
-		tok = tok->next;
-	}
-	return (i);
-}
-
-int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
+int	expander_s1_update_operation(t_operation *op, t_list *tokens)
 {
 	char	**args;
 	size_t	lst_size;
 	size_t	arr_size;
 	size_t	i;
 
-	free(operation->cmd);
-	operation->cmd = tokens->content;
-	tokens = tokens->next;
-	lst_size = ft_lstsize(tokens);
-	arr_size = get_lsttok_size(tokens);
+	exp_s1_update_op_prep(op, &tokens, &lst_size, &arr_size);
 	args = ft_calloc(arr_size + 2, sizeof(char *));
 	if (!args)
 		return (-1);
@@ -61,10 +33,10 @@ int	expander_s1_update_operation(t_operation *operation, t_list *tokens)
 		tokens = tokens->next;
 	}
 	i = 0;
-	while (operation->args[++i])
-		free(operation->args[i]);
-	free(operation->args);
-	operation->args = args;
+	while (op->args[++i])
+		free(op->args[i]);
+	free(op->args);
+	op->args = args;
 	return (1);
 }
 
@@ -126,32 +98,21 @@ int	execute_expander_stage2_helper(t_op_ref *op_ref,
 }
 
 int	execute_expander_stage2(t_op_ref *op_ref,
-		t_operation *operation, t_list **tokens)
+		t_operation *op, t_list **tokens)
 {
 	size_t	i;
 	int		status;
 
 	i = 0;
-	status = execute_expander_stage2_helper(op_ref, operation, tokens);
+	status = execute_expander_stage2_helper(op_ref, op, tokens);
 	if (status <= 0)
 		return (status);
-	while (i < operation->n_out)
+	while (i < op->n_out)
 	{
-		if (!token_expander(operation->out_redirects[i].name, tokens, op_ref))
+		if (!token_expander(op->out_redirects[i].name, tokens, op_ref))
 			return (-1);
-		if (ft_lstsize(*tokens) > 1)
-		{
-			ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
-				operation->in_redirects[i].name);
+		if (!execute_expander_stage2_helper2(tokens, op, i))
 			return (0);
-		}
-		if (*(char *)(*tokens)->content)
-		{
-			free(operation->out_redirects[i].name);
-			operation->out_redirects[i].name = (char *)(*tokens)->content;
-		}
-		else
-			free((*tokens)->content);
 		free_lst(*tokens);
 		*tokens = 0;
 		i++;

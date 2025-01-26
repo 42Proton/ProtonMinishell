@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/25 17:25:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 10:52:07 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,7 @@ static void	start_shell(t_minishell *mini)
 	{
 		mini->curr_line++;
 		recover_stdin_bak(mini);
-		if (g_signum)
-		{
-			if (mini->unclean_mode)
-				cursor_line_back(mini);
-			mini->unclean_mode = 1;
-			mini->last_exit_code = 130;
-			g_signum = 0;
-		}
+		start_shell_sighandle(mini);
 		signal_handler(SIG_NEWPROMPT);
 		mini->line_read = readline("\001\033[35m\002Proton>\001\033[33m\002 ");
 		if (!g_signum)
