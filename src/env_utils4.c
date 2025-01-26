@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:57:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 18:09:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:04:24 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,12 @@ size_t	get_env_len(char *s, t_op_ref *op_ref, int trunc_spaces)
 	size_t	res;
 
 	s++;
-	if (*s == '?' || *s == '_')
+	if (*s == '?' || *s == '_' || *s == '0')
 	{
 		if (*s == '?')
 			res = get_digits_amount(*(op_ref->lec));
+		else if (*s == '0')
+			res = ft_strlen(getenv("_"));
 		else
 		{
 			env_str = ft_getenv(*(op_ref->env_lst), "_");

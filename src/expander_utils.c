@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:06:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 12:18:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:01:45 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*get_env_safe(t_list *env_lst, char *new_str, t_tok_expander *tok_exp)
 		res = ft_strdup("$");
 	else if (*new_str == '?' && !new_str[1])
 		res = ft_itoa(tok_exp->lec);
+	else if (*new_str == '0' && !new_str[1])
+		res = ft_strdup(getenv("_"));
 	else
 	{
 		res = ft_getenv(env_lst, new_str);

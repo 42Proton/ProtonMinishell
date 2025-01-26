@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:08:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/06 14:08:30 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 19:00:13 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	tokens_expander_env_iter(char *s, t_tok_expander *tok_exp, t_list *env_lst)
 {
 	if (check_env_end(s, tok_exp))
 	{
-		if (s[tok_exp->split_se.end] == '?' && tok_exp->split_se.end
+		if ((s[tok_exp->split_se.end] == '?' || ft_isdigit(s[tok_exp->split_se.end])) && tok_exp->split_se.end
 			- tok_exp->split_se.start == 1)
 			tok_exp->split_se.end++;
 		if (!expander_add_tok(s, tok_exp, env_lst))
@@ -108,15 +108,10 @@ int	exp_env_condition(char *s, t_tok_expander *tok_exp, t_list *env_lst)
 {
 	if (!expander_add_tok(s, tok_exp, env_lst))
 		return (0);
-	if (ft_isdigit(s[tok_exp->split_se.end + 1]))
-		inc_split_index(&tok_exp->split_se);
-	else if (tok_exp->mode == DOUBLE_QUOTE_MODE)
+	if (tok_exp->mode == DOUBLE_QUOTE_MODE)
 		tok_exp->mode = DOUBLE_QUOTE_ENV_MODE;
 	else
 		tok_exp->mode = ENV_MODE;
-	if (tok_exp->mode == ENV_MODE || tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
-		tok_exp->split_se.end++;
-	else
-		inc_split_index(&tok_exp->split_se);
+	tok_exp->split_se.end++;
 	return (1);
 }
