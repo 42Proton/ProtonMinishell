@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:46:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 14:02:33 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 14:10:18 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	create_trunc_out_files(t_operation *op)
 		if (!out_files_check(op, i, &flags))
 			return (0);
 		fd = open(op->out_redirects[i].name, flags,
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		if (fd == -1)
 		{
 			ft_dprintf(STDERR_FILENO, "Proton: %s: %s\n",
