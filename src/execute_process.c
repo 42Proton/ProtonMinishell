@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 18:12:31 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 18:15:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ int	execute_process(t_operation **ops,
 
 	if (!is_subshell)
 	{
-		expand_heredoc_limiters(ops);
+		if (!expand_heredoc_limiters(ops))
+			return (EXIT_FAILURE);
 		execute_process_heredoc(ops, op_ref);
 		if (op_ref->signal_term)
 			return (EXIT_SUCCESS);

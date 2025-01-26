@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:29:02 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 18:13:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/26 18:18:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*exp_limiter(char *tok)
 	t_split_toks	*split_tok;
 	char			*res;
 
-	split_tok = malloc(sizeof(split_tok));
+	split_tok = malloc(sizeof(t_split_toks));
 	if (!split_tok)
 		return (0);
 	if (!exp_limiter_prep(split_tok, tok, &split_toks))
@@ -50,6 +50,7 @@ char	*exp_limiter(char *tok)
 	if (!exp_rm_qt(split_toks))
 		return (0);
 	res = split_tok->str;
+	ft_lstclear(&split_tok->quotes_ranges, free);
 	free(split_tok);
 	free(split_toks);
 	return (res);
