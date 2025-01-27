@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 02:25:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:27:31 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	shell_level(t_minishell *mini, t_list *env_lst)
 	if (prev_lvl >= 1000)
 	{
 		ft_dprintf(STDERR_FILENO, "Proton: warning: shell level \
-			(1000) too high, resetting to 1\n");
+			(%d) too high, resetting to 1\n", prev_lvl + 1);
 		prev_lvl = 0;
 	}
 	new_level = ft_itoa(prev_lvl + 1);
