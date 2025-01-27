@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/27 14:16:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 15:16:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_error(int error)
 	if (error == ERR_TERM)
 		perror("term fail");
 	if (error == NONE)
-		ft_printf("exit");
+		write(STDOUT_FILENO, "exit\n", 5);
 }
 
 void	print_syntax_error(t_token *token)

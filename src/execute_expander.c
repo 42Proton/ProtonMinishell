@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 10:50:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 15:20:04 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,22 +75,19 @@ int	execute_expander_stage2_helper(t_op_ref *op_ref,
 	i = 0;
 	while (i < operation->n_in)
 	{
-		if (!token_expander(operation->in_redirects[i].name, tokens, op_ref))
-			return (-1);
-		if (ft_lstsize(*tokens) > 1)
+		if (operation->in_redirects->type != REDIRECT_LIMITER)
 		{
-			ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
-				operation->in_redirects[i].name);
-			return (0);
+			if (!token_expander(operation->in_redirects[i].name,
+					tokens, op_ref))
+				return (-1);
+			if (ft_lstsize(*tokens) > 1)
+			{
+				ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
+					operation->in_redirects[i].name);
+				return (0);
+			}
+			exec_exp_s2_helper2(tokens, operation, i);
 		}
-		if (*(char *)(*tokens)->content)
-		{
-			free(operation->in_redirects[i].name);
-			operation->in_redirects[i].name = (char *)(*tokens)->content;
-		}
-		else
-			free((*tokens)->content);
-		free_lst(*tokens);
 		*tokens = 0;
 		i++;
 	}

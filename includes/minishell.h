@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 14:13:35 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 15:19:26 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,8 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+void				exec_exp_s2_helper2(t_list **tokens,
+						t_operation *operation, size_t i);
 size_t				get_envlst_size(t_list *env_lst);
 int					sort_print_env_helper2_util(char **res, t_env *env);
 int					check_if_special_exp(char *s, t_tok_expander *tok_exp);

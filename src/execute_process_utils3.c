@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process_utils3.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:59:35 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 14:49:40 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/27 15:19:18 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,17 @@ int	out_files_check(t_operation *op, size_t i, int *flags)
 		return (0);
 	}
 	return (1);
+}
+
+void	exec_exp_s2_helper2(t_list **tokens,
+	t_operation *operation, size_t i)
+{
+	if (*(char *)(*tokens)->content)
+	{
+		free(operation->in_redirects[i].name);
+		operation->in_redirects[i].name = (char *)(*tokens)->content;
+	}
+	else
+		free((*tokens)->content);
+	free_lst(*tokens);
 }
