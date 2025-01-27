@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/28 02:05:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:35:15 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 static void	signal_newprompt(int signum)
 {
 	if (!g_signum)
+	{
 		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+	}
 	g_signum = signum;
 	close(STDIN_FILENO);
 }
