@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 13:12:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:21:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	free_env(t_env *env)
 void	shell_level(t_minishell *mini, t_list *env_lst)
 {
 	char	*new_level;
+	int		prev_lvl;
 	t_env	*env;
 
 	while (env_lst)
@@ -31,7 +32,14 @@ void	shell_level(t_minishell *mini, t_list *env_lst)
 			break ;
 		env_lst = env_lst->next;
 	}
-	new_level = ft_itoa(ft_atoi(env->data) + 1);
+	prev_lvl = ft_atoi(env->data);
+	if (prev_lvl >= 1000)
+	{
+		ft_dprintf(STDERR_FILENO, "Proton: warning: shell level \
+			(1000) too high, resetting to 1\n");
+		prev_lvl = 0;
+	}
+	new_level = ft_itoa(prev_lvl + 1);
 	if (!new_level)
 		exit_handler(mini, ERR_POSTMINI);
 	free(env->data);
