@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:08:59 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:32:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 14:12:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int	expander_add_quote_tok(char *word, t_tok_expander *tok_exp)
 	return (1);
 }
 
-int	expander_quotes_condition(char *s, t_tok_expander *tok_exp, t_op_ref *op_ref)
+int	expander_quotes_condition(char *s,
+	t_tok_expander *tok_exp, t_op_ref *op_ref)
 {
 	if (!expander_add_tok(s, tok_exp, op_ref))
 		return (0);

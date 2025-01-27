@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 02:19:37 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 21:50:41 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/27 14:11:45 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	ft_setenv_helper(t_list *lst, char *data)
 	((t_env *)lst->content)->data = ft_strdup(data);
 	if (!((t_env *)lst->content)->data)
 		return (0);
+	((t_env *)lst->content)->mode = 1;
 	return (1);
 }
 
@@ -31,7 +32,7 @@ int	ft_setenv(t_list **env_lst, char *name, char *data)
 	{
 		if (!ft_strcmp(((t_env *)lst->content)->name, name))
 		{
-			if (!ft_setenv_helper(lst, data))
+			if (data && !ft_setenv_helper(lst, data))
 				return (-1);
 			return (0);
 		}
@@ -54,23 +55,18 @@ int	sort_print_env_helper2(char **res, t_env *env)
 {
 	char	*temp;
 
-	temp = ft_strjoin(*res, env->name);
-	free(*res);
+	temp = ft_strjoin2(*res, "export ", STRJOIN_FS1);
 	if (!temp)
 		return (0);
 	*res = temp;
-	temp = ft_strjoin(*res, "=");
-	free(*res);
+	temp = ft_strjoin2(*res, env->name, STRJOIN_FS1);
 	if (!temp)
 		return (0);
 	*res = temp;
-	temp = ft_strjoin(*res, env->data);
-	free(*res);
-	if (!temp)
-		return (0);
-	*res = temp;
-	temp = ft_strjoin(*res, "\n");
-	free(*res);
+	if (env->mode)
+		if (!sort_print_env_helper2_util(res, env))
+			return (0);
+	temp = ft_strjoin2(*res, "\n", STRJOIN_FS1);
 	if (!temp)
 		return (0);
 	*res = temp;
@@ -84,10 +80,13 @@ int	sort_print_env_helper(t_list *new_lst, char **res)
 	while (new_lst)
 	{
 		env = (t_env *)new_lst->content;
-		if (!sort_print_env_helper2(res, env))
+		if (ft_strcmp(env->name, "_"))
 		{
-			free_lst(new_lst);
-			return (0);
+			if (!sort_print_env_helper2(res, env))
+			{
+				free_lst(new_lst);
+				return (0);
+			}
 		}
 		new_lst = new_lst->next;
 	}
@@ -118,7 +117,7 @@ int	sort_print_env(t_list *lst)
 	}
 	if (!sort_print_env_helper(new_lst, &res))
 		return (EXIT_FAILURE);
-	ft_printf("%s", res);
+	write(1, res, ft_strlen(res));
 	free(res);
 	free_lst(new_lst);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:49:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/10 20:57:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 14:02:01 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,18 @@ t_env	*alloc_env(char *name, char *data)
 		free_env(env);
 		return (0);
 	}
-	env->data = ft_strdup(data);
-	if (!env->data)
+	if (data)
 	{
-		free_env(env);
-		return (0);
+		env->data = ft_strdup(data);
+		if (!env->data)
+		{
+			free_env(env);
+			return (0);
+		}
+		env->mode = 1;
 	}
+	else
+		env->mode = 0;
 	return (env);
 }
 
@@ -50,7 +56,9 @@ int	ft_unsetenv(t_list **env_lst, char *name)
 			free_env((t_env *)lst->content);
 			if (lst->prev)
 				lst->prev->next = lst->next;
-			else
+			if (lst->next)
+				lst->next->prev = lst->prev;
+			if (!lst->prev && lst->next)
 				*env_lst = lst->next;
 			free(lst);
 			return (0);

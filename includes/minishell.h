@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:31:35 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 14:13:35 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_env
 {
 	char					*name;
 	char					*data;
+	int						mode;
 }							t_env;
 
 typedef struct s_redirect
@@ -208,6 +209,8 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+size_t				get_envlst_size(t_list *env_lst);
+int					sort_print_env_helper2_util(char **res, t_env *env);
 int					check_if_special_exp(char *s, t_tok_expander *tok_exp);
 char				*exp_limiter(char *tok);
 int					quicksig_handle(t_minishell *mini);

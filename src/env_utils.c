@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 16:19:33 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 13:12:34 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,23 @@ int	parse_env_data(char *data, t_env *env)
 	i = 0;
 	while (data[i] && data[i] != '=')
 		i++;
-	if (!data[i])
-		return (i);
-	i++;
-	env->name = malloc(i * sizeof(char));
+	env->name = malloc((i + 1) * sizeof(char));
 	if (!env->name)
 		return (0);
-	ft_strlcpy(env->name, data, i);
-	j = i;
+	ft_strlcpy(env->name, data, i + 1);
+	if (!data[i])
+		return (i);
+	env->mode = 1;
+	j = i++;
 	while (data[j])
 		j++;
-	if (j == i)
+	if (j == i - 1)
 		env->data = ft_strdup("");
 	else
 		env->data = malloc(((j - i) + 1) * sizeof(char));
 	if (!env->data)
 		return (0);
-	if (j != i)
+	if (j != i - 1)
 		ft_strlcpy(env->data, data + i, (j - i) + 1);
 	return (i);
 }

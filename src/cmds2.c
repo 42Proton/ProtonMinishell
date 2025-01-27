@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:05:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/20 17:06:34 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 12:11:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ int	env_cmd(t_op_ref *op_ref)
 		return (EXIT_FAILURE);
 	while (lst)
 	{
-		if (!env_cmd_helper(&res, (t_env *)lst->content))
-			return (EXIT_FAILURE);
+		if (((t_env *)lst->content)->mode)
+			if (!env_cmd_helper(&res, (t_env *)lst->content))
+				return (EXIT_FAILURE);
 		lst = lst->next;
 	}
-	ft_printf("%s", res);
+	write(STDOUT_FILENO, res, ft_strlen(res));
 	free(res);
 	return (EXIT_SUCCESS);
 }

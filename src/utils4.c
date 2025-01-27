@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:16 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 15:26:30 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 14:13:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,41 @@ int	quicksig_handle(t_minishell *mini)
 		return (1);
 	}
 	return (0);
+}
+
+int	sort_print_env_helper2_util(char **res, t_env *env)
+{
+	char	*temp;
+
+	temp = ft_strjoin2(*res, "=", STRJOIN_FS1);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin2(*res, "\"", STRJOIN_FS1);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin2(*res, env->data, STRJOIN_FS1);
+	if (!temp)
+		return (0);
+	*res = temp;
+	temp = ft_strjoin2(*res, "\"", STRJOIN_FS1);
+	if (!temp)
+		return (0);
+	*res = temp;
+	return (1);
+}
+
+size_t	get_envlst_size(t_list *env_lst)
+{
+	size_t	res;
+
+	res = 0;
+	while (env_lst)
+	{
+		if (((t_env *)env_lst->content)->mode)
+			res++;
+		env_lst = env_lst->next;
+	}
+	return (res);
 }

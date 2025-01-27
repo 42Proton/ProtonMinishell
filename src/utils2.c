@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:51:13 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/21 12:21:27 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 14:13:22 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**env_lst_to_2d_arr(t_op_ref *op_ref)
 	size_t	i;
 	t_list	*lst;
 
-	lst_size = ft_lstsize(*op_ref->env_lst);
+	lst_size = get_envlst_size(*op_ref->env_lst);
 	res = ft_calloc(lst_size + 1, sizeof(char *));
 	if (!res)
 		return (0);
@@ -63,6 +63,8 @@ char	**env_lst_to_2d_arr(t_op_ref *op_ref)
 		}
 		i++;
 		lst = lst->next;
+		while (lst && !((t_env *)lst->content)->mode)
+			lst = lst->next;
 	}
 	return (res);
 }
