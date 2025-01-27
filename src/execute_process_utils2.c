@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:51:29 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 11:54:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 21:22:13 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	execute_subshell(t_operation **ops,
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
+		op_ref->is_child = 1;
 		status = subshell_apply_fds(ops[i]);
 		execute_cmd_close_fds(ops[i], 1);
 		if (!status)

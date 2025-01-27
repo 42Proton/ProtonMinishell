@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:27:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/26 19:23:15 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 21:58:10 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,13 @@ t_op_ref	*op_ref_init(t_operation **operations, t_minishell *mini)
 	op_ref->lec = &mini->last_exit_code;
 	op_ref->stdin_bak = &mini->stdin_bak;
 	op_ref->env_lst = &mini->env_lst;
-	op_ref->curr_line = mini->curr_line;
+	op_ref->curr_line = &mini->curr_line;
+	op_ref->heredoc_line_inc = 0;
 	op_ref->wait_childs = 0;
 	op_ref->is_exit = 0;
 	op_ref->circuit_trigger = 0;
 	op_ref->signal_term = 0;
 	op_ref->last_pid = -1;
+	op_ref->is_child = 0;
 	return (op_ref);
 }

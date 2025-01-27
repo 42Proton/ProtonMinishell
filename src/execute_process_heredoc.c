@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:27:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/24 16:57:01 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:09:04 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,13 @@ int	prep_heredoc_helper(t_op_ref *op_ref, t_operation *operation, size_t j)
 		}
 		if (j == operation->n_in - 1 && !operation->heredoc_buffer)
 		{
-			operation->heredoc_buffer = ft_strdup("");
-			if (!operation->heredoc_buffer)
-			{
-				free(line);
+			if (!prep_heredoc_helper_util(operation, line))
 				return (0);
-			}
 		}
 		status = prep_heredoc_helper2(line, op_ref, operation, j);
 		if (status != 1)
 			break ;
+		op_ref->heredoc_line_inc++;
 	}
 	return (status);
 }
@@ -100,9 +97,8 @@ int	prep_heredoc(t_op_ref *op_ref, t_operation **operations)
 			return (1);
 		while (j < operations[i]->n_in)
 		{
-			if (operations[i]->in_redirects[j].type == REDIRECT_LIMITER)
-				if (!prep_heredoc_helper(op_ref, operations[i], j))
-					return (0);
+			if (!prep_heredoc_util(op_ref, operations, i, j))
+				return (0);
 			if (op_ref->signal_term)
 				return (1);
 			j++;

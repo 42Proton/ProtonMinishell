@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:59:35 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 15:19:18 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:15:16 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,36 @@ void	exec_exp_s2_helper2(t_list **tokens,
 	else
 		free((*tokens)->content);
 	free_lst(*tokens);
+}
+
+int	prep_heredoc_helper_util(t_operation *op, char *line)
+{
+	op->heredoc_buffer = ft_strdup("");
+	if (!op->heredoc_buffer)
+	{
+		free(line);
+		return (0);
+	}
+	return (1);
+}
+
+int	prep_heredoc_util(t_op_ref *op_ref,
+	t_operation **ops, size_t i, size_t j)
+{
+	if (ops[i]->in_redirects[j].type == REDIRECT_LIMITER)
+	{
+		if (!prep_heredoc_helper(op_ref, ops[i], j))
+			return (0);
+		*op_ref->curr_line += op_ref->heredoc_line_inc;
+		op_ref->heredoc_line_inc = 0;
+	}
+	return (1);
+}
+
+void	execute_cmd_end(t_op_ref *op_ref,
+	pid_t pid, t_operation *next_op)
+{
+	op_ref->last_pid = pid;
+	if (next_op && next_op->operation_type != OPERATION_PIPE)
+		op_ref->wait_childs = 1;
 }

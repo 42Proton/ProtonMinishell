@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:21:37 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:12:23 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	start_execution(t_minishell *mini)
 {
 	int			status;
 	int			is_exit;
+	int			is_child;
 	t_op_ref	*op_ref;
 	t_operation	**operations;
 
@@ -28,16 +29,13 @@ static void	start_execution(t_minishell *mini)
 	op_ref = op_ref_init(operations, mini);
 	if (!g_signum)
 		status = execute_process(operations, op_ref, 0);
+	if (g_signum)
+		write(STDOUT_FILENO, "\n", 1);
 	free_operations(operations);
 	is_exit = op_ref->is_exit;
+	is_child = op_ref->is_child;
 	free(op_ref);
-	if (status == EXIT_FAILURE)
-	{
-		mini->last_exit_code = -1;
-		exit_handler(mini, ERR_POSTLEXER);
-	}
-	if (is_exit)
-		exit_handler(mini, NONE);
+	start_execution_exits(mini, status, is_exit, is_child);
 }
 
 static t_minishell	*minishell_prep(char **environ, char **argv)
@@ -86,7 +84,6 @@ static void	start_shell_helper(t_minishell *mini)
 
 static void	start_shell(t_minishell *mini)
 {
-	display_header(mini);
 	while (1)
 	{
 		mini->curr_line++;

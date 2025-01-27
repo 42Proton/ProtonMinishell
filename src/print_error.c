@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:54:59 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/27 15:16:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 21:59:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ void	print_heredoc_warning(t_op_ref *op_ref,
 	t_operation *operation, size_t j)
 {
 	ft_dprintf(STDERR_FILENO, "Proton: warning: here-document \
-at line %u delimited by end-of-file (wanted `%s')\n", op_ref->curr_line,
+at line %u delimited by end-of-file (wanted `%s')\n", *op_ref->curr_line,
 		operation->in_redirects[j].name);
 }

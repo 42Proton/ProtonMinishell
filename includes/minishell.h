@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 15:19:26 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:15:26 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ typedef struct s_op_ref
 	int			last_pid;
 	int			circuit_trigger;
 	int			signal_term;
-	u_int32_t	curr_line;
+	int			is_child;
+	u_int32_t	*curr_line;
+	u_int32_t	heredoc_line_inc;
 	t_list		**env_lst;
 	char		*shell_exec;
 }	t_op_ref;
@@ -166,6 +168,7 @@ enum						e_errors
 	ERR_POSTMINI,
 	ERR_TERM,
 	NONE,
+	CHILD_NONE,
 	ERR_POSTLEXER,
 };
 
@@ -209,6 +212,15 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+void				execute_cmd_end(t_op_ref *op_ref,
+						pid_t pid, t_operation *next_op);
+void				start_execution_exits(t_minishell *mini,
+						int status, int is_exit, int is_child);
+int					prep_heredoc_helper(t_op_ref *op_ref,
+						t_operation *operation, size_t j);
+int					prep_heredoc_util(t_op_ref *op_ref,
+						t_operation **ops, size_t i, size_t j);
+int					prep_heredoc_helper_util(t_operation *op, char *line);
 void				exec_exp_s2_helper2(t_list **tokens,
 						t_operation *operation, size_t i);
 size_t				get_envlst_size(t_list *env_lst);
@@ -372,7 +384,6 @@ void				print_tokens(t_minishell *mini);
 int					check_redirect(char *token);
 int					get_redirection_type(char *token);
 void				line_add_newline(t_minishell *mini);
-void				display_header(t_minishell *mini);
 void				line_tokenizer(t_minishell *mini);
 int					check_sep(char *line);
 int					ft_unsetenv(t_list **env_lst, char *name);

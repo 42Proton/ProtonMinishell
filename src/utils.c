@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 16:20:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:12:37 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,6 @@ t_token	*get_token_num(t_list *tokens, size_t index)
 		i++;
 	}
 	return (0);
-}
-
-void	display_header(t_minishell *mini)
-{
-	char	*clear_cap;
-	char	*line;
-	int		fd;
-
-	if (mini->is_terminfo_caps_loaded)
-	{
-		clear_cap = tgetstr("cl", NULL);
-		if (clear_cap)
-			ft_putstr_fd(clear_cap, STDOUT_FILENO);
-	}
-	fd = open("header.txt", O_RDONLY);
-	if (!fd)
-		return ;
-	line = get_next_line(fd);
-	while (line)
-	{
-		ft_putstr_fd(line, STDOUT_FILENO);
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
 }
 
 void	line_add_newline(t_minishell *mini)
@@ -79,15 +54,25 @@ int	get_redirection_type(char *token)
 void	cursor_line_back(t_minishell *mini)
 {
 	char	*up_cap;
-	char	*ll_cap;
 
 	if (mini->is_terminfo_caps_loaded)
 	{
 		up_cap = tgetstr("up", NULL);
 		if (up_cap)
-			ft_putstr_fd(up_cap, STDOUT_FILENO);
-		ll_cap = tgetstr("ll", NULL);
-		if (ll_cap)
-			ft_putstr_fd(ll_cap, STDOUT_FILENO);
+			tputs(up_cap, 1, putchar);
 	}
+}
+
+void	start_execution_exits(t_minishell *mini,
+	int status, int is_exit, int is_child)
+{
+	if (status == EXIT_FAILURE)
+	{
+		mini->last_exit_code = -1;
+		exit_handler(mini, ERR_POSTLEXER);
+	}
+	if (is_exit && is_child)
+		exit_handler(mini, CHILD_NONE);
+	if (is_exit)
+		exit_handler(mini, NONE);
 }

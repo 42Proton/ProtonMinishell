@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 11:58:56 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 21:23:18 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	builtin_cmd_child(t_operation **operations,
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
+		op_ref->is_child = 1;
 		op_ref->is_exit = 1;
 		if (ft_setenv(op_ref->env_lst, "_", operations[i]->cmd) == -1)
 			return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/21 12:16:06 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/27 22:14:29 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	cd_cmd(t_op_ref *op_ref, char **args)
 			*op_ref->lec = 1;
 		}
 	}
-	return ;
 }
 
 void	pwd_cmd(t_op_ref *op_ref)

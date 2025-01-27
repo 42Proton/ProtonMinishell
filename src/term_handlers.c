@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term_handlers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/25 19:13:07 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/28 02:05:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	signal_newprompt(int signum)
 {
+	if (!g_signum)
+		write(STDOUT_FILENO, "\n", 1);
 	g_signum = signum;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
 	close(STDIN_FILENO);
 }
 

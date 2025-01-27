@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_process_utils1.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:08:49 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/25 19:49:12 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/28 02:16:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	execute_cmd(t_op_ref *op_ref,
 	if (!pid)
 	{
 		restore_sigint();
+		op_ref->is_child = 1;
 		if (ft_setenv(op_ref->env_lst, "_", operation->cmd_path) == -1)
 			return (EXIT_FAILURE);
 		if (!execute_cmd_redirections(operation, 1))
@@ -66,9 +67,7 @@ int	execute_cmd(t_op_ref *op_ref,
 		free_array((void **)env);
 		return (-1);
 	}
-	op_ref->last_pid = pid;
-	if (next_op && next_op->operation_type != OPERATION_PIPE)
-		op_ref->wait_childs = 1;
+	execute_cmd_end(op_ref, pid, next_op);
 	return (EXIT_SUCCESS);
 }
 
