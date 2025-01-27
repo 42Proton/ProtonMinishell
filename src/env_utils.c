@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:25:10 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 02:21:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 02:25:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	shell_level(t_minishell *mini, t_list *env_lst)
 		env_lst = env_lst->next;
 	}
 	prev_lvl = ft_atoi(env->data);
+	if (prev_lvl < 0)
+		prev_lvl = -1;
 	if (prev_lvl >= 1000)
 	{
 		ft_dprintf(STDERR_FILENO, "Proton: warning: shell level \
