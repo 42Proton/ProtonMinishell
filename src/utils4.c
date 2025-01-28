@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:16 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 14:13:29 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 14:53:56 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,21 @@ size_t	get_envlst_size(t_list *env_lst)
 		env_lst = env_lst->next;
 	}
 	return (res);
+}
+
+void	echo_iteraite_flag(char ***args, int *newline)
+{
+	size_t	i;
+
+	i = 1;
+	while ((*args)[i] && !ft_strncmp((*args)[i], "-n", 2))
+	{
+		if (check_valid_flag((*args)[i]))
+		{
+			*newline = 0;
+			(*args) += 1;
+			continue ;
+		}
+		i++;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 02:15:26 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 14:55:06 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,8 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+int					check_valid_flag(char *arg);
+void				echo_iteraite_flag(char ***args, int *newline);
 void				execute_cmd_end(t_op_ref *op_ref,
 						pid_t pid, t_operation *next_op);
 void				start_execution_exits(t_minishell *mini,

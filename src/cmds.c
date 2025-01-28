@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/28 13:18:58 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/28 14:53:34 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,7 @@ int	echo_cmd(char **args)
 	res = ft_strdup("");
 	if (!res)
 		return (EXIT_FAILURE);
-	if (args[1])
-	{
-		if (!ft_strncmp(args[1], "-n", 2) && check_valid_flag(args[1]))
-		{
-			newline = 0;
-			args++;
-		}
-	}
+	echo_iteraite_flag(&args, &newline);
 	args++;
 	if (!echo_cmd_helper(&res, args))
 		return (EXIT_FAILURE);
