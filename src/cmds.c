@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/28 13:17:22 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:22:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,22 @@ int	echo_cmd_helper(char **res, char **args)
 	return (1);
 }
 
+int	check_valid_flag(char *arg)
+{
+	size_t	i;
+
+	i = 1;
+	if (arg[0] != '-')
+		return (0);
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	echo_cmd(char **args)
 {
 	int		newline;
@@ -102,7 +118,7 @@ int	echo_cmd(char **args)
 		return (EXIT_FAILURE);
 	if (args[1])
 	{
-		if (!ft_strncmp(args[1], "-n", 2))
+		if (!ft_strncmp(args[1], "-n", 2) && check_valid_flag(args[1]))
 		{
 			newline = 0;
 			args++;
