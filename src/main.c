@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 02:12:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:08:19 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	start_execution(t_minishell *mini)
 	op_ref = op_ref_init(operations, mini);
 	if (!g_signum)
 		status = execute_process(operations, op_ref, 0);
-	if (g_signum)
+	if (op_ref->signal_term)
 		write(STDOUT_FILENO, "\n", 1);
 	free_operations(operations);
 	is_exit = op_ref->is_exit;
