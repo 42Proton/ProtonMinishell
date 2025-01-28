@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:08:49 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 02:16:00 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:40:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,7 @@ int	execute_process_circuit(t_operation *operation,
 			|| (operation->operation_type == OPERATION_OR && *op_ref->lec))
 			op_ref->circuit_trigger = 0;
 		else
-		{
-			execute_cmd_close_fds(operation, 0);
 			return (1);
-		}
 	}
 	else
 	{
@@ -114,7 +111,6 @@ int	execute_process_circuit(t_operation *operation,
 			|| (operation->operation_type == OPERATION_OR && !*op_ref->lec))
 		{
 			op_ref->circuit_trigger = 1;
-			execute_cmd_close_fds(operation, 0);
 			return (1);
 		}
 	}

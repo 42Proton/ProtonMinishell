@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 18:15:03 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 17:49:38 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	exec_proc_iter(t_operation **ops,
 {
 	if (execute_process_helper(ops, i, op_ref) == EXIT_FAILURE)
 	{
+		if (op_ref->is_child)
+			execute_cmd_close_fds(ops[i], 1);
 		execute_cmd_close_fds(ops[i], 0);
 		return (EXIT_FAILURE);
 	}
@@ -66,19 +68,13 @@ int	exec_proc_iter(t_operation **ops,
 		&& ops[i]->operation_type != OPERATION_PIPE)
 		if (!ops[i]->cmd)
 			ft_unsetenv(op_ref->env_lst, "_");
+	if (op_ref->is_child)
+		execute_cmd_close_fds(ops[i], 1);
 	execute_cmd_close_fds(ops[i], 0);
-	if (op_ref->wait_childs)
-		wait_childs(op_ref);
 	if (op_ref->signal_term || op_ref->is_exit)
-	{
-		wait_childs(op_ref);
 		return (EXIT_SUCCESS);
-	}
 	if (update_underscore_env(ops, i, op_ref) == EXIT_FAILURE)
-	{
-		wait_childs(op_ref);
 		return (EXIT_FAILURE);
-	}
 	return (2);
 }
 
@@ -130,7 +126,10 @@ int	execute_process(t_operation **ops,
 	{
 		status = exec_proc_iter(ops, op_ref, i);
 		if (status != 2)
+		{
+			wait_childs(op_ref);
 			return (status);
+		}
 		i++;
 	}
 	wait_childs(op_ref);

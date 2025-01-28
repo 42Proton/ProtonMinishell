@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:51:29 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 21:22:13 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:07:48 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ static int	exec_proc_helper_prep(t_operation **ops,
 		*op_ref->lec = 1;
 		return (EXIT_SUCCESS);
 	}
-	if (execute_process_circuit(ops[i], op_ref))
-		return (EXIT_SUCCESS);
 	return (2);
 }
 
@@ -97,11 +95,45 @@ static int	exec_proc_cmd_dir_check(t_operation **ops,
 	return (1);
 }
 
+int	exec_circuit(t_op_ref *op_ref, t_operation *op)
+{
+	if (op_ref->circuit_trigger)
+	{
+		if ((op->operation_type == OPERATION_AND && !*op_ref->lec)
+			|| (op->operation_type == OPERATION_OR && *op_ref->lec))
+		{
+			op_ref->circuit_trigger = 0;
+			return (1);
+		}
+		return (0);
+	}
+	else
+	{
+		if ((op->operation_type == OPERATION_AND && *op_ref->lec)
+			|| (op->operation_type == OPERATION_OR && !*op_ref->lec))
+		{
+			op_ref->circuit_trigger = 1;
+			return (0);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+void	exec_finish_circuit(t_op_ref *op_ref, t_operation *op)
+{
+	if ((op->operation_type == OPERATION_AND && *op_ref->lec)
+		|| (op->operation_type == OPERATION_OR && !*op_ref->lec))
+		op_ref->circuit_trigger = 1;
+}
+
 int	execute_process_helper(t_operation **ops,
 	size_t i, t_op_ref *op_ref)
 {
 	int	status;
 
+	if (!exec_circuit_check(op_ref, ops[i]))
+		return (EXIT_SUCCESS);
 	status = exec_proc_helper_prep(ops, i, op_ref);
 	if (status != 2)
 		return (status);
@@ -123,5 +155,7 @@ int	execute_process_helper(t_operation **ops,
 			if (exec_proc_helper2(ops, i, op_ref) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 	}
+	else
+		*op_ref->lec = 0;
 	return (EXIT_SUCCESS);
 }
