@@ -6,26 +6,14 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/28 14:53:34 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/28 15:07:39 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	cd_cmd(t_op_ref *op_ref, char **args)
+static void	cmd_cmd_helper(char **args, size_t i, t_op_ref *op_ref)
 {
-	size_t	i;
-
-	i = 1;
-	if (!args[i])
-	{
-		if (chdir(ft_getenv(*op_ref->env_lst, "HOME")) == -1)
-		{
-			perror("Proton: cd");
-			*op_ref->lec = 1;
-		}
-		return ;
-	}
 	if (args[i + 1])
 		ft_dprintf(STDERR_FILENO, "Proton: cd: too many arguments\n");
 	if (args[i + 1])
@@ -38,6 +26,30 @@ void	cd_cmd(t_op_ref *op_ref, char **args)
 			*op_ref->lec = 1;
 		}
 	}
+}
+
+void	cd_cmd(t_op_ref *op_ref, char **args)
+{
+	size_t	i;
+	char	*home_ref;
+
+	i = 1;
+	if (!args[i])
+	{
+		home_ref = ft_getenv(*op_ref->env_lst, "HOME");
+		if (!home_ref)
+		{
+			ft_dprintf(STDERR_FILENO, "Proton: cd: HOME not set\n");
+			return ;
+		}
+		if (chdir(home_ref) == -1)
+		{
+			perror("Proton: cd");
+			*op_ref->lec = 1;
+		}
+		return ;
+	}
+	cmd_cmd_helper(args, i, op_ref);
 }
 
 void	pwd_cmd(t_op_ref *op_ref)
