@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 15:20:04 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:04:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	expander_s1_update_operation(t_operation *op, t_list *tokens)
 	i = 0;
 	while (i++ < lst_size)
 	{
-		if (tokens->content && *((char *)tokens->content))
+		if (tokens->content)
 			args[i] = (char *)tokens->content;
 		else
 			free(tokens->content);
@@ -80,7 +80,7 @@ int	execute_expander_stage2_helper(t_op_ref *op_ref,
 			if (!token_expander(operation->in_redirects[i].name,
 					tokens, op_ref))
 				return (-1);
-			if (ft_lstsize(*tokens) > 1)
+			if (get_lsttok_size(*tokens) != 1)
 			{
 				ft_dprintf(STDERR_FILENO, "%s: ambiguous redirect\n",
 					operation->in_redirects[i].name);

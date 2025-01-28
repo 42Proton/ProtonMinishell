@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:59:35 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 02:15:16 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:02:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	out_files_check(t_operation *op, size_t i, int *flags)
 void	exec_exp_s2_helper2(t_list **tokens,
 	t_operation *operation, size_t i)
 {
-	if (*(char *)(*tokens)->content)
+	if ((*tokens)->content)
 	{
 		free(operation->in_redirects[i].name);
 		operation->in_redirects[i].name = (char *)(*tokens)->content;

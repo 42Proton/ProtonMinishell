@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:21:45 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 01:54:23 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:00:08 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ size_t	get_lsttok_size(t_list *tok)
 	i = 0;
 	while (tok)
 	{
-		if (tok->content && *((char *)tok->content))
+		if (tok->content)
 			i++;
 		tok = tok->next;
 	}
