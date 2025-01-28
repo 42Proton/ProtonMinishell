@@ -6,27 +6,11 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/28 15:07:39 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/28 15:13:29 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static void	cmd_cmd_helper(char **args, size_t i, t_op_ref *op_ref)
-{
-	if (args[i + 1])
-		ft_dprintf(STDERR_FILENO, "Proton: cd: too many arguments\n");
-	if (args[i + 1])
-		*op_ref->lec = 1;
-	else
-	{
-		if (chdir(args[i]) == -1)
-		{
-			perror("Proton: cd");
-			*op_ref->lec = 1;
-		}
-	}
-}
 
 void	cd_cmd(t_op_ref *op_ref, char **args)
 {
@@ -40,6 +24,7 @@ void	cd_cmd(t_op_ref *op_ref, char **args)
 		if (!home_ref)
 		{
 			ft_dprintf(STDERR_FILENO, "Proton: cd: HOME not set\n");
+			*op_ref->lec = 1;
 			return ;
 		}
 		if (chdir(home_ref) == -1)

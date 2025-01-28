@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 14:55:06 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/28 15:13:12 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+void				cmd_cmd_helper(char **args, size_t i, t_op_ref *op_ref);
 int					check_valid_flag(char *arg);
 void				echo_iteraite_flag(char ***args, int *newline);
 void				execute_cmd_end(t_op_ref *op_ref,

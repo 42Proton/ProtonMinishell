@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:16 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 14:53:56 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/28 15:12:52 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,21 @@ void	echo_iteraite_flag(char ***args, int *newline)
 			continue ;
 		}
 		i++;
+	}
+}
+
+void	cmd_cmd_helper(char **args, size_t i, t_op_ref *op_ref)
+{
+	if (args[i + 1])
+		ft_dprintf(STDERR_FILENO, "Proton: cd: too many arguments\n");
+	if (args[i + 1])
+		*op_ref->lec = 1;
+	else
+	{
+		if (chdir(args[i]) == -1)
+		{
+			perror("Proton: cd");
+			*op_ref->lec = 1;
+		}
 	}
 }
