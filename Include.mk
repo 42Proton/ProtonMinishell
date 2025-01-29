@@ -50,6 +50,7 @@ SRCS= \
 	execute_process_utils1.c \
 	execute_process_utils2.c \
 	execute_process_utils3.c \
+	execute_process_utils4.c \
 	execute_builtin.c \
 	exit_cmd.c \
 	opers_helpers.c \

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:51:29 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 18:46:06 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/29 11:28:51 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,34 +67,6 @@ static int	exec_proc_helper_prep(t_operation **ops,
 	return (2);
 }
 
-static int	exec_proc_helper2(t_operation **ops,
-	size_t i, t_op_ref *op_ref)
-{
-	int	status;
-
-	status = pre_execute_external_cmd(op_ref, ops[i]);
-	if (status == -1)
-		return (EXIT_FAILURE);
-	if (status)
-		status = execute_cmd(op_ref, ops[i], ops[i + 1]);
-	if (status == -1)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
-
-static int	exec_proc_cmd_dir_check(t_operation **ops,
-	size_t i, t_op_ref *op_ref)
-{
-	if (ft_strchr(ops[i]->cmd, '/') && check_if_dir(ops[i]->cmd) == 1)
-	{
-		*op_ref->lec = 126;
-		ft_dprintf(STDERR_FILENO,
-			"Proton: %s: Is a directory\n", ops[i]->cmd);
-		return (0);
-	}
-	return (1);
-}
-
 int	execute_process_helper(t_operation **ops,
 	size_t i, t_op_ref *op_ref)
 {
@@ -112,16 +84,8 @@ int	execute_process_helper(t_operation **ops,
 	}
 	else if (ops[i]->cmd)
 	{
-		if (!exec_proc_cmd_dir_check(ops, i, op_ref))
-			return (EXIT_SUCCESS);
-		if (check_if_builtin(ops[i]->cmd))
-		{
-			status = builtin_cmd(ops, i, op_ref);
-			return (status);
-		}
-		else
-			if (exec_proc_helper2(ops, i, op_ref) == EXIT_FAILURE)
-				return (EXIT_FAILURE);
+		status = exec_proc_helper_util(ops, i, op_ref);
+		return (status);
 	}
 	else
 		*op_ref->lec = 0;

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/29 11:02:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/29 11:31:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,12 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+int					exec_proc_iter(t_operation **ops,
+						t_op_ref *op_ref, size_t i);
+int					exec_proc_helper_util(t_operation **ops,
+						size_t i, t_op_ref *op_ref);
+int					exec_proc_util(t_op_ref *op_ref,
+						t_operation **ops, size_t i);
 int					exec_circuit_check(t_op_ref *op_ref, t_operation *op);
 void				cmd_cmd_helper(char **args, size_t i, t_op_ref *op_ref);
 int					check_valid_flag(char *arg);
