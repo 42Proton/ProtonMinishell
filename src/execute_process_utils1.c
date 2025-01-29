@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:08:49 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 17:40:39 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:46:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,29 +94,6 @@ int	prep_pipeline(t_operation *operation,
 	return (EXIT_SUCCESS);
 }
 
-int	execute_process_circuit(t_operation *operation,
-	t_op_ref *op_ref)
-{
-	if (op_ref->circuit_trigger)
-	{
-		if ((operation->operation_type == OPERATION_AND && !*op_ref->lec)
-			|| (operation->operation_type == OPERATION_OR && *op_ref->lec))
-			op_ref->circuit_trigger = 0;
-		else
-			return (1);
-	}
-	else
-	{
-		if ((operation->operation_type == OPERATION_AND && *op_ref->lec)
-			|| (operation->operation_type == OPERATION_OR && !*op_ref->lec))
-		{
-			op_ref->circuit_trigger = 1;
-			return (1);
-		}
-	}
-	return (0);
-}
-
 void	wait_childs(t_op_ref *op_ref)
 {
 	int		wstatus;
@@ -138,4 +115,20 @@ void	wait_childs(t_op_ref *op_ref)
 		}
 		pid = wait(&wstatus);
 	}
+}
+
+int	exec_circuit_check(t_op_ref *op_ref, t_operation *op)
+{
+	if (op_ref->circuit_trigger)
+	{
+		if ((op->operation_type == OPERATION_AND && !*op_ref->lec)
+			|| (op->operation_type == OPERATION_OR && *op_ref->lec))
+		{
+			op_ref->circuit_trigger = 0;
+			return (1);
+		}
+		else
+			return (0);
+	}
+	return (1);
 }

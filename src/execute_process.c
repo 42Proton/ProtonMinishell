@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 17:49:38 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:51:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,25 @@ int	expand_heredoc_limiters(t_operation **ops)
 	return (1);
 }
 
+int	exec_proc_util(t_op_ref *op_ref, t_operation **ops, size_t i)
+{
+	int	status;
+
+	status = exec_proc_iter(ops, op_ref, i);
+	if ((ops[i]->operation_type == OPERATION_AND && *op_ref->lec)
+		|| (ops[i]->operation_type == OPERATION_OR && !*op_ref->lec))
+		op_ref->circuit_trigger = 1;
+	if (status != 2)
+	{
+		wait_childs(op_ref);
+		return (status);
+	}
+	if (ops[i + 1] && (ops[i + 1]->operation_type == OPERATION_AND
+		|| ops[i + 1]->operation_type == OPERATION_OR))
+		wait_childs(op_ref);
+	return (status);
+}
+
 int	execute_process(t_operation **ops,
 	t_op_ref *op_ref, int is_subshell)
 {
@@ -124,12 +143,9 @@ int	execute_process(t_operation **ops,
 	i = 0;
 	while (ops[i])
 	{
-		status = exec_proc_iter(ops, op_ref, i);
+		status = exec_proc_util(op_ref, ops, i);
 		if (status != 2)
-		{
-			wait_childs(op_ref);
 			return (status);
-		}
 		i++;
 	}
 	wait_childs(op_ref);
