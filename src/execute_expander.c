@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/29 23:58:39 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/30 00:01:56 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	expander_s1_update_operation(t_operation *op, t_list *tokens)
 	size_t	arr_size;
 	size_t	i;
 
+	free(op->cmd);
+	op->cmd = 0;
 	arr_size = get_lsttok_size(tokens);
 	args = ft_calloc(arr_size + 2, sizeof(char *));
 	if (!args)
