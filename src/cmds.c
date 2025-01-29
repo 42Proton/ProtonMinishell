@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/28 15:13:29 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/29 22:25:22 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,25 @@ int	echo_cmd_helper(char **res, char **args)
 int	check_valid_flag(char *arg)
 {
 	size_t	i;
+	int		newline;
+	int		flag;
 
 	i = 1;
+	flag = 0;
+	newline = 0;
 	if (arg[0] != '-')
 		return (0);
 	while (arg[i])
 	{
-		if (arg[i] != 'n')
-			return (0);
+		if (arg[i] != 'n' && arg[i] != 'e' && arg[i] != 'E')
+			flag = 0;
+		else
+			flag = 1;
+		if (arg[i] == 'n')
+			newline = 1;
 		i++;
 	}
-	return (1);
+	return (flag + newline);
 }
 
 int	echo_cmd(char **args)
