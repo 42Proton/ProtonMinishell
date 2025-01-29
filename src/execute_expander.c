@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 08:44:36 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 13:04:41 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/29 23:17:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ int	expander_s1_update_operation(t_operation *op, t_list *tokens)
 	args = ft_calloc(arr_size + 2, sizeof(char *));
 	if (!args)
 		return (-1);
-	i = 0;
-	while (i++ < lst_size)
+	i = 1;
+	while (tokens)
 	{
 		if (tokens->content)
+		{
 			args[i] = (char *)tokens->content;
-		else
-			free(tokens->content);
+			i++;
+		}
 		tokens = tokens->next;
 	}
 	i = 0;
