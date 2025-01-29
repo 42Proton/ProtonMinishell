@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/29 23:21:22 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/29 23:58:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,8 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+void				exp_s1_update_op_iter(t_list *tokens,
+						t_operation *op, char **args);
 int					tok_exp_res_split_helper_util(t_tok_expander *tok_exp,
 						t_tok_expander *tok_exp2, size_t env_len,
 						t_op_ref *op_ref);
@@ -244,8 +246,6 @@ int					quicksig_handle(t_minishell *mini);
 int					out_files_check(t_operation *op, size_t i, int *flags);
 int					execute_expander_stage2_helper2(t_list **tokens,
 						t_operation *op, size_t i);
-void				exp_s1_update_op_prep(t_operation *op, t_list **tokens,
-						size_t *lst_size, size_t *arr_size);
 size_t				get_lsttok_size(t_list *tok);
 size_t				get_arr_len(void **arr);
 void				start_shell_sighandle(t_minishell *mini);

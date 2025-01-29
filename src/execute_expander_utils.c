@@ -6,21 +6,11 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 10:49:25 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 13:04:48 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/29 23:59:44 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-void	exp_s1_update_op_prep(t_operation *op, t_list **tokens,
-	size_t *lst_size, size_t *arr_size)
-{
-	free(op->cmd);
-	op->cmd = (*tokens)->content;
-	*tokens = (*tokens)->next;
-	*lst_size = ft_lstsize(*tokens);
-	*arr_size = get_lsttok_size(*tokens);
-}
 
 int	execute_expander_stage2_helper2(t_list **tokens,
 	t_operation *op, size_t i)
@@ -39,4 +29,24 @@ int	execute_expander_stage2_helper2(t_list **tokens,
 	else
 		free((*tokens)->content);
 	return (1);
+}
+
+void	exp_s1_update_op_iter(t_list *tokens,
+	t_operation *op, char **args)
+{
+	size_t	i;
+
+	i = 0;
+	while (tokens)
+	{
+		if (tokens->content)
+		{
+			if (!i)
+				op->cmd = tokens->content;
+			else
+				args[i] = (char *)tokens->content;
+			i++;
+		}
+		tokens = tokens->next;
+	}
 }
