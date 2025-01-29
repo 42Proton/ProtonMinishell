@@ -6,16 +6,16 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/29 22:17:36 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/29 22:25:22 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void cd_cmd(t_op_ref *op_ref, char **args)
+void	cd_cmd(t_op_ref *op_ref, char **args)
 {
-	size_t i;
-	char *home_ref;
+	size_t	i;
+	char	*home_ref;
 
 	i = 1;
 	if (!args[i])
@@ -25,21 +25,21 @@ void cd_cmd(t_op_ref *op_ref, char **args)
 		{
 			ft_dprintf(STDERR_FILENO, "Proton: cd: HOME not set\n");
 			*op_ref->lec = 1;
-			return;
+			return ;
 		}
 		if (chdir(home_ref) == -1)
 		{
 			perror("Proton: cd");
 			*op_ref->lec = 1;
 		}
-		return;
+		return ;
 	}
 	cmd_cmd_helper(args, i, op_ref);
 }
 
-void pwd_cmd(t_op_ref *op_ref)
+void	pwd_cmd(t_op_ref *op_ref)
 {
-	char cwd[PATH_MAX + 1];
+	char	cwd[PATH_MAX + 1];
 
 	if (getcwd(cwd, PATH_MAX))
 		ft_printf("%s\n", cwd);
@@ -50,10 +50,10 @@ void pwd_cmd(t_op_ref *op_ref)
 	}
 }
 
-int echo_cmd_helper(char **res, char **args)
+int	echo_cmd_helper(char **res, char **args)
 {
-	char *temp;
-	size_t i;
+	char	*temp;
+	size_t	i;
 
 	i = 0;
 	while (args[i])
@@ -76,11 +76,11 @@ int echo_cmd_helper(char **res, char **args)
 	return (1);
 }
 
-int check_valid_flag(char *arg)
+int	check_valid_flag(char *arg)
 {
-	size_t i;
-	int newline;
-	int flag;
+	size_t	i;
+	int		newline;
+	int		flag;
 
 	i = 1;
 	flag = 0;
@@ -100,10 +100,10 @@ int check_valid_flag(char *arg)
 	return (flag + newline);
 }
 
-int echo_cmd(char **args)
+int	echo_cmd(char **args)
 {
-	int newline;
-	char *res;
+	int		newline;
+	char	*res;
 
 	newline = 1;
 	res = ft_strdup("");
