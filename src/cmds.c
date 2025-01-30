@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:10:56 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/29 22:25:22 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/30 15:58:50 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	check_valid_flag(char *arg)
 	while (arg[i])
 	{
 		if (arg[i] != 'n' && arg[i] != 'e' && arg[i] != 'E')
-			flag = 0;
+			return (0);
 		else
 			flag = 1;
 		if (arg[i] == 'n')

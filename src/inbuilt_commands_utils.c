@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inbuilt_commands_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
+/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 22:50:30 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/27 21:23:18 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/30 15:45:38 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

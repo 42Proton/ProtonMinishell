@@ -6,7 +6,7 @@
 /*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:16 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/29 22:28:29 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/30 15:56:14 by abueskander      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	echo_iteraite_flag(char ***args, int *newline)
 			(*args) += 1;
 			continue ;
 		}
+		else
+			break ;
 		i++;
 	}
 }
