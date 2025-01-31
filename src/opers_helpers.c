@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 21:27:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/27 21:58:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:35:01 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,7 @@ t_op_ref	*op_ref_init(t_operation **operations, t_minishell *mini)
 	op_ref->signal_term = 0;
 	op_ref->last_pid = -1;
 	op_ref->is_child = 0;
+	op_ref->is_subshell = 0;
+	op_ref->term = &mini->term;
 	return (op_ref);
 }

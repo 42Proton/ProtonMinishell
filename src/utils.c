@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 15:20:41 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/01/31 10:39:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ void	cursor_line_back(t_minishell *mini)
 }
 
 void	start_execution_exits(t_minishell *mini,
-	int status, int is_exit, int is_child)
+	t_exec_status *exec_status)
 {
-	if (status == EXIT_FAILURE)
+	if (exec_status->status == EXIT_FAILURE)
 	{
 		mini->last_exit_code = -1;
 		exit_handler(mini, ERR_POSTLEXER);
 	}
-	if (is_exit && is_child)
+	if (exec_status->is_child || exec_status->is_subshell)
 		exit_handler(mini, CHILD_NONE);
-	if (is_exit)
+	if (exec_status->is_exit)
 		exit_handler(mini, NONE);
 }

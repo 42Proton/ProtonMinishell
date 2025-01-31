@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/26 16:19:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:17:43 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ void	exit_handler(t_minishell *mini, int error)
 	int	lec;
 
 	print_error(error);
+	if (error == NONE)
+		if (set_term_attr_vquit(&mini->term, 1))
+			perror("ioctl");
 	if (error > ERR_MINI)
 	{
 		rl_clear_history();

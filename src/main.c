@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 17:42:55 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:37:39 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ int	g_signum;
 
 static void	start_execution(t_minishell *mini)
 {
-	int			status;
-	int			is_exit;
-	int			is_child;
-	t_op_ref	*op_ref;
-	t_operation	**operations;
+	t_exec_status	exec_status;
+	t_op_ref		*op_ref;
+	t_operation		**operations;
 
 	operations = operations_prep(mini->line_tokens, 0);
 	ft_lstclear(&mini->line_tokens, free_tokens);
@@ -28,14 +26,17 @@ static void	start_execution(t_minishell *mini)
 		exit_handler(mini, ERR_POSTLEXER);
 	op_ref = op_ref_init(operations, mini);
 	if (!g_signum)
-		status = execute_process(operations, op_ref, 0);
+		exec_status.status = execute_process(operations, op_ref, 0);
 	if (op_ref->signal_term)
-		write(STDOUT_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "\n", 0);
 	free_operations(operations);
-	is_exit = op_ref->is_exit;
-	is_child = op_ref->is_child;
+	exec_status.is_exit = op_ref->is_exit;
+	exec_status.is_child = op_ref->is_child;
+	exec_status.is_subshell = op_ref->is_subshell;
 	free(op_ref);
-	start_execution_exits(mini, status, is_exit, is_child);
+	if (set_term_attr_vquit(&mini->term, 1))
+		exit_handler(mini, ERR_POSTLEXER);
+	start_execution_exits(mini, &exec_status);
 }
 
 static t_minishell	*minishell_prep(char **environ, char **argv)
@@ -69,10 +70,8 @@ static void	start_shell_helper(t_minishell *mini)
 		if (status)
 			start_execution(mini);
 		else
-		{
-			ft_lstclear(&mini->line_tokens, free_tokens);
 			mini->last_exit_code = 2;
-		}
+		ft_lstclear(&mini->line_tokens, free_tokens);
 	}
 	else
 	{
@@ -113,7 +112,7 @@ int	main(int argc, char **argv, char **env)
 	g_signum = 0;
 	signal_handler(SIG_IGNORE);
 	mini = minishell_prep(env, argv);
-	if (terminals_config())
+	if (terminals_config(mini))
 		exit_handler(NULL, ERR_TERM);
 	start_shell(mini);
 }

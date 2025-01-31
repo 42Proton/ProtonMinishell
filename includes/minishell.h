@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/29 23:58:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:40:08 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,20 @@ typedef struct s_split_toks
 
 typedef struct s_op_ref
 {
-	int			*lec;
-	int			*stdin_bak;
-	int			wait_childs;
-	int			is_exit;
-	int			last_pid;
-	int			circuit_trigger;
-	int			signal_term;
-	int			is_child;
-	u_int32_t	*curr_line;
-	u_int32_t	heredoc_line_inc;
-	t_list		**env_lst;
-	char		*shell_exec;
+	int				*lec;
+	int				*stdin_bak;
+	int				wait_childs;
+	int				is_exit;
+	int				last_pid;
+	int				circuit_trigger;
+	int				signal_term;
+	int				is_child;
+	int				is_subshell;
+	u_int32_t		*curr_line;
+	u_int32_t		heredoc_line_inc;
+	t_list			**env_lst;
+	char			*shell_exec;
+	struct termios	*term;
 }	t_op_ref;
 
 typedef struct s_pre_process
@@ -113,6 +115,7 @@ typedef struct s_minishell
 	int						unclean_mode;
 	int						is_terminfo_caps_loaded;
 	char					*shell_exec;
+	struct termios			term;
 }							t_minishell;
 
 typedef struct s_tokens_split
@@ -145,6 +148,14 @@ typedef struct s_tok_expander
 	t_list					**split_tok;
 	int						lec;
 }							t_tok_expander;
+
+typedef struct s_exec_status
+{
+	int	status;
+	int	is_exit;
+	int	is_child;
+	int	is_subshell;
+}	t_exec_status;
 
 enum						e_token_type
 {
@@ -212,6 +223,7 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+int					set_term_attr_vquit(struct termios *term, int allow);
 void				exp_s1_update_op_iter(t_list *tokens,
 						t_operation *op, char **args);
 int					tok_exp_res_split_helper_util(t_tok_expander *tok_exp,
@@ -230,7 +242,7 @@ void				echo_iteraite_flag(char ***args, int *newline);
 void				execute_cmd_end(t_op_ref *op_ref,
 						pid_t pid, t_operation *next_op);
 void				start_execution_exits(t_minishell *mini,
-						int status, int is_exit, int is_child);
+						t_exec_status *exec_status);
 int					prep_heredoc_helper(t_op_ref *op_ref,
 						t_operation *operation, size_t j);
 int					prep_heredoc_util(t_op_ref *op_ref,
@@ -266,7 +278,7 @@ int					execute_cmd(t_op_ref *op_ref,
 						t_operation *operation, t_operation *next_op);
 int					pre_execute_external_cmd(t_op_ref *op_ref,
 						t_operation *operation);
-void				restore_sigint(void);
+void				restore_child_signals(void);
 int					subshell_apply_fds(t_operation *op);
 void				execute_cmd_close_fds(t_operation *operation, int is_ext);
 int					execute_cmd_redirections(t_operation *operation,
@@ -422,7 +434,7 @@ void				free_env(t_env *env);
 void				free_lst(t_list *lst);
 t_env				*alloc_env(char *name, char *data);
 void				signal_handler(int newprompt);
-int					terminals_config(void);
+int					terminals_config(t_minishell *mini);
 int					add_sep_tokens(t_minishell *mini,
 						t_tokens_split *tokens_split, char *line);
 int					add_token(t_minishell *mini,

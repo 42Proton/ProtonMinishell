@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 17:08:49 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 18:46:14 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:30:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	execute_cmd(t_op_ref *op_ref,
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
-		restore_sigint();
+		restore_child_signals();
 		op_ref->is_child = 1;
 		if (ft_setenv(op_ref->env_lst, "_", operation->cmd_path) == -1)
 			return (EXIT_FAILURE);

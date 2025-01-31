@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 16:51:55 by abueskander       #+#    #+#             */
-/*   Updated: 2025/01/28 02:35:15 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:42:02 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,42 @@ void	signal_handler(int mode)
 	sigaction(SIGTSTP, &sa, NULL);
 }
 
-int	terminals_config(void)
+int	set_term_attr_vquit(struct termios *term, int allow)
 {
-	struct termios	term;
+	char	og_quit;
 
-	if (!isatty(STDIN_FILENO))
+	if (allow)
+	{
+		if (tcsetattr(STDERR_FILENO, TCSANOW, term) != 0)
+			return (1);
+	}
+	else
+	{
+		og_quit = term->c_cc[VQUIT];
+		term->c_cc[VQUIT] = _POSIX_VDISABLE;
+		if (tcsetattr(STDERR_FILENO, TCSANOW, term) != 0)
+		{
+			term->c_cc[VQUIT] = og_quit;
+			return (1);
+		}
+		term->c_cc[VQUIT] = og_quit;
+	}
+	return (0);
+}
+
+int	terminals_config(t_minishell *mini)
+{
+	char	og_quit;
+
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO)
+		|| !isatty(STDERR_FILENO))
 		return (1);
-	if (tcgetattr(STDERR_FILENO, &term) != 0)
+	if (tcgetattr(STDERR_FILENO, &mini->term) != 0)
 		return (1);
-	term.c_cc[VQUIT] = _POSIX_VDISABLE;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) != 0)
+	og_quit = mini->term.c_cc[VQUIT];
+	mini->term.c_cc[VQUIT] = _POSIX_VDISABLE;
+	if (tcsetattr(STDERR_FILENO, TCSANOW, &mini->term) != 0)
 		return (1);
+	mini->term.c_cc[VQUIT] = og_quit;
 	return (0);
 }

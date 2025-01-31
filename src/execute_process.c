@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 21:10:52 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/29 11:22:08 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 10:32:28 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ int	execute_process(t_operation **ops,
 	}
 	else
 		signal_handler(SIG_IGNORE);
+	if (set_term_attr_vquit(op_ref->term, 1))
+		return (EXIT_FAILURE);
 	i = 0;
 	while (ops[i])
 	{
