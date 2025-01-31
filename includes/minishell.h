@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 10:40:08 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:26:46 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,8 @@ typedef struct s_tok_expander
 	t_list					*lst;
 	t_list					**split_tok;
 	int						lec;
+	int						toggle;
+	size_t					i_temp;
 }							t_tok_expander;
 
 typedef struct s_exec_status
@@ -223,12 +225,17 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+void				exp_prep_qtr_next(char **content,
+						t_list **split_toks, t_tok_expander *tok_exp);
+void				exp_qtr_quit_env(t_tok_expander *tok_exp, size_t env_len);
+void				exp_qtr_helper(char **content,
+						t_tok_expander *tok_exp, t_list **split_toks,
+						size_t env_len);
 int					set_term_attr_vquit(struct termios *term, int allow);
 void				exp_s1_update_op_iter(t_list *tokens,
 						t_operation *op, char **args);
 int					tok_exp_res_split_helper_util(t_tok_expander *tok_exp,
-						t_tok_expander *tok_exp2, size_t env_len,
-						t_op_ref *op_ref);
+						t_tok_expander *tok_exp2, t_op_ref *op_ref);
 int					exec_proc_iter(t_operation **ops,
 						t_op_ref *op_ref, size_t i);
 int					exec_proc_helper_util(t_operation **ops,
@@ -288,11 +295,11 @@ int					process_in_redirects(t_operation *operation);
 int					process_in_redirects_heredoc(t_operation *operation);
 int					prep_heredoc(t_op_ref *op_ref, t_operation **operations);
 int					token_expander_helper2(t_list **split_toks,
-						t_op_ref *op_ref, char *s);
+						t_op_ref *op_ref, char *exp_str);
 int					token_expander_helper(t_list *split_toks, t_list *res_toks,
 						t_list **tokens);
 void				expander_loop_helper(t_tok_expander *tok_exp,
-						size_t *env_len, size_t *i);
+						size_t *env_len, size_t *i, char **content);
 size_t				exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,
 						t_op_ref *op_ref, size_t *i);
 int					insert_quotes_range(t_list **quotes_range,
@@ -318,7 +325,7 @@ void				clear_split_tok(void *content);
 void				clear_split_tok2(void *content);
 int					exp_rm_qt(t_list *split_toks);
 int					expander_qtr(char *s, t_list *split_toks,
-						t_op_ref *op_ref, int env_mode);
+						t_op_ref *op_ref);
 int					expander_prep_qtr(t_list *s_split_toks,
 						t_list **split_toks);
 int					token_exp_res_split(char *s, char *exp_str,

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:49:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 17:55:49 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:26:38 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	exp_prep_qtr_modes(char *s, size_t i,
 	return (1);
 }
 
-static void	exp_prep_qtr_next(char **content,
+void	exp_prep_qtr_next(char **content,
 	t_list **split_toks, t_tok_expander *tok_exp)
 {
 	if (!(*split_toks)->next)
@@ -70,7 +70,7 @@ int	expander_prep_qtr(t_list *s_split_toks, t_list **split_toks)
 	return (1);
 }
 
-static void	exp_qtr_quit_env(t_tok_expander *tok_exp, size_t env_len)
+void	exp_qtr_quit_env(t_tok_expander *tok_exp, size_t env_len)
 {
 	if (tok_exp->mode >= DOUBLE_QUOTE_ENV_MODE && !env_len)
 	{
@@ -82,21 +82,19 @@ static void	exp_qtr_quit_env(t_tok_expander *tok_exp, size_t env_len)
 }
 
 int	expander_qtr(char *s, t_list *split_toks,
-	t_op_ref *op_ref, int env_mode)
+	t_op_ref *op_ref)
 {
 	t_tok_expander	tok_exp;
 	char			*content;
 	size_t			env_len;
 	size_t			i;
 
-	content = ((t_split_toks *)split_toks->content)->str;
-	expander_loop_helper(&tok_exp, &env_len, &i);
+	tok_exp.split_tok = &split_toks;
+	expander_loop_helper(&tok_exp, &env_len, &i, &content);
 	while (s[i] || tok_exp.mode >= DOUBLE_QUOTE_ENV_MODE)
 	{
-		if (!content[tok_exp.split_se.end])
-			exp_prep_qtr_next(&content, &split_toks, &tok_exp);
-		exp_qtr_quit_env(&tok_exp, env_len);
-		if (!env_len && env_mode)
+		exp_qtr_helper(&content, &tok_exp, &split_toks, env_len);
+		if (!env_len)
 			env_len = exp_prep_qtr_env(s, &tok_exp, op_ref, &i);
 		if (tok_exp.mode < DOUBLE_QUOTE_ENV_MODE)
 			if (!exp_prep_qtr_modes(s, i, split_toks, &tok_exp))
@@ -104,9 +102,10 @@ int	expander_qtr(char *s, t_list *split_toks,
 		if (env_len)
 			env_len--;
 		if (tok_exp.mode < DOUBLE_QUOTE_ENV_MODE && s[i])
-			(i) += 1;
-		if (content[tok_exp.split_se.end])
+			i++;
+		if (content[tok_exp.split_se.end] && !tok_exp.toggle)
 			tok_exp.split_se.end++;
+		tok_exp.toggle = 0;
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:56:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/29 23:20:52 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 19:06:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	token_exp_res_split_helper(char *exp_str, t_tok_expander *tok_exp,
 	size_t	env_len;
 
 	env_len = get_env_len(tok_exp->s_ref + tok_exp->split_se.end, op_ref, 0);
-	if (!tok_exp_res_split_helper_util(tok_exp, tok_exp2, env_len, op_ref))
+	if (!tok_exp_res_split_helper_util(tok_exp, tok_exp2, op_ref))
 		return (1);
 	tok_exp2->split_se.end += tok_exp->split_se.end
 		- tok_exp->split_se.start;

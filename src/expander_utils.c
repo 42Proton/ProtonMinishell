@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 23:06:15 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:26:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 15:10:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	exp_add_tok_rm_qt(char *s, t_tok_expander *tok_exp)
 	t_list	*lst;
 
 	split_se = tok_exp->split_se;
-	if (split_se.start == split_se.end + 1)
+	if (split_se.start >= split_se.end)
 		return (1);
 	sub_s = ft_substr(s, split_se.start, (split_se.end - split_se.start) + 1);
 	if (!sub_s)

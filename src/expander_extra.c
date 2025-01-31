@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 14:38:48 by bismail           #+#    #+#             */
-/*   Updated: 2025/01/26 17:55:53 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:25:55 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,16 @@ void	qr_tok_split(t_tok_expander *tok_exp, t_qr *qr)
 {
 	if (tok_exp->split_se.start == tok_exp->split_se.end - 1)
 	{
-		qr->arr[0] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
-				+ 1) * 2;
-		qr->arr[1] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
-				+ 1) * 2;
+		if (tok_exp->split_se.end >= (tok_exp->quotes_iter_count + 1) * 2)
+			qr->arr[0] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
+					+ 1) * 2;
+		else
+			qr->arr[0] = 0;
+		if (tok_exp->split_se.end >= (tok_exp->quotes_iter_count + 1) * 2)
+			qr->arr[1] = tok_exp->split_se.end - (tok_exp->quotes_iter_count
+					+ 1) * 2;
+		else
+			qr->arr[1] = 0;
 		qr->is_empty = 1;
 	}
 	else
@@ -75,15 +81,19 @@ size_t	exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,
 		else
 			res = get_env_len(str + *i, op_ref, 1);
 		(*i)++;
+		tok_exp->i_temp = *i;
 		while (str[*i] && !check_env_sep(str[*i]))
 			(*i)++;
+		if (!res && *i != tok_exp->i_temp)
+			tok_exp->toggle = 1;
 	}
 	return (res);
 }
 
 void	expander_loop_helper(t_tok_expander *tok_exp,
-		size_t *env_len, size_t *i)
+		size_t *env_len, size_t *i, char **content)
 {
+	*content = ((t_split_toks *)(*tok_exp->split_tok)->content)->str;
 	*i = 0;
 	ft_bzero(tok_exp, sizeof(t_tok_expander));
 	*env_len = 0;
