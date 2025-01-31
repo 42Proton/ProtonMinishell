@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:56:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 19:06:11 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 22:12:12 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	token_exp_res_split_helper3(char *s,
 	t_list	*lst;
 	char	*sub_str;
 
-	if (tok_exp->split_se.start == tok_exp->split_se.end)
+	if (tok_exp->split_se.start >= tok_exp->split_se.end)
 		return (1);
 	sub_str = ft_substr(s, tok_exp->split_se.start,
 			tok_exp->split_se.end - tok_exp->split_se.start);

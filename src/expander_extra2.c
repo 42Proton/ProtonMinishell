@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:35:21 by bismail           #+#    #+#             */
-/*   Updated: 2025/01/31 21:22:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 22:12:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	token_expander_helper2(t_list **split_toks, t_op_ref *op_ref, char *s)
 void	exp_qtr_helper(char **content,
 	t_tok_expander *tok_exp, t_list **split_toks, size_t env_len)
 {
-	if (tok_exp->split_se.end > tok_exp->i_temp)
+	if (tok_exp->split_se.end > ft_strlen(*content))
 		exp_prep_qtr_next(content, split_toks, tok_exp);
 	exp_qtr_quit_env(tok_exp, env_len);
 }
