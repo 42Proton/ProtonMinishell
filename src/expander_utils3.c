@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 15:33:27 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 22:10:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 22:16:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,10 @@ int	tok_exp_res_split_helper_util(t_tok_expander *tok_exp,
 		while (tok_exp->s_ref[tok_exp->split_se.end]
 			&& !check_env_sep(tok_exp->s_ref[tok_exp->split_se.end]))
 			tok_exp->split_se.end++;
-		tok_exp2->split_se.start += tok_exp->split_se.end - tok_exp->split_se.start;
-		tok_exp2->split_se.end += tok_exp->split_se.end - tok_exp->split_se.start;
+		tok_exp2->split_se.start += tok_exp->split_se.end
+			- tok_exp->split_se.start;
+		tok_exp2->split_se.end += tok_exp->split_se.end
+			- tok_exp->split_se.start;
 		tok_exp->split_se.start = tok_exp->split_se.end;
 		return (0);
 	}
