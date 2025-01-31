@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 14:38:48 by bismail           #+#    #+#             */
-/*   Updated: 2025/01/31 22:06:10 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 22:15:05 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,5 @@ void	expander_loop_helper(t_tok_expander *tok_exp,
 	*i = 0;
 	ft_bzero(tok_exp, sizeof(t_tok_expander));
 	*env_len = 0;
-	tok_exp->i_temp = ft_strlen(*content);
+	tok_exp->i_temp2 = ft_strlen(*content);
 }

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 20:26:46 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 22:15:03 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ typedef struct s_tok_expander
 	int						lec;
 	int						toggle;
 	size_t					i_temp;
+	size_t					i_temp2;
 }							t_tok_expander;
 
 typedef struct s_exec_status
