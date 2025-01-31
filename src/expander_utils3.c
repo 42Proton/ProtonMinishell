@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 15:33:27 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 22:16:09 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 22:32:00 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,20 @@ int	tok_exp_res_split_util(char *exp_str,
 int	tok_exp_res_split_helper_util(t_tok_expander *tok_exp,
 	t_tok_expander *tok_exp2, t_op_ref *op_ref)
 {
+	size_t	old_end;
+
+	old_end = tok_exp->split_se.end;
 	if (!get_env_len(tok_exp->s_ref + tok_exp->split_se.end, op_ref, 1))
 	{
 		tok_exp->split_se.end++;
 		while (tok_exp->s_ref[tok_exp->split_se.end]
 			&& !check_env_sep(tok_exp->s_ref[tok_exp->split_se.end]))
+		if (tok_exp->s_ref[tok_exp->split_se.end])
 			tok_exp->split_se.end++;
-		tok_exp2->split_se.start += tok_exp->split_se.end
-			- tok_exp->split_se.start;
-		tok_exp2->split_se.end += tok_exp->split_se.end
-			- tok_exp->split_se.start;
+		tok_exp2->split_se.start += get_env_len(tok_exp->s_ref
+			+ old_end, op_ref, 0);
+		tok_exp2->split_se.end += get_env_len(tok_exp->s_ref
+			+ old_end, op_ref, 0);
 		tok_exp->split_se.start = tok_exp->split_se.end;
 		return (0);
 	}
