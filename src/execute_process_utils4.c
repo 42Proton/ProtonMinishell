@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:23:50 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 10:33:54 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/01/31 20:50:47 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@ int	exec_proc_util(t_op_ref *op_ref, t_operation **ops, size_t i)
 	int	status;
 
 	status = exec_proc_iter(ops, op_ref, i);
-	if ((ops[i]->operation_type == OPERATION_AND && *op_ref->lec)
-		|| (ops[i]->operation_type == OPERATION_OR && !*op_ref->lec))
-		op_ref->circuit_trigger = 1;
 	if (status != 2)
 	{
 		wait_childs(op_ref);
@@ -28,6 +25,9 @@ int	exec_proc_util(t_op_ref *op_ref, t_operation **ops, size_t i)
 	if (ops[i + 1] && (ops[i + 1]->operation_type == OPERATION_AND
 			|| ops[i + 1]->operation_type == OPERATION_OR))
 		wait_childs(op_ref);
+	if (ops[i + 1] && ((ops[i + 1]->operation_type == OPERATION_AND && *op_ref->lec)
+		|| (ops[i + 1]->operation_type == OPERATION_OR && !*op_ref->lec)))
+		op_ref->circuit_trigger = 1;
 	return (status);
 }
 
