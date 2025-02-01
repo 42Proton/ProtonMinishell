@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/02/01 12:44:17 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/02/01 17:26:33 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void clear_env(void *content)
+static void	clear_env(void *content)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = (t_env *)content;
 	free(env->data);
@@ -22,16 +22,16 @@ static void clear_env(void *content)
 	free(env);
 }
 
-void free_tokens(void *tokens)
+void	free_tokens(void *tokens)
 {
 	if (((t_token *)tokens)->token_word)
 		free(((t_token *)tokens)->token_word);
 	free(tokens);
 }
 
-void clear_split_tok(void *content)
+void	clear_split_tok(void *content)
 {
-	t_split_toks *split_toks;
+	t_split_toks	*split_toks;
 
 	split_toks = (t_split_toks *)content;
 	ft_lstclear(&split_toks->quotes_ranges, free);
@@ -39,23 +39,23 @@ void clear_split_tok(void *content)
 	free(content);
 }
 
-void clear_split_tok2(void *content)
+void	clear_split_tok2(void *content)
 {
-	t_split_toks *split_toks;
+	t_split_toks	*split_toks;
 
 	split_toks = (t_split_toks *)content;
 	ft_lstclear(&split_toks->quotes_ranges, free);
 	free(content);
 }
 
-void exit_handler(t_minishell *mini, int error)
+void	exit_handler(t_minishell *mini, int error)
 {
-	int lec;
+	int	lec;
 
 	print_error(error);
-	// if (error == NONE)
-	//  if (set_term_attr_vquit(&mini->term, 1))
-	//  perror("ioctl");
+	if (error == NONE)
+		if (set_term_attr_vquit(&mini->term, 1))
+			perror("ioctl");
 	if (error > ERR_MINI)
 	{
 		rl_clear_history();

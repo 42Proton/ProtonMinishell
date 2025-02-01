@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:30:24 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/02/01 11:51:50 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/01 17:28:58 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ static int	exp_rm_qt_process_qt_empty(char *s,
 
 	qr = (t_qr *)quotes_ranges->content;
 	tok_exp->split_se.end = qr->arr[0] + tok_exp->quotes_iter_count * 2;
-	if (tok_exp->split_se.start > 2
-		&& tok_exp->split_se.end > (tok_exp->split_se.start
-			+ tok_exp->quotes_iter_count * 2) + 2)
+	if (rm_qt_empty_condition(tok_exp))
 	{
 		if (!exp_add_tok_rm_qt(s, tok_exp))
 		{

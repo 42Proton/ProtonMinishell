@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   operations_prep_utils3.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abueskander <abueskander@student.42.fr>    +#+  +:+       +#+        */
+/*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 11:50:44 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/02/01 17:19:08 by abueskander      ###   ########.fr       */
+/*   Updated: 2025/02/01 17:25:14 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int set_redirection_data(t_operation *operations,
-			 t_list *lst, size_t *i, int whom)
+int	set_redirection_data(t_operation *operations,
+	t_list *lst, size_t *i, int whom)
 {
 	if (whom == 1)
 	{
 		operations->in_redirects[*i].type = op_type_to_redirection(lst);
 		operations->in_redirects[*i].name = ft_strdup(((
-								   t_token *)lst->next->content)
-								  ->token_word);
+						t_token *)lst->next->content)->token_word);
 		if (!operations->in_redirects[*i].name)
 			return (0);
 	}
@@ -28,8 +27,7 @@ int set_redirection_data(t_operation *operations,
 	{
 		operations->out_redirects[*i].type = op_type_to_redirection(lst);
 		operations->out_redirects[*i].name = ft_strdup(((
-								    t_token *)lst->next->content)
-								   ->token_word);
+						t_token *)lst->next->content)->token_word);
 		if (!operations->out_redirects[*i].name)
 			return (0);
 	}
@@ -37,10 +35,10 @@ int set_redirection_data(t_operation *operations,
 	return (1);
 }
 
-int op_prep_args(t_operation *operation, t_list *lst)
+int	op_prep_args(t_operation *operation, t_list *lst)
 {
-	ssize_t parenthesis_count;
-	size_t n_args;
+	ssize_t	parenthesis_count;
+	size_t	n_args;
 
 	parenthesis_count = 0;
 	n_args = 0;
@@ -61,11 +59,11 @@ int op_prep_args(t_operation *operation, t_list *lst)
 	return (1);
 }
 
-int op_get_args(t_operation *operation, t_list *lst)
+int	op_get_args(t_operation *operation, t_list *lst)
 {
-	ssize_t parenthesis_count;
-	size_t i;
-	t_token *tok;
+	ssize_t	parenthesis_count;
+	size_t	i;
+	t_token	*tok;
 
 	parenthesis_count = 0;
 	i = 1;
@@ -88,9 +86,9 @@ int op_get_args(t_operation *operation, t_list *lst)
 	return (1);
 }
 
-int add_operation_alloc(t_operation **operations, ssize_t i)
+int	add_operation_alloc(t_operation **operations, ssize_t i)
 {
-	t_operation *temp;
+	t_operation	*temp;
 
 	temp = ft_calloc(1, sizeof(t_operation));
 	if (!temp)

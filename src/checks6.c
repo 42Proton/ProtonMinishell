@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 22:32:46 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/26 19:07:58 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/01 17:29:12 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,15 @@ int	check_if_special_exp(char *s, t_tok_expander *tok_exp)
 	if ((s[tok_exp->split_se.end] == '?'
 			|| ft_isdigit(s[tok_exp->split_se.end]))
 		&& tok_exp->split_se.end - tok_exp->split_se.start == 1)
+		return (1);
+	return (0);
+}
+
+int	rm_qt_empty_condition(t_tok_expander *tok_exp)
+{
+	if (tok_exp->split_se.start > 2
+		&& tok_exp->split_se.end > (tok_exp->split_se.start
+			+ tok_exp->quotes_iter_count * 2) + 2)
 		return (1);
 	return (0);
 }
