@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:48:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 22:39:36 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/01 11:38:41 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ static int	prep_tok_exp(char *s, char *exp_str,
 		ft_lstclear(&s_split_toks, free);
 		free(exp_str);
 		return (0);
+	}
+	t_list *temp = s_split_toks;
+	while (temp)
+	{
+		printf("SPLIT_TOKS: %s\n", (char *)temp->content);
+		temp = temp->next;
 	}
 	free(exp_str);
 	if (!s_split_toks)

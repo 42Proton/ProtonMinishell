@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:30:24 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 20:10:55 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/01 11:51:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	exp_rm_qt_process_qt_empty(char *s,
 	qr = (t_qr *)quotes_ranges->content;
 	tok_exp->split_se.end = qr->arr[0] + tok_exp->quotes_iter_count * 2;
 	if (tok_exp->split_se.start > 2
-		&& tok_exp->split_se.end > tok_exp->split_se.start - 2)
+		&& tok_exp->split_se.end > (tok_exp->split_se.start
+			+ tok_exp->quotes_iter_count * 2) + 2)
 	{
 		if (!exp_add_tok_rm_qt(s, tok_exp))
 		{
@@ -28,6 +29,15 @@ static int	exp_rm_qt_process_qt_empty(char *s,
 			return (0);
 		}
 		tok_exp->split_se.start = tok_exp->split_se.end;
+	}
+	else if (tok_exp->split_se.end > tok_exp->split_se.start)
+	{
+		if (!exp_add_tok_rm_qt(s, tok_exp))
+		{
+			ft_lstclear(&tok_exp->lst, free);
+			return (0);
+		}
+		tok_exp->split_se.start = tok_exp->split_se.end + 1;
 	}
 	tok_exp->split_se.start += 2;
 	return (1);
