@@ -18,7 +18,7 @@ $(NAME): $(OBJS)
 	@make -C $(LIBFT)
 	$(CC) $(OBJS) $(LINKERS) $(CFLAGS) -o $(NAME)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c includes/minishell.h
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 clean: 
