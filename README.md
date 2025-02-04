@@ -18,6 +18,7 @@ Here is what we learned in minishell:
 * AND/OR (Short circuiting): Control which operations should execute based on the last exit code
 * Heredoc: Receiving input from user then redirecting it instead of a file
 * Wildcards: Implemented search for pattern when using `*`
+* Expander: Expanded the enviroment variable with its data in tokens
 ## Resources:
 Bash Manual: https://www.gnu.org/software/bash/manual/bash.html  
 Readline Documentation: https://tiswww.case.edu/php/chet/readline/rltop.html#Documentation  
