@@ -4,7 +4,7 @@
 
 # Minishell
 ## Grade: 125/100
-Minishell is a project where we have to create a simple shell in C, it is the first project where we had to work in a team, it was a challenging project we have learend a lot from.  
+Minishell is a project where we have to create a simple shell in C, it is the first project where we had to work in a team, it was a challenging project that we have learned a lot from.  
 Here is what we learned in minishell:
 * Pipes: redirecting output of a command to another
 * Programming inbuilt commands: env, export, unset, echo, pwd
