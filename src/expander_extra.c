@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 14:38:48 by bismail           #+#    #+#             */
-/*   Updated: 2025/01/31 22:15:05 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/16 17:34:50 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ size_t	exp_prep_qtr_env(char *str, t_tok_expander *tok_exp,
 			else
 				tok_exp->mode = ENV_MODE;
 		}
-		if (tok_exp->mode == DOUBLE_QUOTE_ENV_MODE)
+		if (tok_exp->mode == DOUBLE_QUOTE_ENV_MODE && op_ref)
 			res = get_env_len(str + *i, op_ref, 0);
-		else
+		else if (op_ref)
 			res = get_env_len(str + *i, op_ref, 1);
 		(*i)++;
 		tok_exp->i_temp = *i;

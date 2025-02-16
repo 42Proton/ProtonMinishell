@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:56:08 by abueskander       #+#    #+#             */
-/*   Updated: 2025/02/03 16:17:24 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/16 17:19:11 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	exit_handler(t_minishell *mini, int error)
 {
 	int	lec;
 
+	lec = 0;
 	print_error(error);
 	if (error == NONE)
 		if (set_term_attr_vquit(&mini->term, 1))

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:49:08 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 22:06:52 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/16 17:30:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	expander_qtr(char *s, t_list *split_toks,
 	while (s[i] || tok_exp.mode >= DOUBLE_QUOTE_ENV_MODE)
 	{
 		exp_qtr_helper(&content, &tok_exp, &split_toks, env_len);
-		if (!env_len)
+		if (!env_len && op_ref)
 			env_len = exp_prep_qtr_env(s, &tok_exp, op_ref, &i);
 		if (tok_exp.mode < DOUBLE_QUOTE_ENV_MODE)
 			if (!exp_prep_qtr_modes(s, i, split_toks, &tok_exp))
