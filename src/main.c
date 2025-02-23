@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:38:12 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 21:01:21 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/23 17:20:51 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,6 @@ int	main(int argc, char **argv, char **env)
 	mini = minishell_prep(env, argv);
 	if (terminals_config(mini))
 		exit_handler(mini, ERR_TERM);
+	display_header(mini);
 	start_shell(mini);
 }

@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:13:04 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/31 10:39:43 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/23 17:54:09 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	cursor_line_back(t_minishell *mini)
 	{
 		up_cap = tgetstr("up", NULL);
 		if (up_cap)
-			tputs(up_cap, 1, putchar);
+			ft_printf(up_cap);
 	}
 }
 

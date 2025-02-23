@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:37:07 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/02/01 17:28:22 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/23 17:38:19 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,7 @@ enum						e_signal_modes
 	SIG_UPDATE_SIGNUM
 };
 
+void				display_header(t_minishell *mini);
 int					rm_qt_empty_condition(t_tok_expander *tok_exp);
 void				exp_prep_qtr_next(char **content,
 						t_list **split_toks, t_tok_expander *tok_exp);
