@@ -6,7 +6,7 @@
 /*   By: amsaleh <amsaleh@student.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:27:11 by amsaleh           #+#    #+#             */
-/*   Updated: 2025/01/28 02:09:04 by amsaleh          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:11:59 by amsaleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	prep_heredoc_helper(t_op_ref *op_ref, t_operation *operation, size_t j)
 			op_ref->signal_term = 1;
 			return (1);
 		}
-		if (j == operation->n_in - 1 && !operation->heredoc_buffer)
+		if (!operation->heredoc_buffer)
 		{
 			if (!prep_heredoc_helper_util(operation, line))
 				return (0);
